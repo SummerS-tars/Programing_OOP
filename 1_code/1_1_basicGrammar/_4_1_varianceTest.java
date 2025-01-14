@@ -1,4 +1,4 @@
-public class varianceTest {
+public class _4_1_varianceTest {
     
     public static void main(String[] args){
         int a ;

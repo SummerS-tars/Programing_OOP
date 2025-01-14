@@ -1,4 +1,4 @@
-public class 中文测试 {
+public class _0_中文测试 {
     public static void main(String[] args){
         System.out.println("这是一个中文测试程序");
         // 注意：java源代码的编码方式类型为encoding，所以中文用作标识符也是ok的（虽然显然是不推荐的）

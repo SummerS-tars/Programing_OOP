@@ -1,4 +1,4 @@
-public class constAndVarTypeTest {
+public class _4_2_constAndVarTypeTest {
     public static void main(String[] args){
         // int a = 10L ;    // 10L会被默认为long类型,不能赋值给int类型
         long a = 10 ;   // 10会被默认为int类型,但仍然可以赋值给long类型
@@ -32,6 +32,8 @@ public class constAndVarTypeTest {
          * 1. 大部分从低到高的自动转换是允许的
          * 2. 大部分从高到低的自动转换是不允许的
          * 3. 特例:在不超过数据类型的范围情况下,整数常量(变量不可以)可以直接赋值给short类型(byte同理)
+         *     3.1 小知识:x = x + 1; // x是byte,会报错,因为x+1会被默认为int类型,不能赋值给byte类型
+         *     3.2 小知识:x += 1; // x是byte,不会报错,因为+=会自动进行强制类型转换
          */
     }
 }
