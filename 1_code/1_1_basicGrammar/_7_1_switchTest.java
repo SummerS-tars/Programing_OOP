@@ -55,5 +55,7 @@ public class _7_1_switchTest {
             default :
                 System.out.println("输入错误");
         }
-    }   
+        
+        sc.close();
+    }
 }
