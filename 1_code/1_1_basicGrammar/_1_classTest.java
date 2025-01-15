@@ -16,7 +16,7 @@ class C{
     }
 }
 
-public class classTest {
+public class _1_classTest {
     public static void main(String[] args){
         System.out.println("Hello,World!");
     }
