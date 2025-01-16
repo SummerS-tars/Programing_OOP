@@ -3,5 +3,6 @@ public class test1 {
         int a ;
         char ch1 = 1 , ch2 = 2 ;
         a = ch1 + ch2 ;
+        System.out.print(a) ;
     }
 }
