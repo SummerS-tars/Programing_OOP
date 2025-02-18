@@ -1,0 +1,34 @@
+# Little Note
+
+Some hot keys maybe will be used in Java coding  
+
+## Jump
+
+Hot keys below all can be found in right click list  
+
+1. Go to Definition  
+    `F12`  
+    also `Ctrl + Click the symbol`  
+2. Go to Implementation(方法实现)  
+    `Ctrl + F12`  
+3. Go to Type Definition  
+4. Find All References  
+    `Shift + Alt + F12`  
+
+if you want to stay in the current file  
+use the peeking features below  
+
+1. Peek Definition  
+    `Alt + F12`  
+2. Peek References  
+    `Shift + F12`  
+
+Jump between the matching brackets  
+    `Ctrl + Shift + \`  
+
+## Refactoring(重构)
+
+Use `Ctrl + Shift + R` to call the list of Refactor  
+
+Most frequent one  
+Rename `F2`  
