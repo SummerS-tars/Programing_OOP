@@ -87,7 +87,7 @@
 			"lib/**/*.jar",
 			"3_tool/1_extraLibs/jsoup-1.14.3.jar"
 		],
-		"java.project.explorer.showNonJavaResources": true,
+		"java.project.explorer.showNonJavaResources": false,
 		"java.configuration.updateBuildConfiguration": "automatic",
 		"maven.view": "flat",
 		"java.debug.settings.onBuildFailureProceed": true,
