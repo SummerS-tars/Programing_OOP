@@ -8,7 +8,7 @@ import java.awt.Point;
  */
 public class ChessBoard 
 {
-    // ! deprecated
+    //// deprecated and replaced by enum ChessColor
     //// public static final char WHITE_CHESS = '●' ;
     //// public static final char BLACK_CHESS = '○' ;
     //// public static final char BLANK = '·' ;
@@ -56,7 +56,7 @@ public class ChessBoard
     /**
      * * getChessColor方法，获取point位置棋盘棋子颜色
      * @param point
-     * @return
+     * @return ChessColor
      */
     public ChessColor getChessColor(Point point)
     {
@@ -77,7 +77,7 @@ public class ChessBoard
     /**
      * * 返回某种指定颜色棋子的玩家
      * @param color
-     * @return
+     * @return Player
      */
     public Player getPlayer(ChessColor color)
     {
@@ -87,7 +87,8 @@ public class ChessBoard
     /**
      * * checkGo方法实现对玩家输入的棋步合法性检验
      * @param point
-     * @return 
+     * @return byte
+     * 合法方向信息串
      */
     public byte checkGo(Point point)
     {
@@ -220,6 +221,25 @@ public class ChessBoard
     }
 
     /**
+     * * updatePlayerChessNumber方法，更新玩家棋子数量
+     */
+    public void updatePlayerChessNumber()
+    {
+        int blackChessNumber = 0 ;
+        int whiteChessNumber = 0 ;
+        for(int i = 0 ; i < 8 ; i ++ )
+        {
+            for(int j = 0 ; j < 8 ; j ++ )
+            {
+                if(chessBoard[i][j] == ChessColor.BLACK) blackChessNumber ++ ;
+                else if(chessBoard[i][j] == ChessColor.WHITE) whiteChessNumber ++ ;
+            }
+        }
+        p1.setChessNumber(blackChessNumber);
+        p2.setChessNumber(whiteChessNumber);
+    }
+
+    /**
      * * moveFocus移动检查焦点
      * @param focus
      * @param direction
@@ -241,6 +261,38 @@ public class ChessBoard
         }
         else return false ;
     }
+
+    /**
+     * * 打印棋盘及对局信息
+     */
+    public void printChessBoard()
+    {
+        // TODO: 棋盘信息打印完善
+        PrintTools.clearConsole();
+        System.out.println("  1 2 3 4 5 6 7 8") ;
+        for(int i = 0 ; i < 8 ; i ++ )
+        {
+            System.out.printf("%c " , (char)('A' + i)) ;
+            for(int j = 0 ; j < 8 ; j ++ )
+            {
+                System.out.printf("%c " , chessBoard[i][j].getSymbol()) ;
+            }
+            if(i == 4) System.out.printf("\t\t\t%8s %c : %d" ,
+                        p1.getName() , p1.getColor().getSymbol() , p1.getChessNumber()) ;
+            else if(i == 5) System.out.printf("\t\t\t%8s %c : %d" , 
+                        p2.getName() , p2.getColor().getSymbol() , p2.getChessNumber()) ;
+            System.out.println() ;
+        }
+    }
+
+    /**
+     * * getWinner方法，获取胜利方
+     * @return Player
+     */
+    public Player getWinner()
+    {
+        return p1.getChessNumber() > p2.getChessNumber() ? p1 : p2 ;
+    }
 }
 
 /**
@@ -260,7 +312,7 @@ class InitialChessBoardTestDrive
         for(int i = 0 ; i < 8 ; i ++ )
         {
             for( int j = 0 ; j < 8 ; j ++ )
-                System.out.printf("%c " , cb.getChessColor(i, j).getSymbol()) ;
+                System.out.printf("%c " , cb.getChessColor(new Point(i, j)).getSymbol()) ;
             System.out.println() ;
         }
         System.out.println("After Init of ChessBoard") ;
