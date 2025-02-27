@@ -40,14 +40,14 @@ public class ChessBoard
         blackTurn = true ;
     }
 
-    public void setChessColor(int row , int col , ChessColor color)
+    public void setChessColor(Point point , ChessColor color)
     {
-        chessBoard[row][col] = color ;
+        chessBoard[point.x][point.y] = color ;
     }
 
-    public ChessColor getChessColor(int row , int col)
+    public ChessColor getChessColor(Point point)
     {
-        return chessBoard[row][col] ;
+        return chessBoard[point.x][point.y] ;
     }
 
     public void setBlackTurn(boolean isTurn)
@@ -66,11 +66,11 @@ public class ChessBoard
     }
 
     /**
-     * *checkGo方法实现对玩家输入的棋步合法性检验
+     * * checkGo方法实现对玩家输入的棋步合法性检验
      * @param point
      * @return 
      */
-    public boolean checkGo(Point point)
+    public byte checkGo(Point point)
     {
         // TODO: 实现棋步检测
         /**
@@ -87,47 +87,78 @@ public class ChessBoard
          *      out 无包夹成功方向
          *      go on 有包夹成功方向
          */
-
-
-        // if((blackTurn ? ChessColor.BLACK : ChessColor.WHITE) == )
+        byte legalDirection = 0 ;
 
         // * 当前位置已经有棋子，非法步骤
-        if(chessBoard[point.x][point.y] != ChessColor.BLANK) return false ;
+        if(getChessColor(point) != ChessColor.BLANK) return legalDirection ;
 
         
         EnumSet<Direction> allDirections = EnumSet.allOf(Direction.class);
-        byte legalDirection = 0 ;
         for(Direction direction : allDirections )
         {
             Point focus = new Point(point) ;
-            while(moveFocus(focus, direction))
+            boolean endFlag = false ;
+            while(endFlag = moveFocus(focus, direction))
             {
                 // * 判断是否异色
-                if(chessBoard[focus.x][focus.y] == 
-                (blackTurn ? ChessColor.WHITE : ChessColor.BLACK)
+                if(getChessColor(point) == (blackTurn ? ChessColor.WHITE : ChessColor.BLACK))
                 {
-                    
+                    // * 是异色棋子，维持该方向位数字为1
+                    legalDirection |= direction.getValue() ;
                 }
-                else    // 
+                else
                 {
+                    break ;
+                    /**
+                     * 注意：此处包含多种情况
+                     * 1. 该方向为合法方向，保持方向位为1进入下一个方向
+                     * 2. 该方向相邻为空或者为同色棋子，保持方向位为0进入下一个方向
+                     * 3. 该方向有相邻异色棋子，但没有同色棋子包夹，保持方向位为0进入下一个方向
+                     */
+                }
+            }
+            if(endFlag) legalDirection &= ~(direction.getValue()) ; // * 处理走到底或者出界的情况，确保该方向位为0
+        }
+        return legalDirection ;
+    }
 
+    public void go(Point point , byte legalDirection)
+    {
+        // TODO: 实现一步棋+翻转棋子
+        // * 本次运行要放置的棋子颜色设置
+        ChessColor color = blackTurn ? ChessColor.BLACK : ChessColor.WHITE ;
+
+        // * 棋子翻转
+        EnumSet<Direction> allDirections = EnumSet.allOf(Direction.class);
+        for(Direction direction : allDirections )
+        {
+            Point focus = new Point(point) ;
+
+            // * 判断是否为有效方向
+            if((direction.getValue() & legalDirection) == 0 ) continue ;
+            else
+            {
+                // * 该方向为有效方向，开始翻转棋子
+                while(getChessColor(focus) != color)
+                {
+                    setChessColor(focus, color);
+                    moveFocus(focus, direction);    // * 此处抛弃了返回值，因为有效方向一定会有同色棋子包夹
                 }
             }
         }
-    }
-
-    public void go(Point point)
-    {
-        // TODO: 实现一步棋+翻转（大致思路，可能需要靠递归判断）
+        
+        // * 原位置补上棋子
+        setChessColor(point, color) ;
     }
 
     public boolean checkTurn()
     {
         // TODO: 实现检查是否换方和是否游戏结束
+        
     }
 
     /**
-     * moveFocus移动检查焦点
+     * * moveFocus移动检查焦点
      * @param focus
      * @param direction
      * @return boolean
