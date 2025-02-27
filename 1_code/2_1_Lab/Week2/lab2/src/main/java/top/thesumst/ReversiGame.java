@@ -1,6 +1,7 @@
 package top.thesumst;
 
 import java.util.*;
+import java.awt.Point ;
 
 public class ReversiGame
 {
@@ -26,7 +27,7 @@ public class ReversiGame
         // TODO: 游戏运行主体编写
     }
 
-    private static void recieveGo()
+    private static void receiveGo()
     {
         // TODO: 接受当局玩家输入（并转换为api入口）
     }

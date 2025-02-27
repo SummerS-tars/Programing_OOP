@@ -1,6 +1,7 @@
 package top.thesumst;
 
 import java.util.*;
+import java.awt.Point;
 
 /**
  * class ChessBoard store the chess board data
@@ -64,24 +65,88 @@ public class ChessBoard
         return color == p1.getColor() ? p1 : p2 ;
     }
 
-    public boolean checkGo(int row , int col)
+    /**
+     * *checkGo方法实现对玩家输入的棋步合法性检验
+     * @param point
+     * @return 
+     */
+    public boolean checkGo(Point point)
     {
         // TODO: 实现棋步检测
+        /**
+         * 检测条件构思：
+         * 0. 不超出棋盘（或许在输入转换方法中实现）
+         * 1. 周围八格棋子检验 & 记录有异色棋子方向
+         *      next direction 无相邻异色棋子 + 记录0不变
+         *      next direction 有相邻异色棋子 + 改记录1
+         *      out 无相邻异色棋子
+         *      go on 有相邻异色棋子
+         * 2. 异色棋子方向检验 & 记录包夹方向
+         *      next direction 无同色棋子夹住 + 改记录0
+         *      next direction 有同色棋子夹住 + 记录1不变
+         *      out 无包夹成功方向
+         *      go on 有包夹成功方向
+         */
+
+
+        // if((blackTurn ? ChessColor.BLACK : ChessColor.WHITE) == )
+
+        // * 当前位置已经有棋子，非法步骤
+        if(chessBoard[point.x][point.y] != ChessColor.BLANK) return false ;
+
+        
+        EnumSet<Direction> allDirections = EnumSet.allOf(Direction.class);
+        byte legalDirection = 0 ;
+        for(Direction direction : allDirections )
+        {
+            Point focus = new Point(point) ;
+            while(moveFocus(focus, direction))
+            {
+                // * 判断是否异色
+                if(chessBoard[focus.x][focus.y] == 
+                (blackTurn ? ChessColor.WHITE : ChessColor.BLACK)
+                {
+                    
+                }
+                else    // 
+                {
+
+                }
+            }
+        }
     }
 
-    public void go(int row , int col)
+    public void go(Point point)
     {
-        setChessColor(row, col, blackTurn? ChessColor.BLACK : ChessColor.WHITE);
-    }
-
-    public void reverseChess()
-    {
-        // TODO: 实现翻转（大致思路，可能需要靠递归判断）
+        // TODO: 实现一步棋+翻转（大致思路，可能需要靠递归判断）
     }
 
     public boolean checkTurn()
     {
         // TODO: 实现检查是否换方和是否游戏结束
+    }
+
+    /**
+     * moveFocus移动检查焦点
+     * @param focus
+     * @param direction
+     * @return boolean
+     * true : successfully move
+     * false : unable to move
+     */
+    private static boolean moveFocus(Point focus , Direction direction)
+    {
+        int dx = Direction.getDirectionDelta(direction).x ;
+        int dy = Direction.getDirectionDelta(direction).y ;
+
+        if( focus.x + dx >= 0 && focus.x + dx <= 8 &&
+            focus.y + dy >= 0 && focus.y + dy <= 8)
+        {
+            focus.x += dx ;
+            focus.y += dy ;
+            return true ;
+        }
+        else return false ;
     }
 }
 
