@@ -18,6 +18,9 @@ public class ChessBoard
     private Player p1 , p2 ;
     private Scanner sc = new Scanner(System.in) ;
 
+    /**
+     * * initChessBoard方法用于初始化棋盘以及玩家数据
+     */
     public void initChessBoard()
     {
         chessBoard = new ChessColor[8][8] ;
@@ -40,16 +43,27 @@ public class ChessBoard
         blackTurn = true ;
     }
 
+    /**
+     * * setChessColor方法，设置point位置棋盘棋子
+     * @param point
+     * @param color
+     */
     public void setChessColor(Point point , ChessColor color)
     {
         chessBoard[point.x][point.y] = color ;
     }
 
+    /**
+     * * getChessColor方法，获取point位置棋盘棋子颜色
+     * @param point
+     * @return
+     */
     public ChessColor getChessColor(Point point)
     {
         return chessBoard[point.x][point.y] ;
     }
 
+    // 基本被弃用的接口，因为blackTurn基本只在本类的实例中使用
     public void setBlackTurn(boolean isTurn)
     {
         blackTurn = isTurn ;
@@ -60,6 +74,11 @@ public class ChessBoard
         return blackTurn ;
     }
 
+    /**
+     * * 返回某种指定颜色棋子的玩家
+     * @param color
+     * @return
+     */
     public Player getPlayer(ChessColor color)
     {
         return color == p1.getColor() ? p1 : p2 ;
@@ -92,7 +111,7 @@ public class ChessBoard
         // * 当前位置已经有棋子，非法步骤
         if(getChessColor(point) != ChessColor.BLANK) return legalDirection ;
 
-        
+        // * 遍历八个方向寻找是否有合法方向
         EnumSet<Direction> allDirections = EnumSet.allOf(Direction.class);
         for(Direction direction : allDirections )
         {
@@ -122,6 +141,11 @@ public class ChessBoard
         return legalDirection ;
     }
 
+    /**
+     * * go方法，用于实施下棋和翻转棋子的步骤
+     * @param point
+     * @param legalDirection
+     */
     public void go(Point point , byte legalDirection)
     {
         // TODO: 实现一步棋+翻转棋子
@@ -151,10 +175,48 @@ public class ChessBoard
         setChessColor(point, color) ;
     }
 
+    /**
+     * * checkTurn方法，检测是否需要换边或游戏是否结束
+     * @return boolean
+     * true 游戏继续
+     * false 游戏结束
+     */
     public boolean checkTurn()
     {
         // TODO: 实现检查是否换方和是否游戏结束
         
+        // * 先检测另一方是否有合法位置
+        blackTurn = !blackTurn ;
+        if(checkSide()) return true ; // * 检测到另一方有合法位置，换边并进入下一轮
+        
+        // * 检测已下棋方是否有合法位置
+        blackTurn = !blackTurn ;
+        if(checkSide()) return true ;
+
+        // * 双方均无合法位置，退出游戏
+        return false ;
+    }
+    
+    /**
+     * * checkSide，用于确认当前blackTurn下的Player是否具有合法位置
+     * @return boolean
+     * true 有
+     * false 没有
+     */
+    private boolean checkSide()
+    {
+        for(int i = 0 ; i < 8 ; i ++ )
+        {
+            for(int j = 0 ; j < 8 ; j ++ )
+            {
+                Point focus = new Point(i , j) ;
+                if(getChessColor(focus) == ChessColor.BLANK)
+                {
+                    if(checkGo(focus) != 0) return true ; // * 存在合法方向
+                }
+            }
+        }
+        return false ;
     }
 
     /**
