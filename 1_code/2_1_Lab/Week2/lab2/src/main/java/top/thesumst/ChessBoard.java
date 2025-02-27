@@ -7,11 +7,10 @@ import java.util.*;
  */
 public class ChessBoard 
 {
-
-    // // * set chess color char
-    // public static final char WHITE_CHESS = '●' ;
-    // public static final char BLACK_CHESS = '○' ;
-    // public static final char BLANK = '·' ;
+    // ! deprecated
+    //// public static final char WHITE_CHESS = '●' ;
+    //// public static final char BLACK_CHESS = '○' ;
+    //// public static final char BLANK = '·' ;
 
     private ChessColor[][] chessBoard ;
     private boolean blackTurn ; // * true表示黑色下棋，false表示白色下棋

@@ -71,3 +71,7 @@
     1. instance variable:  
         1. `chessBoard[][]`: 棋盘
         2. `currentPlayer`  
+
+**runGame:**  
+
+![runGame diagram](./runGame.svg)
