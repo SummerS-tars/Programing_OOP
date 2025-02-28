@@ -80,18 +80,209 @@
 
 ### v1.0
 
+**总结:**  
 实现基本功能，能跑了  
 
-severe bugs:
+**运行方法:**  
+
+Windows:
+运行`runGame.bat`
+
+测试环境
+
+- Windows:  
+
+    1. 使用java版本：  
+
+        ```shell
+        java 23.0.2 2025-01-21
+        Java(TM) SE Runtime Environment (build 23.0.2+7-58)
+        Java HotSpot(TM) 64-Bit Server VM (build 23.0.2+7-58, mixed mode, sharing)
+        ```
+
+    2. 执行目录：`Week2`  
+
+        ```shell
+        chcp 65001 && & 'java' '-XX:+ShowCodeDetailsInExceptionMessages' '-cp' '.\lab2\target\classes' 'top.thesumst.ReversiGame' 
+        ```
+
+**severe bugs:**  
 
 1. 判断合法棋步似乎有问题  
+2. checkSide中出现越界问题  
+    具体表现为check到point(0,7)时checkRightDirection时focus(0,8)越界现象  
 
-bugs:  
+    ```txt
+    start check point:java.awt.Point[x=0,y=7]
+    start check direction:LEFT_UP
+    0
+    start check direction:UP
+    0
+    start check direction:RIGHT_UP
+    0
+    start check direction:RIGHT
+    focus:java.awt.Point[x=0,y=8]
+    Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: Index 8 out of bounds for length 8
+    ```
+
+3. 运行逻辑问题，D3 + E3 后出现 col 3上面全为白子的情况(如下)  
+    根据日志分析，应该是checkGo有问题  
+    碰见有相邻异色棋子的方向，走到空白处仍然判断为有效方向  
+
+    ```txt
+      1 2 3 4 5 6 7 8
+    A · · ● · · · · ·
+    B · · ● · · · · ·
+    C · · ● · · · · · 
+    D · · ● ○ ○ · · · 
+    E · · ● ○ ● · · ·                          test1 ○ : 3
+    F · · · · · · · ·                           test ● : 6
+    G · · · · · · · · 
+    H · · · · · · · ·
+    ```
+
+    ```txt
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: start check point:java.awt.Point[x=4,y=2]
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: start check direction:LEFT_UP
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard moveFocus
+    信息: start moveFocus !!!
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: focus:java.awt.Point[x=3,y=1]
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: 0
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: start check direction:UP
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard moveFocus
+    信息: start moveFocus !!!
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: focus:java.awt.Point[x=3,y=2]
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard moveFocus
+    信息: start moveFocus !!!
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: focus:java.awt.Point[x=2,y=2]
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: 10
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: start check direction:RIGHT_UP
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard moveFocus
+    信息: start moveFocus !!!
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: focus:java.awt.Point[x=3,y=3]
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard moveFocus
+    信息: start moveFocus !!!
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: focus:java.awt.Point[x=2,y=4]
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: 110
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: start check direction:RIGHT
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard moveFocus
+    信息: start moveFocus !!!
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: focus:java.awt.Point[x=4,y=3]
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard moveFocus
+    信息: start moveFocus !!!
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: focus:java.awt.Point[x=4,y=4]
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: 1110
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: start check direction:RIGHT_DOWN
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard moveFocus
+    信息: start moveFocus !!!
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: focus:java.awt.Point[x=5,y=3]
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: 1110
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: start check direction:DOWN
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard moveFocus
+    信息: start moveFocus !!!
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: focus:java.awt.Point[x=5,y=2]
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: 1110
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: start check direction:LEFT_DOWN
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard moveFocus
+    信息: start moveFocus !!!
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: focus:java.awt.Point[x=5,y=1]
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: 1110
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: start check direction:LEFT
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard moveFocus
+    信息: start moveFocus !!!
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: focus:java.awt.Point[x=4,y=1]
+    2月 28, 2025 5:45:10 下午 top.thesumst.ChessBoard checkGo
+    信息: 1110
+    ```
+
+4. 着棋逻辑有问题  
+    初步判断只会执行按照Direction中顺序的第一个合法方向的翻转棋子，以及原位置的着棋子  
+    大致定位bug位于`go`或`reverse`方法中  
+
+    before one go :
+
+    ```txt
+      1 2 3 4 5 6 7 8
+    A · · · · · · · ·
+    B · · · · · · · ·
+    C · ● · · ○ ● · ·
+    D · · ● ○ ○ · · ·
+    E · ○ ○ ● ○ ○ · ·                          test1 ○ : 8
+    F · · ● ○ ● · · ·                          test2 ● : 7
+    G · · ● · · · · ·
+    H · · · · · · · ·
+    ```
+
+    after go in (3,5):
+
+    ```txt
+      1 2 3 4 5 6 7 8
+    A · · · · · · · ·
+    B · · · · · · · ·
+    C · ● · · ○ ● · ·
+    D · · ● ○ ○ ● · ·
+    E · ○ ○ ● ● ○ · ·                          test1 ○ : 6
+    F · · ● ● ● · · ·                          test2 ● : 10
+    G · · ● · · · · ·
+    H · · · · · · · ·
+    ```
+
+    可以发现只有LEFT_DOWN方向的棋子发生翻转，但LEFT同为合法方向，并没有翻转  
+
+    ```txt
+    2月 28, 2025 6:50:52 下午 top.thesumst.ChessBoard checkGo
+    信息: 110
+    2月 28, 2025 6:50:52 下午 top.thesumst.ChessBoard go
+    信息: start check go !!!
+    2月 28, 2025 6:50:52 下午 top.thesumst.ChessBoard go
+    信息: start revers chesses in direction:UP
+    2月 28, 2025 6:50:52 下午 top.thesumst.ChessBoard moveFocus
+    信息: start moveFocus !!!
+    2月 28, 2025 6:50:52 下午 top.thesumst.ChessBoard moveFocus
+    信息: start moveFocus !!!
+    2月 28, 2025 6:50:52 下午 top.thesumst.ChessBoard go
+    信息: start revers chesses in direction:RIGHT_UP
+    2月 28, 2025 6:50:52 下午 top.thesumst.ChessBoard checkSide
+    信息: start checkSide !!!
+    ```
+
+**bugs:**  
 
 1. 棋盘打印有问题：玩家位置输出在D、E行，应该在C、D行
 2. 中文玩家名似乎有问题
 
-expected features:
+**change:**  
+
+1. 一开始行为字母，列为数字，后根据文档要求调换
+
+**expected features:**
 
 1. 优化打印格式
 2. 彩色打印
@@ -99,10 +290,12 @@ expected features:
 4. 更合理的输入提示
 5. 仅当前轮次选手显示棋子
 
-- [ ] 修复合法棋步判断
-- [ ] 修复玩家信息输出位置
-- [ ] 修复中文玩家名问题
+- [x] 修复合法棋步判断
+- [x] 修复checkSide越界问题
+- [x] 修复玩家信息输出位置
+- [x] 修复中文玩家名问题(in Windows)
+    (通过命令执行前加上`chcp 65001`解决)
 - [ ] 优化打印格式
 - [ ] 更合理的MOTD
-- [ ] 更合理的输入提示
+- [x] 更合理的输入提示
 - [ ] 彩色打印
