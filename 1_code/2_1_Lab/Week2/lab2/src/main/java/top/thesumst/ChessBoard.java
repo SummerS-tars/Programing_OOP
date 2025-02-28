@@ -109,6 +109,13 @@ public class ChessBoard
          */
         byte legalDirection = 0 ;
 
+
+        // TODO: 测试！！！
+        // 调试步骤
+        System.out.println("point:" + point);
+
+
+
         // * 当前位置已经有棋子，非法步骤
         if(getChessColor(point) != ChessColor.BLANK) return legalDirection ;
 
@@ -116,12 +123,21 @@ public class ChessBoard
         EnumSet<Direction> allDirections = EnumSet.allOf(Direction.class);
         for(Direction direction : allDirections )
         {
+            // TODO: test
+            System.out.println("direction:" + direction);
+
+
             Point focus = new Point(point) ;
             boolean endFlag = false ;
             while(endFlag = moveFocus(focus, direction))
             {
+                // TODO: test
+                System.out.println("focus:" + focus);
+
+
+                // ! fix try 1.1 修复合法棋步检测问题 但似乎返回还是有问题 
                 // * 判断是否异色
-                if(getChessColor(point) == (blackTurn ? ChessColor.WHITE : ChessColor.BLACK))
+                if(getChessColor(focus) == (blackTurn ? ChessColor.WHITE : ChessColor.BLACK))
                 {
                     // * 是异色棋子，维持该方向位数字为1
                     legalDirection |= direction.getValue() ;
@@ -137,7 +153,10 @@ public class ChessBoard
                      */
                 }
             }
-            if(endFlag) legalDirection &= ~(direction.getValue()) ; // * 处理走到底或者出界的情况，确保该方向位为0
+            if(!endFlag) legalDirection &= ~(direction.getValue()) ; // * 处理走到底或者出界的情况，确保该方向位为0
+
+            // TODO: test
+            System.out.println(Integer.toBinaryString(legalDirection));
         }
         return legalDirection ;
     }
