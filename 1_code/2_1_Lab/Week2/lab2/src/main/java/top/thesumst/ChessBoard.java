@@ -2,12 +2,28 @@ package top.thesumst;
 
 import java.util.*;
 import java.awt.Point;
+import java.io.IOException;
+import java.util.logging.*;
 
 /**
  * class ChessBoard store the chess board data
  */
 public class ChessBoard 
 {
+    // : test logger for ChessBoard
+    // private static final Logger logger = Logger.getLogger(ChessBoard.class.getName());
+    // static {
+    //     try {
+    //         LogManager.getLogManager().reset();
+    //         FileHandler fh = new FileHandler("chessboard.log", true);
+    //         fh.setFormatter(new SimpleFormatter());
+    //         logger.addHandler(fh);
+    //         logger.setLevel(Level.ALL);
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }
+    // }
+
     //// deprecated and replaced by enum ChessColor
     //// public static final char WHITE_CHESS = '●' ;
     //// public static final char BLACK_CHESS = '○' ;
@@ -16,6 +32,9 @@ public class ChessBoard
     private ChessColor[][] chessBoard ;
     private boolean blackTurn ; // * true表示黑色下棋，false表示白色下棋
     private Player p1 , p2 ;
+    // * v1.0 feature add 4.1 增加玩家回合信息
+    private String blackTurnInfo ;
+    private String whiteTurnInfo ;
     private Scanner sc = new Scanner(System.in) ;
 
     /**
@@ -41,6 +60,10 @@ public class ChessBoard
         }
 
         blackTurn = true ;
+
+        // * v1.0 feature add 4.2 增加玩家回合信息
+        blackTurnInfo = "现在是" + (p1.getColor() == ChessColor.BLACK ? p1.getName() : p2.getName())  + ChessColor.BLACK.getSymbol() + " 下棋" ;
+        whiteTurnInfo = "现在是" + (p1.getColor() == ChessColor.WHITE ? p1.getName() : p2.getName())  + ChessColor.WHITE.getSymbol() + " 下棋" ;
     }
 
     /**
@@ -92,7 +115,6 @@ public class ChessBoard
      */
     public byte checkGo(Point point)
     {
-        // TODO: 实现棋步检测
         /**
          * 检测条件构思：
          * 0. 不超出棋盘（或许在输入转换方法中实现）
@@ -110,9 +132,8 @@ public class ChessBoard
         byte legalDirection = 0 ;
 
 
-        // TODO: 测试！！！
-        // 调试步骤
-        System.out.println("point:" + point);
+        // test checkGo
+        // logger.info("start check point:" + point);
 
 
 
@@ -123,40 +144,48 @@ public class ChessBoard
         EnumSet<Direction> allDirections = EnumSet.allOf(Direction.class);
         for(Direction direction : allDirections )
         {
-            // TODO: test
-            System.out.println("direction:" + direction);
+            // test direction
+            // logger.info("start check direction:" + direction);
 
+
+            boolean legalFlag = false ; // ! fix try 3.1 修复运行逻辑问题，调整辅助判断参数
+            /**
+             * * v1.0 bug fix 中将endFlag改为legalFlag
+             * * 从表示是否走到底 改为更合适的 表示合法方向的判断辅助参数
+             * * 用于辅助判断是否有合法方向
+             */
 
             Point focus = new Point(point) ;
-            boolean endFlag = false ;
-            while(endFlag = moveFocus(focus, direction))
+            while(legalFlag = moveFocus(focus, direction))
             {
-                // TODO: test
-                System.out.println("focus:" + focus);
+                // test focus move
+                // logger.info("focus:" + focus);
 
-
-                // ! fix try 1.1 修复合法棋步检测问题 但似乎返回还是有问题 
+ 
                 // * 判断是否异色
-                if(getChessColor(focus) == (blackTurn ? ChessColor.WHITE : ChessColor.BLACK))
+                if(getChessColor(focus) == (blackTurn ? ChessColor.WHITE : ChessColor.BLACK))   // ! fix try 1.1 修复合法棋步检测问题
                 {
                     // * 是异色棋子，维持该方向位数字为1
                     legalDirection |= direction.getValue() ;
                 }
                 else
                 {
+                    // ! fix try 3.2 修复运行逻辑问题，增设空白判断机制，调整辅助判断参数
+                    if(getChessColor(focus) == ChessColor.BLANK) legalFlag = false ; // * 该方向为空，将legalFlag置为false再退出
                     break ;
                     /**
                      * 注意：此处包含多种情况
-                     * 1. 该方向为合法方向，保持方向位为1进入下一个方向
-                     * 2. 该方向相邻为空或者为同色棋子，保持方向位为0进入下一个方向
-                     * 3. 该方向有相邻异色棋子，但没有同色棋子包夹，保持方向位为0进入下一个方向
+                     * 1. 该方向相邻异色棋子且有同色棋子包夹，保持 legalFlag:true 方向位:1 进入下一个方向
+                     * 2. 该方向直接为空或者相邻异色棋子之后为空，设置 legalFlag:false 经过方向位重置后 进入下一个方向
+                     * 3. 该方向相邻同色棋子， 保持 legalFlag:true 方向位:0 进入下一个方向
                      */
                 }
             }
-            if(!endFlag) legalDirection &= ~(direction.getValue()) ; // * 处理走到底或者出界的情况，确保该方向位为0
+            // ! fix try 3.3 修复运行逻辑问题，调整辅助判断参数
+            if(!legalFlag) legalDirection &= ~(direction.getValue()) ; // * 处理走到底或者出界的情况，确保该方向位为0
 
-            // TODO: test
-            System.out.println(Integer.toBinaryString(legalDirection));
+            // test legalDirection
+            // logger.info(Integer.toBinaryString(legalDirection));
         }
         return legalDirection ;
     }
@@ -168,7 +197,10 @@ public class ChessBoard
      */
     public void go(Point point , byte legalDirection)
     {
-        // TODO: 实现一步棋+翻转棋子
+        // test direction
+        // logger.info("start check go !!!");
+
+
         // * 本次运行要放置的棋子颜色设置
         ChessColor color = blackTurn ? ChessColor.BLACK : ChessColor.WHITE ;
 
@@ -176,12 +208,18 @@ public class ChessBoard
         EnumSet<Direction> allDirections = EnumSet.allOf(Direction.class);
         for(Direction direction : allDirections )
         {
-            Point focus = new Point(point) ;
-
+            
             // * 判断是否为有效方向
             if((direction.getValue() & legalDirection) == 0 ) continue ;
             else
             {
+                // test direction reverse chesses
+                // logger.info("start revers chesses in direction:" + direction);
+
+
+                Point focus = new Point(point) ;
+                moveFocus(focus, direction) ; // ! bug fix try 4.1 修复翻转棋子时只能翻转按照Direction顺序的第一个合法方向棋子的问题
+
                 // * 该方向为有效方向，开始翻转棋子
                 while(getChessColor(focus) != color)
                 {
@@ -202,9 +240,7 @@ public class ChessBoard
      * false 游戏结束
      */
     public boolean checkTurn()
-    {
-        // TODO: 实现检查是否换方和是否游戏结束
-        
+    {   
         // * 先检测另一方是否有合法位置
         blackTurn = !blackTurn ;
         if(checkSide()) return true ; // * 检测到另一方有合法位置，换边并进入下一轮
@@ -225,6 +261,9 @@ public class ChessBoard
      */
     private boolean checkSide()
     {
+        // test checkSide
+        // logger.info("start checkSide !!!");
+
         for(int i = 0 ; i < 8 ; i ++ )
         {
             for(int j = 0 ; j < 8 ; j ++ )
@@ -268,11 +307,15 @@ public class ChessBoard
      */
     private static boolean moveFocus(Point focus , Direction direction)
     {
+        // test moveFocus
+        // logger.info("start moveFocus !!!");
+
         int dx = Direction.getDirectionDelta(direction).x ;
         int dy = Direction.getDirectionDelta(direction).y ;
 
-        if( focus.x + dx >= 0 && focus.x + dx <= 8 &&
-            focus.y + dy >= 0 && focus.y + dy <= 8)
+
+        if( focus.x + dx >= 0 && focus.x + dx < 8 &&
+            focus.y + dy >= 0 && focus.y + dy < 8)      // ! fix try 2.1 修复移动焦点的边界检测问题
         {
             focus.x += dx ;
             focus.y += dy ;
@@ -286,22 +329,26 @@ public class ChessBoard
      */
     public void printChessBoard()
     {
-        // TODO: 棋盘信息打印完善
+        // TODO: 增加彩色打印功能
         PrintTools.clearConsole();
-        System.out.println("  1 2 3 4 5 6 7 8") ;
+        System.out.println("  A B C D E F G H") ;
         for(int i = 0 ; i < 8 ; i ++ )
         {
-            System.out.printf("%c " , (char)('A' + i)) ;
+            System.out.printf("%c " , (char)('1' + i)) ;
             for(int j = 0 ; j < 8 ; j ++ )
             {
                 System.out.printf("%c " , chessBoard[i][j].getSymbol()) ;
             }
-            if(i == 4) System.out.printf("\t\t\t%8s %c : %d" ,
+            // ! little fix try 1.1 修复玩家打印位置向下一偏移了行的错误
+            if(i == 3) System.out.printf("\t\t\t%8s %c : %d" ,
                         p1.getName() , p1.getColor().getSymbol() , p1.getChessNumber()) ;
-            else if(i == 5) System.out.printf("\t\t\t%8s %c : %d" , 
+            else if(i == 4) System.out.printf("\t\t\t%8s %c : %d" , 
                         p2.getName() , p2.getColor().getSymbol() , p2.getChessNumber()) ;
             System.out.println() ;
         }
+
+        // * v1.0 feature add 4.3 增加玩家回合信息打印
+        System.out.println(blackTurn ? blackTurnInfo : whiteTurnInfo) ;
     }
 
     /**

@@ -98,7 +98,7 @@ class DirectionTestDrive
         for(Direction direction : allDirections)
         {
             System.out.println("direction : " + direction) ;
-            System.out.println("delta of direction : " + direction.getDirectionDelta(direction) );
+            System.out.println("delta of direction : " + Direction.getDirectionDelta(direction) );
         }
     }
 }
