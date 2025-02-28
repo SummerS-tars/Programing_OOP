@@ -4,3 +4,4 @@
 3_tool/0_javaInstallPack/
 *.pdf
 *.zip
+.DS_Store
