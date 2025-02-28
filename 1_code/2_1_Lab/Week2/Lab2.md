@@ -74,7 +74,7 @@
 
 **runGame:**  
 
-![runGame diagram](./runGame.svg)
+![runGame diagram](./runGame.png)
 
 ## Release
 
@@ -104,7 +104,7 @@ Windows:
 
         ```shell
         chcp 65001 && & 'java' '-XX:+ShowCodeDetailsInExceptionMessages' '-cp' '.\lab2\target\classes' 'top.thesumst.ReversiGame' 
-        ```
+    
 
 **severe bugs:**  
 
