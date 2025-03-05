@@ -7,23 +7,20 @@ public class ReversiGame
     int boardNum = 0 ;
     ChessBoard[] chessBoards ;
 
-    /**
-     * ! 总程序入口
-     * @param args
-     */
-    public static void main(String[] args)
-    {
-        gameMotd();
-
-        ReversiGame reversiGame = new ReversiGame();
-        reversiGame.initGame();
-        reversiGame.runGame();
-    }
+    // deprecated
+    //// public static void main(String[] args)
+    //// {
+    ////     gameMotd();
+    ////
+    ////     ReversiGame reversiGame = new ReversiGame();
+    ////     reversiGame.initGame();
+    ////     reversiGame.runGame();
+    //// }
 
     /**
      * * Welcome message of the game
      */
-    private static void gameMotd()
+    public static void gameMotd()
     {
         // TODO: 完善MOTD
         // TODO: 增加彩色打印功能
@@ -90,7 +87,7 @@ public class ReversiGame
     /**
      * * game running main body
      */
-    private void runGame()
+    public void runGame()
     {
         PrintTools printTools = new PrintTools();
         ReceiveTools receiveTools = new ReceiveTools();
