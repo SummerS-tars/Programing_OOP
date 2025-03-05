@@ -84,7 +84,7 @@ public class ReversiGame
         chessBoards = new ChessBoard[boardSum] ;
         for(int i = 0; i < boardSum; i++)
         {
-            chessBoards[i] = new ChessBoard(p1Name, p2Name, p1Color, p2Color, i) ;
+            chessBoards[i] = new ChessBoard(p1Name, p2Name, p1Color, p2Color, i + 1) ; // ! little fix try 3 : 将传入和棋盘号映射为实际棋盘号（从1开始）
         }
 
         // 初始化：收集初始棋盘号以及游戏状态

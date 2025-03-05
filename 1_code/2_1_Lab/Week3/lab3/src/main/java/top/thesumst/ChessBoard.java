@@ -35,14 +35,15 @@ public class ChessBoard
     // * v1.0 feature add 4.1 增加玩家回合信息
     private static String blackTurnInfo ;
     private static String whiteTurnInfo ;
-    private Scanner sc = new Scanner(System.in) ;
     private boolean gameEndFlag = false ;
+    private int boardNum ;      // ! ver2.0 little fix try : 2.1 增加棋盘序号记录
 
     /**
      * * ChessBoard方法用于初始化棋盘以及玩家数据
      */
-    ChessBoard(String player1Name, String player2Name, ChessColor player1ChessColor, ChessColor player2ChessColor)
+    ChessBoard(String player1Name, String player2Name, ChessColor player1ChessColor, ChessColor player2ChessColor, int num)
     {
+        boardNum = num ;    // ! ver2.0 little fix try : 2.2 增加棋盘序号记录
         chessBoard = new ChessColor[8][8] ;
         for (int i = 0; i < chessBoard.length; i++) 
             Arrays.fill(chessBoard[i], ChessColor.BLANK); // * 填充每一行
@@ -342,8 +343,9 @@ public class ChessBoard
             {
                 System.out.printf("%c " , chessBoard[i][j].getSymbol()) ;
             }
+            if( i == 2 ) System.out.printf("\t\t\t当前棋盘序号 : %d" , boardNum) ;  // ! ver2.0 little fix try 2.3 : 增加棋盘序号打印
             // ! little fix try 1.1 修复玩家打印位置向下一偏移了行的错误
-            if(i == 3) System.out.printf("\t\t\t%8s %c : %d" ,
+            else if(i == 3) System.out.printf("\t\t\t%8s %c : %d" ,
                         p1.getName() , p1.getColor().getSymbol() , p1.getChessNumber()) ;
             else if(i == 4) System.out.printf("\t\t\t%8s %c : %d" , 
                         p2.getName() , p2.getColor().getSymbol() , p2.getChessNumber()) ;
