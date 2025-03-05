@@ -18,13 +18,11 @@
         - `boardNum` : int
         - `goPoint` : Point
     2. methods
-        - `receivePlayerInfo` : 接受玩家信息(`name`和`color`)
         - `receiveOperation` : 接受玩家操作(`boardNum`和`goPoint`)
         - `getBoardNum` : 返回`boardNum`
         - `getGoPoint` : 返回`goPoint`
         - `getChangeFlag` : 返回`changeFlag`
         - `setChangeFlag` : 设置`changeFlag`
-        - `resetChangeFlag` : 重置`changeFlag`
 
 ### changed classes
 
@@ -32,6 +30,9 @@
     1. instance variables
         - `boardNum` : int
         - `chessBoard` : ChessBoard[]
+    2. add methods
+        - `initGame` : 初始化棋盘
+        - `receivePlayerInfo` : 接受玩家信息(`name`和`color`)
 2. ChessBoard
     1. add instance variables
         - `gameStatus` : boolean

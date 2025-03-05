@@ -4,6 +4,9 @@ import java.awt.Point;
 
 public class ReversiGame
 {
+    int boardNum = 0 ;
+    ChessBoard[] chessBoards ;
+
     /**
      * ! 总程序入口
      * @param args
@@ -29,13 +32,64 @@ public class ReversiGame
     }
 
     /**
+     * * initGame方法用于初始化游戏
+     */
+    public void initGame()
+    {
+        PrintTools printTools = new PrintTools();
+        PrintTools.clearConsole(); 
+
+        // 初始化：收集p1名字
+        System.out.println("请输入1号玩家的名称：");
+        String p1Name = printTools.sc.nextLine() ;
+        
+        // 初始化：收集p1棋子颜色
+        ChessColor p1Color = ChessColor.BLACK ;
+        boolean optionAvailable = false ;
+        while(!optionAvailable)
+        {
+            PrintTools.clearConsole();
+            System.out.println("请选择1号玩家的棋子颜色：(1.Black ○ | 2.White ● )");
+            int op = printTools.sc.nextInt() ;
+            printTools.sc.nextLine() ; // 读取缓冲区中多余的换行符
+            switch (op)
+            {
+                case 1:
+                    p1Color = ChessColor.BLACK ;
+                    optionAvailable = true ;
+                    break;
+                case 2:
+                    p1Color = ChessColor.WHITE ;
+                    optionAvailable = true ;
+                    break;
+                default:
+                    System.out.println("无效的选择！请键入任何按键以重新选择") ;
+                    printTools.sc.nextLine() ;
+                    break;
+            }
+        }
+
+        // 初始化：收集p2名字
+        System.out.println("请输入2号玩家的名称：");
+        String p2Name = printTools.sc.nextLine() ;
+
+        // 初始化：根据p1棋子颜色确定p2棋子颜色
+        ChessColor p2Color = (p1Color == ChessColor.BLACK) ? ChessColor.WHITE : ChessColor.BLACK ;
+
+        // 实际初始化棋盘
+        chessBoards = new ChessBoard[3] ;
+        for(int i = 0; i < 3; i++)
+        {
+            chessBoards[i] = new ChessBoard(p1Name, p2Name, p1Color, p2Color) ;
+        }
+    }
+
+    /**
      * * game running main body
      */
     private static void runGame()
     {
         // TODO: 游戏运行主体编写
-        ChessBoard chessBoardClass = new ChessBoard();
-        chessBoardClass.initChessBoard();
         boolean keepGame = true;
 
         PrintTools printTools = new PrintTools();
@@ -80,51 +134,16 @@ public class ReversiGame
         Point attemptPoint = new Point();
         return attemptPoint;
     }
-
-
-    /**
-     * * checkReceive用于接收输入，确保输入处于合理范围，并根据一定逻辑返回操作
-     * @return Point
-     * 如果切换棋盘将
-     */
-    private static Point checkReceive()
-    {
-        PrintTools printTools = new PrintTools();
-        PrintTools.rememberCursor();
-
-        while (true)
-        {
-            PrintTools.restoreCursor();
-            PrintTools.clearConsoleAfterCursor();
-
-            System.out.println("请输入你的下棋位置：");
-            String input = printTools.sc.nextLine();
-            if (input.length() != 2)
-            {
-                System.out.println("输入格式错误！请输入任何键以开始重新输入");
-                printTools.sc.nextLine();
-                continue;
-            }
-            char row = input.charAt(0);
-            char col = input.charAt(1);
-            if (row < '1' || row > '8' || col < 'A' || col > 'H')
-            {
-                System.out.println("输入格式错误！请输入任何键以开始重新输入");
-                printTools.sc.nextLine();
-                continue;
-            }
-            
-
-            return new Point(row - 1, col -1) ;
-        }
-    }
 }
 
+/**
+ * * ReceiveTools类用于接收输入，根据输入内容返回操作 
+ */
 class ReceiveTools
 {
-    private boolean changeFlag ;
-    private int boardNum ;
-    private Point goPoint ;
+    private boolean changeFlag ;    // 用于判断是否切换棋盘
+    private int boardNum ;        // 用于存储切换的棋盘号
+    private Point goPoint ;       // 用于存储下棋位置
 
     ReceiveTools()
     {
@@ -164,11 +183,18 @@ class ReceiveTools
         return goPoint ;
     }
 
+    /**
+     * * receiveOperation方法用于接收输入，根据输入内容返回操作
+     * * 如果输入为1-3，则返回切换棋盘操作
+     * * 如果输入为A1-H8，则返回下棋位置（接受大小写和乱序输入）
+     * * 如果输入不符合规范，则重新输入
+     */
     public void receiveOperation()
     {
         PrintTools printTools = new PrintTools();
         PrintTools.rememberCursor();
 
+        // * 循环输入直至输入合法
         while (true)
         {
             PrintTools.restoreCursor();
