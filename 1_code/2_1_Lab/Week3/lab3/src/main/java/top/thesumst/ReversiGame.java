@@ -133,7 +133,7 @@ public class ReversiGame
             Point attemptPoint = new Point();
             if(receiveTools.getChangeFlag())
             {
-                boardNum = receiveTools.getBoardNum() ;
+                boardNum = receiveTools.getBoardNum() - 1 ; // ! fix try 1.1 : 映射传入棋盘号为数组下标
                 continue ;
             }
             else attemptPoint = receiveTools.getGoPoint();
@@ -192,7 +192,7 @@ public class ReversiGame
         if(receiveTools.getEndGameFlag()) return false ;
         else
         {
-            boardNum = receiveTools.getBoardNum() ;
+            boardNum = receiveTools.getBoardNum() - 1  ;    // ! fix try 1.2 : 映射传入棋盘号为数组下标
             return true ;
         }
     }
@@ -205,7 +205,7 @@ public class ReversiGame
         // TODO: 复盘模式
         ReceiveTools receiveTools = new ReceiveTools();
         receiveTools.receiveReviseOperation();
-        boardNum = receiveTools.getBoardNum() ;
+        boardNum = receiveTools.getBoardNum() - 1 ; // ! fix try 1.3 : 映射传入棋盘号为数组下标
     }
 
     /**
@@ -224,7 +224,7 @@ public class ReversiGame
 class ReceiveTools
 {
     private boolean changeFlag ;    // 用于判断是否切换棋盘
-    private int boardNum ;        // 用于存储切换的棋盘号
+    private int boardNum ;        // 用于存储切换的棋盘号   // ! fix try 1 : 注意此处棋盘号为从1开始，映射到数组下标时需要减1
     private Point goPoint ;       // 用于存储下棋位置
     private boolean endGameFlag ;       // 用于记录是否结束游戏
 
