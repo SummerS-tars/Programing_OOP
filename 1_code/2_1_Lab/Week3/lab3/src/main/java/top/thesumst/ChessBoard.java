@@ -36,6 +36,7 @@ public class ChessBoard
     private static String blackTurnInfo ;
     private static String whiteTurnInfo ;
     private Scanner sc = new Scanner(System.in) ;
+    private boolean gameEndFlag = false ;
 
     /**
      * * ChessBoard方法用于初始化棋盘以及玩家数据
@@ -87,6 +88,16 @@ public class ChessBoard
     public boolean getBlackTurn()
     {
         return blackTurn ;
+    }
+
+    public void setGameEndFlag(boolean flag)
+    {
+        gameEndFlag = flag ;
+    }
+
+    public boolean getGameEndFlag()
+    {
+        return gameEndFlag ;
     }
 
     /**
