@@ -6,10 +6,10 @@
 
   <groupId>top.thesumst</groupId>
   <artifactId>lab3</artifactId>
-  <version>1.1</version>
+  <version>2.0</version>
 
   <name>lab3</name>
-  <url>https://github.com/SummerS-tars/Programing_OOP/tree/master/1_code/2_1_Lab/Week2</url>
+  <url>https://github.com/SummerS-tars/Programing_OOP/tree/master/1_code/2_1_Lab/Week3</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

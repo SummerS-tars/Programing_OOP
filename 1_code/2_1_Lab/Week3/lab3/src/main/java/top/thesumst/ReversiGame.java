@@ -1,6 +1,7 @@
 package top.thesumst;
 
 import java.awt.Point;
+import java.util.*;
 
 public class ReversiGame
 {
@@ -52,22 +53,27 @@ public class ReversiGame
         {
             PrintTools.clearConsole();
             System.out.println("请选择1号玩家的棋子颜色：(1.Black ○ | 2.White ● )");
-            int op = printTools.sc.nextInt() ;
-            printTools.sc.nextLine() ; // 读取缓冲区中多余的换行符
-            switch (op)
-            {
-                case 1:
-                    p1Color = ChessColor.BLACK ;
-                    optionAvailable = true ;
-                    break;
-                case 2:
-                    p1Color = ChessColor.WHITE ;
-                    optionAvailable = true ;
-                    break;
-                default:
-                    System.out.println("无效的选择！请键入任何按键以重新选择") ;
-                    printTools.sc.nextLine() ;
-                    break;
+            try {               // ! ver2.0 fix try 4 : 通过引入try-catch块解决输入无效导致的崩溃
+                int op = printTools.sc.nextInt();
+                printTools.sc.nextLine(); // 读取缓冲区中多余的换行符
+                switch (op) {
+                    case 1:
+                        p1Color = ChessColor.BLACK;
+                        optionAvailable = true;
+                        break;
+                    case 2:
+                        p1Color = ChessColor.WHITE;
+                        optionAvailable = true;
+                        break;
+                    default:
+                        System.out.println("无效的选择！请键入任何按键以重新选择");
+                        printTools.sc.nextLine();
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                printTools.sc.nextLine(); // 清空缓冲区
+                System.out.println("输入无效！请输入数字1或2，请键入任何按键以重新选择");
+                printTools.sc.nextLine();
             }
         }
 
