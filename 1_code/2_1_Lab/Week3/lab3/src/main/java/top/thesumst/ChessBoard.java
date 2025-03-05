@@ -51,7 +51,7 @@ public class ChessBoard
         chessBoard[3][4] = chessBoard[4][3] = ChessColor.BLACK ;
 
         p1 = new Player(player1Name, player1ChessColor) ;
-        p2 = new Player(player1Name, player2ChessColor) ;
+        p2 = new Player(player2Name, player2ChessColor) ;       // ! ver2.0 little fix try 4 : 修正p2初始化传入的名字
 
         blackTurn = true ;
 
