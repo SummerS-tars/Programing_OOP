@@ -4,8 +4,8 @@ import java.awt.Point;
 
 public class ReversiGame
 {
+    static int boardSum ; // 用于存储棋盘总数
     int boardNum ; // 用于存储当前棋盘号
-    int boardSum ; // 用于存储棋盘总数
     ChessBoard[] chessBoards ; // 用于存储多个棋盘
     boolean gameOver ; // 用于判断游戏是否结束
 
@@ -109,6 +109,22 @@ public class ReversiGame
             PrintTools.clearConsole();
             chessBoards[boardNum].printChessBoard();
 
+            // 检查所有棋盘是否结束，如果结束则进行复盘或者结束游戏
+            if(gameOver)
+            {
+                outputResult();
+                if(keepRevise()) continue ; // 继续复盘
+                else break ;    // 结束游戏
+            }
+
+            // 检查当前棋盘是否已经结束，若结束则进入revise模式（只能选择棋盘）
+            if(chessBoards[boardNum].getGameEndFlag())
+            {
+                outputResult();
+                reviseGame(); // 进入复盘模式，只能选择棋盘
+                continue ;
+            }
+
             // 接受操作输入（包括下棋位置和切换棋盘）
             receiveTools.receiveOperation();
 
@@ -123,12 +139,10 @@ public class ReversiGame
             
             // 位置传入棋盘，判断后进行相关操作
             inputPoint(attemptPoint);
-        }
 
-        PrintTools.clearConsole();
-        chessBoards[boardNum].printChessBoard();
-        System.out.println("游戏结束！");
-        System.out.println("胜利者是：" + chessBoards[boardNum].getWinner().getName() + chessBoards[boardNum].getWinner().getColor().getSymbol());
+            // 检查游戏是否结束
+            gameOver = checkGameOver();
+        }
     }
 
     private void inputPoint(Point attemptPoint)
@@ -163,6 +177,44 @@ public class ReversiGame
         }
         return true ;
     }
+
+    /**
+     * * keepRevise方法用于选择继续复盘或者结束游戏
+     * @return boolean
+     * 继续复盘则返回true，结束游戏则返回false
+     */
+    private boolean keepRevise()
+    {
+        // TODO: 更换棋盘或者结束游戏
+        ReceiveTools receiveTools = new ReceiveTools();
+        receiveTools.receiveAllReviseOperation();
+        if(receiveTools.getEndGameFlag()) return false ;
+        else
+        {
+            boardNum = receiveTools.getBoardNum() ;
+            return true ;
+        }
+    }
+
+    /**
+     * * reviseGame方法用于在游戏未完全结束时，复盘已结束棋盘
+     */
+    private void reviseGame()
+    {
+        // TODO: 复盘模式
+        ReceiveTools receiveTools = new ReceiveTools();
+        receiveTools.receiveReviseOperation();
+        boardNum = receiveTools.getBoardNum() ;
+    }
+
+    /**
+     * * outputResult方法用于输出已经完赛的棋盘的结果
+     */
+    private void outputResult()
+    {
+        System.out.println("游戏结束！");
+        System.out.println("胜利者是：" + chessBoards[boardNum].getWinner().getName() + chessBoards[boardNum].getWinner().getColor().getSymbol());
+    }
 }
 
 /**
@@ -173,12 +225,14 @@ class ReceiveTools
     private boolean changeFlag ;    // 用于判断是否切换棋盘
     private int boardNum ;        // 用于存储切换的棋盘号
     private Point goPoint ;       // 用于存储下棋位置
+    private boolean endGameFlag ;       // 用于记录是否结束游戏
 
     ReceiveTools()
     {
         changeFlag = false ;
         boardNum = 0 ;
         goPoint = new Point() ;
+        endGameFlag = false ;
     }
 
     public void setChangeFlag(boolean flag)
@@ -210,6 +264,16 @@ class ReceiveTools
     public Point getGoPoint()
     {
         return goPoint ;
+    }
+
+    public void setEndGameFlag(boolean flag)
+    {
+        endGameFlag = flag ;
+    }
+
+    public boolean getEndGameFlag()
+    {
+        return endGameFlag;
     }
 
     /**
@@ -249,7 +313,7 @@ class ReceiveTools
                 else
                 {
                     int num = Integer.parseInt(input) ;
-                    if(num < 1 || num > 3) // 输入数字不在范围内
+                    if(num < 1 || num > ReversiGame.boardSum) // 输入数字不在范围内
                     {
                         System.out.println("输入棋盘序号有误！请输入任何键以开始重新输入");
                         printTools.sc.nextLine();
@@ -286,6 +350,95 @@ class ReceiveTools
                     printTools.sc.nextLine();
                     continue;
                 }
+            }
+        }
+    }
+
+    /**
+     * * receiveAllReviseOperation用于为keepRevise接受信息
+     * * 输入exit退出游戏
+     * * 输入有效棋盘数字则记录数字返回
+     */
+    public void receiveAllReviseOperation()
+    {
+        PrintTools printTools = new PrintTools();
+        PrintTools.rememberCursor();
+
+        while( true )
+        {
+            PrintTools.restoreCursor();
+            PrintTools.clearConsoleAfterCursor();
+
+            System.out.println("请输入exit退出游戏或选择复盘其他棋盘：");
+            String input = printTools.sc.nextLine();
+            int length = input.length();
+            if( input == "exit") // 输入exit退出游戏
+            {
+                endGameFlag = true ;
+                return ;
+            }
+            else if( length == 1 && Character.isDigit(input.charAt(0)) ) // 输入数字进入棋盘序号有效性判断
+            {
+                int num = Integer.parseInt(input) ;
+                if(num < 1 || num > ReversiGame.boardSum) // 输入数字不在范围内
+                {
+                    System.out.println("输入棋盘序号有误！请输入任何键以开始重新输入");
+                    printTools.sc.nextLine();
+                    continue;
+                }
+                else
+                {
+                    endGameFlag = false ;
+                    boardNum = num ;
+                    return ;
+                }
+            }
+            else
+            {
+                System.out.println("输入无效！请输入任何键以重新输入");
+                printTools.sc.nextLine();
+                continue ;
+            }
+        }
+    }
+
+    /**
+     * * receiveReviseOperation用于为reviseGame接受信息
+     * * 输入有效棋盘数字记录数字返回
+     */
+    public void receiveReviseOperation()
+    {
+        PrintTools printTools = new PrintTools();
+        PrintTools.rememberCursor();
+
+        while( true )
+        {
+            PrintTools.restoreCursor();
+            PrintTools.clearConsoleAfterCursor();
+
+            System.out.println("请选择棋盘：");
+            String input = printTools.sc.nextLine();
+            int length = input.length();
+            if( length == 1 && Character.isDigit(input.charAt(0)) ) // 输入数字进入棋盘序号有效性判断
+            {
+                int num = Integer.parseInt(input) ;
+                if(num < 1 || num > ReversiGame.boardSum) // 输入数字不在范围内
+                {
+                    System.out.println("输入棋盘序号无效！请输入任何键以开始重新输入");
+                    printTools.sc.nextLine();
+                    continue;
+                }
+                else
+                {
+                    boardNum = num ;
+                    return ;
+                }
+            }
+            else
+            {
+                System.out.println("输入有误！请输入任何键以重新输入");
+                printTools.sc.nextLine();
+                continue ;
             }
         }
     }
