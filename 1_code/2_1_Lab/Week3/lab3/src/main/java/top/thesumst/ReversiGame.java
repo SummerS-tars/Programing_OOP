@@ -39,9 +39,9 @@ public class ReversiGame
     public void initGame()
     {
         PrintTools printTools = new PrintTools();
-        PrintTools.clearConsole(); 
-
+        
         // 初始化：收集p1名字
+        PrintTools.clearConsole(); 
         System.out.println("请输入1号玩家的名称：");
         String p1Name = printTools.sc.nextLine() ;
         
@@ -72,6 +72,7 @@ public class ReversiGame
         }
 
         // 初始化：收集p2名字
+        PrintTools.clearConsole();
         System.out.println("请输入2号玩家的名称：");
         String p2Name = printTools.sc.nextLine() ;
 
