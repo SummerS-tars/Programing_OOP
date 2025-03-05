@@ -159,9 +159,7 @@ public class ReversiGame
         {
             chessBoards[boardNum].go(attemptPoint, legalDirection);
             chessBoards[boardNum].updatePlayerChessNumber();
-
-            // ? 原用于判断是否继续游戏，现因增加多棋盘机制，需要更改游戏结束逻辑
-            // if (!chessBoards[boardNum].checkTurn()) keepGame = false;
+            chessBoards[boardNum].checkTurn(); // ! fix try 2 : 重新加上checkTurn，刷新回合需要下棋的玩家信息
         }
     }
 
