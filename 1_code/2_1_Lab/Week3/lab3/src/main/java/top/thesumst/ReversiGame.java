@@ -156,7 +156,7 @@ class ReceiveTools
     public void setGoPoint(Point point)
     {
         goPoint.x = point.x ;
-        goPoint.y = point.y 
+        goPoint.y = point.y ;
     }
 
     public Point getGoPoint()
@@ -215,13 +215,13 @@ class ReceiveTools
 
                 if(c1 >= '1' && c1 <= '8' && (c2 >= 'A' && c2 <= 'H'|| c2 >= 'a' && c2 <= 'h')) // 输入合法
                 {
-                    setGoPoint(new Point(c1 - '1', c2 - 'A')) ;
+                    setGoPoint(new Point(c1 - '1', (c2 - 'a' >= 0) ? c2 - 'a' : c2 - 'A')) ;
                     setChangeFlag(false) ;
                     return ;
                 }
                 else if(c2 >= '1' && c2 <= '8' && (c1 >= 'A' && c1 <= 'H'|| c1 >= 'a' && c1 <= 'h')) // 输入合法
                 {
-                    setGoPoint(new Point(c2 - '1', c1 - 'A')) ;
+                    setGoPoint(new Point(c2 - '1', (c1 - 'a' >= 0) ? c1 - 'a' : c1 - 'A')) ;
                     setChangeFlag(false) ;
                     return ;
                 }
@@ -232,6 +232,26 @@ class ReceiveTools
                     continue;
                 }
             }
+        }
+    }
+}
+
+/**
+ * test drive fot ReceiveTools
+ */
+class ReceiveToolsTestDrive
+{
+    public static void main(String[] args)
+    {
+        ReceiveTools receiveTools = new ReceiveTools();
+        receiveTools.receiveOperation();
+        if(receiveTools.getChangeFlag())
+        {
+            System.out.println("切换到棋盘" + receiveTools.getBoardNum());
+        }
+        else
+        {
+            System.out.println("下棋位置：" + receiveTools.getGoPoint().x + " " + receiveTools.getGoPoint().y);
         }
     }
 }
