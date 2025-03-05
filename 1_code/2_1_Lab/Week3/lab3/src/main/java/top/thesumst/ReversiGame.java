@@ -14,7 +14,10 @@ public class ReversiGame
     public static void main(String[] args)
     {
         gameMotd();
-        runGame();
+
+        ReversiGame reversiGame = new ReversiGame();
+        reversiGame.initGame();
+        reversiGame.runGame();
     }
 
     /**
@@ -89,23 +92,25 @@ public class ReversiGame
      */
     private void runGame()
     {
-        boolean keepGame = true;
-
         PrintTools printTools = new PrintTools();
         ReceiveTools receiveTools = new ReceiveTools();
+
+        // ! 游戏主体
+        boolean keepGame = true;
         while (keepGame)
         {
+            // TODO: 添加切换棋盘接收部份 over
+            // TODO: 棋盘完赛可以预览，但是之后只能换棋盘，不能再下棋
+            // TODO: 添加结束复盘功能
+            
             PrintTools.clearConsole();
             chessBoards[boardNum].printChessBoard();
-
-
-            // TODO: 添加切换棋盘接收部份
 
             // 接受操作输入（包括下棋位置和切换棋盘）
             receiveTools.receiveOperation();
 
             // 执行操作（切换棋盘或传入位置）
-            Point attemptPoint ;
+            Point attemptPoint = new Point();
             if(receiveTools.getChangeFlag())
             {
                 boardNum = receiveTools.getBoardNum() ;
@@ -114,25 +119,32 @@ public class ReversiGame
             else attemptPoint = receiveTools.getGoPoint();
             
             // 位置传入棋盘，判断后进行相关操作
-            byte legalDirection = chessBoards[boardNum].checkGo(attemptPoint);
-            if (legalDirection == 0)
-            {
-                System.out.println("无效的下棋位置！请键入任何按键以重新选择");
-                printTools.sc.nextLine();
-                continue;
-            }
-            else
-            {
-                chessBoards[boardNum].go(attemptPoint, legalDirection);
-                chessBoards[boardNum].updatePlayerChessNumber();
-                if (!chessBoards[boardNum].checkTurn()) keepGame = false;
-            }
+            inputPoint(attemptPoint);
         }
 
         PrintTools.clearConsole();
         chessBoards[boardNum].printChessBoard();
         System.out.println("游戏结束！");
         System.out.println("胜利者是：" + chessBoards[boardNum].getWinner().getName() + chessBoards[boardNum].getWinner().getColor().getSymbol());
+    }
+
+    private void inputPoint(Point attemptPoint)
+    {
+        PrintTools printTools = new PrintTools();
+        byte legalDirection = chessBoards[boardNum].checkGo(attemptPoint);
+        if (legalDirection == 0)
+        {
+            System.out.println("无效的下棋位置！请键入任何按键以重新选择");
+            printTools.sc.nextLine();
+        }
+        else
+        {
+            chessBoards[boardNum].go(attemptPoint, legalDirection);
+            chessBoards[boardNum].updatePlayerChessNumber();
+
+            // ? 原用于判断是否继续游戏，现因多棋盘，需要更改游戏结束逻辑
+            // if (!chessBoards[boardNum].checkTurn()) keepGame = false;
+        }
     }
 }
 

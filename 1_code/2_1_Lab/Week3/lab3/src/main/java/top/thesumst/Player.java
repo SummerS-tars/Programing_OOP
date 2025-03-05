@@ -54,17 +54,18 @@ public class Player
     }
 }
 
+// deprecated
 /**
  * Initial Test for class Player
  */
-class PlayerInitTestDrive
-{
-    public static void main(String[] args)
-    {
-        Player player = new Player() ;
-        player.initPlayer();
-        PrintTools.clearConsole();
-        System.out.println("player name is " + player.getName());
-        System.out.println("player chess is " + player.getColor().getSymbol());
-    }
-}
+//// class PlayerInitTestDrive
+//// {
+////     public static void main(String[] args)
+////     {
+////         Player player = new Player() ;
+////         player.initPlayer();
+////         PrintTools.clearConsole();
+////         System.out.println("player name is " + player.getName());
+////         System.out.println("player chess is " + player.getColor().getSymbol());
+////     }
+//// }
