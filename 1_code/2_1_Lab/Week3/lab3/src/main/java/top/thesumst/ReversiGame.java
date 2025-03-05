@@ -75,15 +75,28 @@ public class ReversiGame
         // TODO: 计划接受乱序输入
         // TODO: 计划完善互动与提示信息
 
+
+
+        Point attemptPoint = new Point();
+        return attemptPoint;
+    }
+
+
+    /**
+     * * checkReceive用于接收输入，确保输入处于合理范围，并根据一定逻辑返回操作
+     * @return Point
+     * 如果切换棋盘将
+     */
+    private static Point checkReceive()
+    {
         PrintTools printTools = new PrintTools();
         PrintTools.rememberCursor();
 
-        Point attemptPoint = new Point();
-        boolean validInput = false;
-        while (!validInput)
+        while (true)
         {
             PrintTools.restoreCursor();
             PrintTools.clearConsoleAfterCursor();
+
             System.out.println("请输入你的下棋位置：");
             String input = printTools.sc.nextLine();
             if (input.length() != 2)
@@ -100,10 +113,125 @@ public class ReversiGame
                 printTools.sc.nextLine();
                 continue;
             }
-            attemptPoint.x = row - '1';
-            attemptPoint.y = col - 'A';
-            validInput = true;
+            
+
+            return new Point(row - 1, col -1) ;
         }
-        return attemptPoint;
+    }
+}
+
+class ReceiveTools
+{
+    private boolean changeFlag ;
+    private int boardNum ;
+    private Point goPoint ;
+
+    ReceiveTools()
+    {
+        changeFlag = false ;
+        boardNum = 0 ;
+        goPoint = new Point() ;
+    }
+
+    public void setChangeFlag(boolean flag)
+    {
+        changeFlag = flag;
+    }
+
+    public boolean getChangeFlag()
+    {
+        return changeFlag ;
+    } 
+    
+    public void setBoardNum(int num)
+    {
+        boardNum = num ;
+    }
+
+    public int getBoardNum()
+    {
+        return boardNum ;
+    }
+
+    public void setGoPoint(Point point)
+    {
+        goPoint.x = point.x ;
+        goPoint.y = point.y 
+    }
+
+    public Point getGoPoint()
+    {
+        return goPoint ;
+    }
+
+    public void receiveOperation()
+    {
+        PrintTools printTools = new PrintTools();
+        PrintTools.rememberCursor();
+
+        while (true)
+        {
+            PrintTools.restoreCursor();
+            PrintTools.clearConsoleAfterCursor();
+
+            System.out.println("请输入你的下棋位置：");
+            String input = printTools.sc.nextLine();
+            int length = input.length();
+            if (length > 2) // 输入太长，一定错误
+            {
+                System.out.println("输入格式错误！请输入任何键以开始重新输入");
+                printTools.sc.nextLine();
+                continue;
+            }
+            else if(length == 1)
+            {
+                if(!Character.isDigit(input.charAt(0))) // 非数字成立
+                {
+                    System.out.println("输入格式错误！请输入任何键以开始重新输入");
+                    printTools.sc.nextLine();
+                    continue;
+                }
+                else
+                {
+                    int num = Integer.parseInt(input) ;
+                    if(num < 1 || num > 3) // 输入数字不在范围内
+                    {
+                        System.out.println("输入棋盘序号有误！请输入任何键以开始重新输入");
+                        printTools.sc.nextLine();
+                        continue;
+                    }
+                    else
+                    {
+                        setBoardNum(num) ;
+                        setChangeFlag(true) ;
+                        return ;
+                    }
+                }
+            }
+            else
+            {
+                char c1 = input.charAt(0) ;
+                char c2 = input.charAt(1) ;
+
+                if(c1 >= '1' && c1 <= '8' && (c2 >= 'A' && c2 <= 'H'|| c2 >= 'a' && c2 <= 'h')) // 输入合法
+                {
+                    setGoPoint(new Point(c1 - '1', c2 - 'A')) ;
+                    setChangeFlag(false) ;
+                    return ;
+                }
+                else if(c2 >= '1' && c2 <= '8' && (c1 >= 'A' && c1 <= 'H'|| c1 >= 'a' && c1 <= 'h')) // 输入合法
+                {
+                    setGoPoint(new Point(c2 - '1', c1 - 'A')) ;
+                    setChangeFlag(false) ;
+                    return ;
+                }
+                else
+                {
+                    System.out.println("输入格式错误！请输入任何键以开始重新输入");
+                    printTools.sc.nextLine();
+                    continue;
+                }
+            }
+        }
     }
 }
