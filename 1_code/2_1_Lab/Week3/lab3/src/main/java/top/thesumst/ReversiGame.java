@@ -295,7 +295,7 @@ class ReceiveTools
             System.out.println("请输入你的下棋位置：");
             String input = printTools.sc.nextLine();
             int length = input.length();
-            if (length > 2) // 输入太长，一定错误
+            if (length > 2 || length == 0) // 输入太长，一定错误 // ! ver2.0 fix try 3 : 修正输入为空导致的崩溃
             {
                 System.out.println("输入格式错误！请输入任何键以开始重新输入");
                 printTools.sc.nextLine();
