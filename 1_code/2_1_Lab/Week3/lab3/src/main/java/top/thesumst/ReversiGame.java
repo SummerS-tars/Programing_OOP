@@ -87,18 +87,34 @@ public class ReversiGame
     /**
      * * game running main body
      */
-    private static void runGame()
+    private void runGame()
     {
-        // TODO: 游戏运行主体编写
         boolean keepGame = true;
 
         PrintTools printTools = new PrintTools();
+        ReceiveTools receiveTools = new ReceiveTools();
         while (keepGame)
         {
             PrintTools.clearConsole();
-            chessBoardClass.printChessBoard();
-            Point attemptPoint = receiveGo();
-            byte legalDirection = chessBoardClass.checkGo(attemptPoint);
+            chessBoards[boardNum].printChessBoard();
+
+
+            // TODO: 添加切换棋盘接收部份
+
+            // 接受操作输入（包括下棋位置和切换棋盘）
+            receiveTools.receiveOperation();
+
+            // 执行操作（切换棋盘或传入位置）
+            Point attemptPoint ;
+            if(receiveTools.getChangeFlag())
+            {
+                boardNum = receiveTools.getBoardNum() ;
+                continue ;
+            }
+            else attemptPoint = receiveTools.getGoPoint();
+            
+            // 位置传入棋盘，判断后进行相关操作
+            byte legalDirection = chessBoards[boardNum].checkGo(attemptPoint);
             if (legalDirection == 0)
             {
                 System.out.println("无效的下棋位置！请键入任何按键以重新选择");
@@ -107,32 +123,16 @@ public class ReversiGame
             }
             else
             {
-                chessBoardClass.go(attemptPoint, legalDirection);
-                chessBoardClass.updatePlayerChessNumber();
-                if (!chessBoardClass.checkTurn()) keepGame = false;
+                chessBoards[boardNum].go(attemptPoint, legalDirection);
+                chessBoards[boardNum].updatePlayerChessNumber();
+                if (!chessBoards[boardNum].checkTurn()) keepGame = false;
             }
         }
 
         PrintTools.clearConsole();
-        chessBoardClass.printChessBoard();
+        chessBoards[boardNum].printChessBoard();
         System.out.println("游戏结束！");
-        System.out.println("胜利者是：" + chessBoardClass.getWinner().getName() + chessBoardClass.getWinner().getColor().getSymbol());
-    }
-
-    /**
-     * * receiveGo方法持续读入输入直到获取合法输入，并转换为符合chessBoard API的Point类实例
-     * @return Point
-     * 返回有效的Point格式下棋点
-     */
-    private static Point receiveGo()
-    {
-        // TODO: 计划接受乱序输入
-        // TODO: 计划完善互动与提示信息
-
-
-
-        Point attemptPoint = new Point();
-        return attemptPoint;
+        System.out.println("胜利者是：" + chessBoards[boardNum].getWinner().getName() + chessBoards[boardNum].getWinner().getColor().getSymbol());
     }
 }
 
@@ -234,7 +234,7 @@ class ReceiveTools
                     }
                 }
             }
-            else
+            else    // 判断为试图输入位置，判断是否有效位置
             {
                 char c1 = input.charAt(0) ;
                 char c2 = input.charAt(1) ;
@@ -253,7 +253,7 @@ class ReceiveTools
                 }
                 else
                 {
-                    System.out.println("输入格式错误！请输入任何键以开始重新输入");
+                    System.out.println("输入位置无效！请输入任何键以开始重新输入");
                     printTools.sc.nextLine();
                     continue;
                 }
