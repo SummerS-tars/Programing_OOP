@@ -4,8 +4,10 @@ import java.awt.Point;
 
 public class ReversiGame
 {
-    int boardNum = 0 ;
-    ChessBoard[] chessBoards ;
+    int boardNum ; // 用于存储当前棋盘号
+    int boardSum ; // 用于存储棋盘总数
+    ChessBoard[] chessBoards ; // 用于存储多个棋盘
+    boolean gameOver ; // 用于判断游戏是否结束
 
     // deprecated
     //// public static void main(String[] args)
@@ -77,11 +79,16 @@ public class ReversiGame
         ChessColor p2Color = (p1Color == ChessColor.BLACK) ? ChessColor.WHITE : ChessColor.BLACK ;
 
         // 实际初始化棋盘
-        chessBoards = new ChessBoard[3] ;
-        for(int i = 0; i < 3; i++)
+        boardSum = 3 ;  // 定义棋盘总数，留一个接口，后面方便拓展
+        chessBoards = new ChessBoard[boardSum] ;
+        for(int i = 0; i < boardSum; i++)
         {
             chessBoards[i] = new ChessBoard(p1Name, p2Name, p1Color, p2Color) ;
         }
+
+        // 初始化：收集初始棋盘号以及游戏状态
+        boardNum = 0 ;
+        gameOver = false ;
     }
 
     /**
@@ -89,7 +96,6 @@ public class ReversiGame
      */
     public void runGame()
     {
-        PrintTools printTools = new PrintTools();
         ReceiveTools receiveTools = new ReceiveTools();
 
         // ! 游戏主体
@@ -139,9 +145,23 @@ public class ReversiGame
             chessBoards[boardNum].go(attemptPoint, legalDirection);
             chessBoards[boardNum].updatePlayerChessNumber();
 
-            // ? 原用于判断是否继续游戏，现因多棋盘，需要更改游戏结束逻辑
+            // ? 原用于判断是否继续游戏，现因增加多棋盘机制，需要更改游戏结束逻辑
             // if (!chessBoards[boardNum].checkTurn()) keepGame = false;
         }
+    }
+
+    /**
+     * * checkGameOver方法用于检查游戏是否结束
+     * @return boolean
+     * 所有棋盘都完成游戏则返回true，否则返回false
+     */
+    private boolean checkGameOver()
+    {
+        for(int i = 0; i < boardSum; i++)
+        {
+            if(!chessBoards[i].getGameEndFlag()) return false ;
+        }
+        return true ;
     }
 }
 
