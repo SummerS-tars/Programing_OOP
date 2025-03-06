@@ -239,22 +239,20 @@ public class ChessBoard
 
     /**
      * * checkTurn方法，检测是否需要换边或游戏是否结束
-     * @return boolean
-     * true 游戏继续
-     * false 游戏结束
      */
-    public boolean checkTurn()
+    public void checkTurn() // ! fix try 
     {   
         // * 先检测另一方是否有合法位置
         blackTurn = !blackTurn ;
-        if(checkSide()) return true ; // * 检测到另一方有合法位置，换边并进入下一轮
+        if(checkSide()) return ;// * 检测到另一方有合法位置，换边并进入下一轮
         
         // * 检测已下棋方是否有合法位置
         blackTurn = !blackTurn ;
-        if(checkSide()) return true ;
+        if(checkSide()) return ;
 
         // * 双方均无合法位置，退出游戏
-        return false ;
+        gameEndFlag = true ;
+        return ;
     }
     
     /**
