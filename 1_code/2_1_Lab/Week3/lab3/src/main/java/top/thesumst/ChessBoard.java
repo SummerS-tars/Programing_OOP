@@ -295,10 +295,9 @@ public class ChessBoard
                 else if(chessBoard[i][j] == ChessColor.WHITE) whiteChessNumber ++ ;
             }
         }
-        p1.setChessNumber(blackChessNumber);
-        p2.setChessNumber(whiteChessNumber);
+        p1.setChessNumber((p1.getColor() == ChessColor.BLACK) ? blackChessNumber : whiteChessNumber);
+        p2.setChessNumber((p2.getColor() == ChessColor.BLACK) ? blackChessNumber : whiteChessNumber);
     }
-
     /**
      * * moveFocus移动检查焦点
      * @param focus
