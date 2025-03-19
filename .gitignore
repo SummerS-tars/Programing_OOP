@@ -1,7 +1,9 @@
 0_workspace/0_extraLibs/
 0_workspace/apache-maven-3.9.9/
-.idea/
 3_tool/0_javaInstallPack/
+4_else/
+
+.idea/
 *.pdf
 *.zip
 .DS_Store
