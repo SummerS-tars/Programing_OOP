@@ -2,6 +2,59 @@ package top.thesumst;
 
 import java.awt.Point;
 
+abstract class GameMode 
+{
+    final int gameOrder ;
+    final String gameMode ;
+    final int maxSize ;
+    protected ChessBoard board;
+    protected Player player1, player2;
+    protected boolean isBlackTurn, isOver;
+
+    GameMode(int order, String mode,int size, String name1, String name2, ChessColor color1, ChessColor color2)
+    {
+        gameOrder = order;
+        gameMode = mode;
+        maxSize = size;
+        board = new ChessBoard(maxSize);
+        player1 = new Player(name1, color1);
+        player2 = new Player(name2, color2);
+        isBlackTurn = true;
+        isOver = false;
+    }
+
+    /**
+     * * quit方法，退出游戏
+     */
+    void quit()
+    {
+        System.exit(0);
+    }
+
+    /**
+     * * receiveOperation方法，接受下棋操作，在输入前就过滤超出棋盘范围的操作
+     * @param Point 下棋位置
+     */
+    abstract void receiveOperation(Point point) ;
+
+    /**
+     * * receiveOperation方法，接受下棋操作，在输入前就过滤超出棋盘范围的操作
+     * @param String 操作
+     * 应该是pass或者quit，其中pass只有在ReversiMode中有用
+     */
+    abstract void receiveOperation(String operation) ;
+
+    /**
+     * * toString方法，返回游戏模式信息
+     * @return String 游戏模式信息  
+     */
+    @Override
+    public String toString() 
+    {
+        return gameOrder + " " + gameMode;
+    }
+}
+
 
 
 class Player
