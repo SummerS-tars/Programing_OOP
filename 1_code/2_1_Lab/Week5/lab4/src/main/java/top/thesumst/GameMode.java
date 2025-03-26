@@ -165,7 +165,10 @@ class PeaceMode extends GameMode
                         peace.getPlayerName(peace.player2), peace.getPlayerChessColor(peace.player2).getSymbol());
         peace.printBoard();
         System.out.println(peace);
+        PauseUtil.pause();
 
+        peace.receiveOperation("pass");
+        peace.receiveOperation("test");
         PauseUtil.pause();
 
         for(int i = 0 ; i < 8 ; i++ ) 
@@ -173,7 +176,7 @@ class PeaceMode extends GameMode
             for(int j = 0 ; j < 8 ; j++ )
             {
                 PrintTools.clearConsole();
-                peace.go(new Point(i, j));
+                peace.receiveOperation(new Point(i, j));
                 peace.printBoard();
                 PauseUtil.pause();
             }
@@ -181,8 +184,8 @@ class PeaceMode extends GameMode
 
         PrintTools.clearConsole();
         System.out.println("isOver = " + peace.isOver);
-        PauseUtil.pause();
-        peace.quit();
+        PauseUtil.pause("游戏结束，按回车键退出");
+        peace.receiveOperation("quit");
     }
 }
 
