@@ -95,4 +95,24 @@ public class TerminalUI {
             String.format("得分: %d", current.getChessNumber()));
     }
 
+    private void renderGameList(GameContainer container, TerminalPosition start) {
+        textGraphics.drawLine(
+            start.withColumn(start.getColumn()-1),
+            start.withRelativeRow(size.getRows()-INPUT_HEIGHT-1),
+            Symbols.DOUBLE_LINE_VERTICAL
+        );
+
+        int y = 1;
+        for (int i = 1; i <= GameList.getGameNumber(); i++) {
+            String label = container.getGame(i).toString();
+            if (i == container.getCurrentGameOrder()) {
+                textGraphics.putString(start.withRelativeRow(y++), 
+                    "▶ " + label, SGR.BOLD, SGR.REVERSE);
+            } else {
+                textGraphics.putString(start.withRelativeRow(y++), "  " + label);
+            }
+        }
+    }
+
+
 }
