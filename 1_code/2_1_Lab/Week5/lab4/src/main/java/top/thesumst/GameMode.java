@@ -51,11 +51,121 @@ abstract class GameMode
     @Override
     public String toString() 
     {
-        return gameOrder + " " + gameMode;
+        return gameOrder + ". " + gameMode;
     }
 }
 
+class PeaceMode extends GameMode
+{
+    PeaceMode(int order, String mode, int size, String name1, String name2, ChessColor color1, ChessColor color2)
+    {
+        super(order, mode, size, name1, name2, color1, color2);
+    }
 
+    @Override
+    void receiveOperation(Point point) 
+    {
+        // TODO：完善游戏结束判断及信息显示
+        if(isOver)
+        {
+            System.out.println("游戏已结束");
+            return ;
+        }
+        go(point);
+    }
+
+    // TODO: 完善receiveOperation方法
+    @Override
+    void receiveOperation(String operation) 
+    {
+        switch (operation) {
+            case "quit":
+                quit();
+                break;
+            case "pass":
+                System.out.println("peace模式不支持pass");
+                break;
+            default:
+                System.out.println("无效操作");
+                break;
+        }
+    }
+    
+    void go(Point point) 
+    {
+        if(checkPoint(point))
+        {
+            ChessColor putColor = isBlackTurn ? player1.getColor() : player2.getColor() ;
+            board.setChessColor(point, putColor);
+            isBlackTurn = !isBlackTurn ;
+            isOver = checkGameOver() ;
+        }
+    }
+
+    /**
+     * * checkPoint方法，检查point位置是否可落子
+     * @param point
+     * @return true 可落子 false 不可落子
+     */
+    private boolean checkPoint(Point point)
+    {
+        if(board.getChessColor(point) == ChessColor.BLANK)
+        {
+            return true ;
+        }
+        return false ;
+    }
+
+    /**
+     * * checkGameOver方法，检查游戏是否结束
+     * @return true 游戏结束 false 游戏未结束
+     */
+    private boolean checkGameOver()
+    {
+        int blackChess = board.getChessNumber(ChessColor.BLACK) ;
+        int whiteChess = board.getChessNumber(ChessColor.WHITE) ;
+        if(blackChess + whiteChess == maxSize * maxSize) return true ;
+        return false ;
+    }
+
+    private String getPlayerName(Player p)
+    {
+        return p.getName();
+    }
+
+    private ChessColor getPlayerChessColor(Player p)
+    {
+        return p.getColor();
+    }
+
+    /**
+     * test
+     */
+    void printBoard()
+    {
+        for(int i = 0; i < maxSize; i++)
+        {
+            for(int j = 0; j < maxSize; j++)
+                System.out.print(board.getChessColor(new Point(i, j)).getSymbol()+" ") ;
+            System.out.println();
+        }     
+    }
+
+    public static void main(String[] args) 
+    {
+        PeaceMode peace = new PeaceMode(1, "peace", 8, "test1", "test2", ChessColor.BLACK, ChessColor.WHITE) ;
+        System.out.printf("player1: name = %s, color = %c\nplayer2: name = %s, color = %c\n",
+                        peace.getPlayerName(peace.player1), peace.getPlayerChessColor(peace.player1).getSymbol(),
+                        peace.getPlayerName(peace.player2), peace.getPlayerChessColor(peace.player2).getSymbol());
+        peace.printBoard();
+        System.out.println(peace);
+    }
+}
+
+class ReversiMode extends GameMode
+{
+
+}
 
 class Player
 {
@@ -89,6 +199,8 @@ class Player
     {
         return chessNumber ;
     }
+    
+    // TODO: 或许可以加上 toString() 方法
 }
 
 class ChessBoard
