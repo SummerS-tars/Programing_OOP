@@ -54,4 +54,30 @@ public class TerminalUI {
         
         screen.refresh();
     }
+
+    private void renderChessBoard(GameContainer container, TerminalPosition start) {
+        GameMode game = container.getCurrentGame();
+        ChessBoard board = game.getChessBoard();
+        
+        // 绘制棋盘边框
+        textGraphics.drawRectangle(
+            start,
+            new TerminalSize(BOARD_WIDTH, size.getRows()-INPUT_HEIGHT),
+            Symbols.DOUBLE_LINE_HORIZONTAL
+        );
+
+        // 绘制棋盘内容
+        for (int row = 0; row < board.size; row++) {
+            for (int col = 0; col < board.size; col++) {
+                TerminalPosition pos = new TerminalPosition(
+                    start.getColumn() + 2 + col*2,
+                    start.getRow() + 1 + row
+                );
+                
+                ChessColor color = board.getChessColor(new Point(row, col));
+                textGraphics.setCharacter(pos, color.getSymbol());
+            }
+        }
+    }
+
 }
