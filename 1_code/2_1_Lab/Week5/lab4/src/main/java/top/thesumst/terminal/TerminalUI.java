@@ -80,4 +80,19 @@ public class TerminalUI {
         }
     }
 
+
+    private void renderPlayerInfo(GameContainer container, TerminalPosition start) {
+        GameMode game = container.getCurrentGame();
+        Player current = game.isBlackTurn() ? game.player1 : game.player2;
+        
+        // 使用表格形式显示
+        textGraphics.putString(start, "当前玩家:", SGR.BOLD);
+        textGraphics.putString(start.withRelativeRow(2), 
+            String.format("名称: %s", current.getName()));
+        textGraphics.putString(start.withRelativeRow(4),
+            String.format("颜色: %c", current.getColor().getSymbol()));
+        textGraphics.putString(start.withRelativeRow(6),
+            String.format("得分: %d", current.getChessNumber()));
+    }
+
 }
