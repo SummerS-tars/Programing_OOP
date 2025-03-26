@@ -113,6 +113,8 @@ class PeaceMode extends GameMode
         {
             return true ;
         }
+        System.out.println("输入无效，当前位置已有棋子");
+        PauseUtil.pause();
         return false ;
     }
 
@@ -139,9 +141,9 @@ class PeaceMode extends GameMode
     }
 
     /**
-     * test
+     * test output
      */
-    void printBoard()
+    private void printBoard()
     {
         for(int i = 0; i < maxSize; i++)
         {
@@ -151,6 +153,10 @@ class PeaceMode extends GameMode
         }     
     }
 
+    /**
+     * * main方法用于测试
+     * @param args
+     */
     public static void main(String[] args) 
     {
         PeaceMode peace = new PeaceMode(1, "peace", 8, "test1", "test2", ChessColor.BLACK, ChessColor.WHITE) ;
@@ -159,6 +165,24 @@ class PeaceMode extends GameMode
                         peace.getPlayerName(peace.player2), peace.getPlayerChessColor(peace.player2).getSymbol());
         peace.printBoard();
         System.out.println(peace);
+
+        PauseUtil.pause();
+
+        for(int i = 0 ; i < 8 ; i++ ) 
+        {
+            for(int j = 0 ; j < 8 ; j++ )
+            {
+                PrintTools.clearConsole();
+                peace.go(new Point(i, j));
+                peace.printBoard();
+                PauseUtil.pause();
+            }
+        }
+
+        PrintTools.clearConsole();
+        System.out.println("isOver = " + peace.isOver);
+        PauseUtil.pause();
+        peace.quit();
     }
 }
 
