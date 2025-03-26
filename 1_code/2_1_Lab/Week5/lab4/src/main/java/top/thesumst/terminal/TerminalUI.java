@@ -114,5 +114,23 @@ public class TerminalUI {
         }
     }
 
-
+    private void renderInputPanel(GameContainer container, TerminalPosition start) {
+        // 绘制分割线
+        textGraphics.drawLine(
+            start.withRelativeRow(-1),
+            start.withColumn(size.getColumns()-1).withRelativeRow(-1),
+            Symbols.DOUBLE_LINE_HORIZONTAL
+        );
+    
+        // 提示信息
+        String tips = container.getCurrentGame().getInputTips();
+        textGraphics.putString(start, "输入提示: " + tips);
+        
+        // 输入框
+        textGraphics.drawRectangle(
+            start.withRelativeRow(2),
+            new TerminalSize(40, 1),
+            Symbols.SINGLE_LINE_HORIZONTAL
+        );
+    }
 }
