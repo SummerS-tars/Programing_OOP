@@ -1,0 +1,387 @@
+package top.thesumst.mode;
+
+import top.thesumst.mode.component.Player;
+import top.thesumst.tools.PauseTools;
+import top.thesumst.tools.PrintTools;
+import top.thesumst.type.ChessColor;
+import top.thesumst.type.Direction;
+import java.awt.Point;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.EnumSet;
+
+public class ReversiMode extends GameMode
+{
+    private Map<Point, Byte> validPointsCache ;
+    private boolean shouldPass ;
+
+    public ReversiMode(int order, String mode, int size, String name1, String name2, ChessColor color1, ChessColor color2)
+    {
+        super(order, mode, size, name1, name2, color1, color2);
+        validPointsCache = new HashMap<>();
+        shouldPass = false ;
+        refreshValidPoints();
+    }
+
+    @Override
+    public boolean receiveOperation(Point point) 
+    {
+        // TODO：完善游戏结束判断及信息显示
+        if(isOver)
+        {
+            System.out.println("游戏已结束，无法继续落子");
+            return false;
+        }
+
+        if(shouldPass)
+        {
+            System.out.println("当前玩家无合法位置，执行pass操作");
+            return false;
+        }
+
+        return go(point);
+    }
+
+    @Override
+    public boolean receiveOperation(String operation)
+    {
+        // TODO: 测试pass操作
+        switch (operation) {
+            case "pass":
+                if(shouldPass)
+                {
+                    shouldPass = false ;
+                    if(isOver)
+                    {
+                        System.out.println("当前游戏已结束，无法使用pass操作");
+                        return false;
+                    }
+                    else
+                    {
+                        isBlackTurn = !isBlackTurn ;
+                        checkGameOver() ;
+                        return true ;
+                    }
+                }
+                else
+                {
+                    System.out.println("当前玩家有合法位置，无法使用pass操作");
+                    return false;
+                }
+            case "quit":
+                PauseTools.pause("游戏结束，按回车键退出");
+                return true;
+            default:
+                PauseTools.pause("无效操作，请按回车键后重新输入");
+                return false;
+        }
+    }
+
+    /**
+     * * getChessColor方法，获取point位置棋盘棋子颜色
+     * @param point
+     * @return ChessColor
+     */
+    public ChessColor getChessColor(Point point)
+    {
+        return board.getChessColor(point) ;
+    }
+
+    /**
+     * * setChessColor方法，设置point位置棋盘棋子
+     * @param point
+     * @param color
+     */
+    public void setChessColor(Point point , ChessColor color)
+    {
+        board.setChessColor(point, color);
+    }
+
+    /**
+     * * go方法，尝试落子
+     * @param point 尝试落子位置
+     * @return true 落子成功 false 落子失败
+     */
+    private boolean go(Point point)
+    {
+        if(checkGo(point))
+        {
+            reverse(point, validPointsCache.get(point));
+            updatePlayerChessNumber();
+            isBlackTurn = !isBlackTurn ;
+            refreshValidPoints();
+            shouldPass = validPointsCache.isEmpty() ;
+            return true ;
+        }
+        return false ;
+    }
+
+    /**
+     * * checkGo方法检查输入point是否存在于validPointsCache中
+     * @param point 尝试下棋位置
+     * @return true 存在 false 不存在
+     */
+    private boolean checkGo(Point point)
+    {
+        return validPointsCache.containsKey(point) ;
+    }
+
+    /**
+     * * checkPoint方法实现对玩家输入的棋步合法性检验
+     * @param point 要检查的位置
+     * @return byte 合法方向信息串
+     */
+    private byte checkPoint(Point point)
+    {
+        byte legalDirection = 0 ;
+        /**
+         * 检测条件构思：
+         * 0. 不超出棋盘（或许在输入转换方法中实现）
+         * 1. 周围八格棋子检验 & 记录有异色棋子方向
+         *      next direction 无相邻异色棋子 + 记录0不变
+         *      next direction 有相邻异色棋子 + 改记录1
+         *      out 无相邻异色棋子
+         *      go on 有相邻异色棋子
+         * 2. 异色棋子方向检验 & 记录包夹方向
+         *      next direction 无同色棋子夹住 + 改记录0
+         *      next direction 有同色棋子夹住 + 记录1不变
+         *      out 无包夹成功方向
+         *      go on 有包夹成功方向
+         */
+
+        // * 当前位置已经有棋子，非法步骤
+        if(getChessColor(point) != ChessColor.BLANK) return legalDirection ;
+
+        // * 遍历八个方向寻找是否有合法方向
+        EnumSet<Direction> allDirections = EnumSet.allOf(Direction.class);
+        for(Direction direction : allDirections )
+        {
+            boolean legalFlag = false ;
+            Point focus = new Point(point) ;
+            while(legalFlag = moveFocus(focus, direction))
+            {
+                // * 判断是否异色
+                if(getChessColor(focus) == (isBlackTurn ? ChessColor.WHITE : ChessColor.BLACK))
+                {
+                    // * 是异色棋子，维持该方向位数字为1
+                    legalDirection |= direction.getValue() ;
+                }
+                else
+                {
+                    if(getChessColor(focus) == ChessColor.BLANK) legalFlag = false ; // * 该方向为空，将legalFlag置为false再退出
+                    break ;
+                    /**
+                     * 注意：此处包含多种情况
+                     * 1. 该方向相邻异色棋子且有同色棋子包夹，保持 legalFlag:true 方向位:1 进入下一个方向
+                     * 2. 该方向直接为空或者相邻异色棋子之后为空，设置 legalFlag:false 经过方向位重置后 进入下一个方向
+                     * 3. 该方向相邻同色棋子， 保持 legalFlag:true 方向位:0 进入下一个方向
+                     */
+                }
+            }
+            if(!legalFlag) legalDirection &= ~(direction.getValue()) ; // * 处理走到底或者出界的情况，确保该方向位为0
+        }
+        return legalDirection ;
+    }
+
+    /**
+     * * refreshValidPoints方法，刷新当前玩家可下棋位置
+     * * 同时刷新棋盘上的提示信息
+     */
+    private void refreshValidPoints()
+    {
+        clearValidPointsHint();
+        validPointsCache.clear();
+        
+        for(int i = 0; i < maxSize; i++)
+        {
+            for(int j = 0; j < maxSize; j++)
+            {
+                Point point = new Point(i, j) ;
+                byte legalDirection = checkPoint(point) ;
+                if(legalDirection != 0)
+                {
+                    validPointsCache.put(point, legalDirection) ;
+                }
+            }
+        }
+        refreshValidPointsHint();
+    }
+
+    /**
+     * * clearValidPoints方法，清除地图中的提示信息
+     */
+    private void clearValidPointsHint()
+    {
+        for(Point point : validPointsCache.keySet())
+            if(board.getChessColor(point) == ChessColor.VALID)
+                board.setChessColor(point, ChessColor.BLANK);
+    }
+
+    /**
+     * * refreshValidPointsHint方法，刷新地图中中的提示信息
+     */
+    private void refreshValidPointsHint()
+    {
+        for(Point point : validPointsCache.keySet())
+            board.setChessColor(point, ChessColor.VALID);
+    }
+
+    /**
+     * * reverse方法，实施棋子翻转
+     * @param point
+     * @param legalDirection
+     */
+    private void reverse(Point point, byte legalDirection)
+    {
+        // * 本次运行要放置的棋子颜色设置
+        ChessColor color = isBlackTurn ? ChessColor.BLACK : ChessColor.WHITE ;
+
+        // * 棋子翻转
+        EnumSet<Direction> allDirections = EnumSet.allOf(Direction.class);
+        for(Direction direction : allDirections )
+        {
+            // * 判断是否为有效方向
+            if((direction.getValue() & legalDirection) == 0 ) continue ;
+            else
+            {
+                Point focus = new Point(point) ;
+                moveFocus(focus, direction) ;
+
+                // * 该方向为有效方向，开始翻转棋子
+                while(getChessColor(focus) != color)
+                {
+                    setChessColor(focus, color);
+                    moveFocus(focus, direction);    // * 此处抛弃了返回值，因为有效方向一定会有同色棋子包夹
+                }
+            }
+        }
+
+        // * 原位置补上棋子
+        setChessColor(point, color) ;
+    }
+
+    /**
+     * * moveFocus移动检查焦点
+     * @param focus
+     * @param direction
+     * @return boolean
+     * true : successfully move
+     * false : unable to move
+     */
+    private boolean moveFocus(Point focus , Direction direction)
+    {
+        int dx = Direction.getDirectionDelta(direction).x ;
+        int dy = Direction.getDirectionDelta(direction).y ;
+
+
+        if( focus.x + dx >= 0 && focus.x + dx < maxSize &&
+            focus.y + dy >= 0 && focus.y + dy < maxSize)
+        {
+            focus.x += dx ;
+            focus.y += dy ;
+            return true ;
+        }
+        else return false ;
+    }
+
+    /**
+     * * updatePlayerChessNumber方法，更新玩家棋子数量
+     */
+    private void updatePlayerChessNumber()
+    {
+        player1.setChessNumber(board.getChessNumber(player1.getColor()));
+        player2.setChessNumber(board.getChessNumber(player2.getColor()));
+    }
+
+    /**
+     * * checkGameOver方法，检查游戏是否结束
+     * * 在每次pass后触发，如果未找到有效位置，说明双方均无法下棋，游戏结束
+     */
+    private void checkGameOver()
+    {
+        refreshValidPoints();
+        if(validPointsCache.isEmpty())
+            isOver = true ;
+    }
+
+    /**
+     * test output
+     */
+    private String getPlayerName(Player p)
+    {
+        return p.getName();
+    }
+    private ChessColor getPlayerChessColor(Player p)
+    {
+        return p.getColor();
+    }
+    // private void printBoard()
+    // {
+    //     for(int i = 0; i < maxSize; i++)
+    //     {
+    //         for(int j = 0; j < maxSize; j++)
+    //             System.out.print(board.getChessColor(new Point(i, j)).getSymbol()+" ") ;
+    //         System.out.println();
+    //     }     
+    // }
+
+    public static void main(String[] args) 
+    {
+        ReversiMode reversi = new ReversiMode(1, "reversi", 8, 
+                            "test1", "test2", ChessColor.BLACK, ChessColor.WHITE) ;    
+
+        System.out.println("test part 1");
+        System.out.printf("player1: name = %s, color = %c\nplayer2: name = %s, color = %c\n",
+                        reversi.getPlayerName(reversi.player1), reversi.getPlayerChessColor(reversi.player1).getSymbol(),
+                        reversi.getPlayerName(reversi.player2), reversi.getPlayerChessColor(reversi.player2).getSymbol());
+        reversi.printBoard();
+        System.out.println(reversi);
+        PauseTools.pause();
+
+        reversi.receiveOperation("pass");
+        reversi.receiveOperation("test");
+        PauseTools.pause();
+
+        while(!reversi.isOver)
+        {
+            PrintTools.clearConsole();
+            System.out.println("test part 2");
+            
+            // 无论是否要跳过，都显示当前棋盘和玩家信息
+            reversi.printBoard();
+            System.out.printf("[Player1]%s %c : %d\n[Player2]%s %c : %d\n",
+                            reversi.getPlayerName(reversi.player1), reversi.getPlayerChessColor(reversi.player1).getSymbol(),reversi.player1.getChessNumber(),
+                            reversi.getPlayerName(reversi.player2), reversi.getPlayerChessColor(reversi.player2).getSymbol(),reversi.player2.getChessNumber());
+            System.out.println("当前玩家：" + (reversi.isBlackTurn ? reversi.player1.getName() : reversi.player2.getName())
+                                + " " + (reversi.isBlackTurn ? reversi.player1.getColor().getSymbol() : reversi.player2.getColor().getSymbol()));
+            
+            if(!reversi.shouldPass)
+            {
+                // 随机选择一个有效位置
+                Point randomPoint = null;
+                if (!reversi.validPointsCache.isEmpty()) {
+                    // 使用更简洁的方法随机选择一个点
+                    java.util.List<Point> points = new java.util.ArrayList<>(reversi.validPointsCache.keySet());
+                    randomPoint = points.get((int)(Math.random() * points.size()));
+                }
+                
+                System.out.println("randomPoint = " + randomPoint);
+                if (randomPoint != null) {
+                    reversi.receiveOperation(randomPoint);
+                    // 已经在go方法中有处理，这里不需要再次暂停
+                }
+            }
+            else 
+            {
+                System.out.println("当前玩家无法下棋，执行pass操作");
+                reversi.receiveOperation("pass");
+            }
+            
+            PauseTools.pause("按回车继续...");
+        }
+
+        PrintTools.clearConsole();
+        System.out.println("isOver = " + reversi.isOver);
+        reversi.receiveOperation("quit");
+    }
+}
