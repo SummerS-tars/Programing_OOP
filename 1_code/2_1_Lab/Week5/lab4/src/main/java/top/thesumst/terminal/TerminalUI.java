@@ -41,4 +41,17 @@ public class TerminalUI {
         textGraphics = screen.newTextGraphics();
         screen.startScreen();
     }
+
+    // 主渲染方法
+    public void render(GameContainer container) throws IOException {
+        TerminalSize size = screen.getTerminalSize();
+        
+        // 划分区域
+        renderChessBoard(container, new TerminalPosition(0, 0)); 
+        renderPlayerInfo(container, new TerminalPosition(BOARD_WIDTH, 0));
+        renderGameList(container, new TerminalPosition(BOARD_WIDTH+INFO_WIDTH, 0));
+        renderInputPanel(container, new TerminalPosition(0, size.getRows()-INPUT_HEIGHT));
+        
+        screen.refresh();
+    }
 }
