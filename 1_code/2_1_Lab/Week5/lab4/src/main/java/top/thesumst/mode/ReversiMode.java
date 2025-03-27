@@ -1,7 +1,6 @@
 package top.thesumst.mode;
 
 import top.thesumst.mode.component.Player;
-import top.thesumst.tools.PauseTools;
 import top.thesumst.type.ChessColor;
 import top.thesumst.type.Direction;
 import java.awt.Point;
