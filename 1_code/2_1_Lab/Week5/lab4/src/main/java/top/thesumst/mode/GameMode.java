@@ -86,40 +86,4 @@ public abstract class GameMode
     {
         return board;
     }
-
-    /**
-     * // deprecated 现只用于测试
-     * * printPlayerInfo方法，打印玩家信息
-     * * 不同游戏模式有不同的打印方式
-     * ! 将来可能会该改变
-     * ! TODO 优化显示方式
-     */
-    public void printPlayerInfo()
-    {
-        System.out.printf("[Player1]%-10s %c : %-4d\n", player1.getName(), player1.getColor().getSymbol(), player1.getChessNumber());
-        System.out.printf("[Player2]%-10s %c : %-4d\n", player2.getName(), player2.getColor().getSymbol(), player2.getChessNumber());
-    }
-
-    /**
-     * // deprecated 现只用于测试
-     * * printBoard方法，打印棋盘
-     * ! 将来可能会该改变
-     * ! TODO 优化显示方式
-     */
-    public void printBoard()
-    {
-        System.out.printf("%3s", "");
-        for(int i = 0 ; i < maxSize ; i ++ )
-            System.out.printf("%c ", 'A' + i) ;
-        System.out.println() ;
-        for(int i = 0 ; i < maxSize ; i ++ )
-        {
-            System.out.printf("%2d ", i + 1) ;
-            for(int j = 0 ; j < maxSize ; j ++ )
-            {
-                System.out.printf("%c " , board.getChessColor(new Point(i,j)).getSymbol()) ;
-            }
-            System.out.println() ;
-        }
-    }
 }
