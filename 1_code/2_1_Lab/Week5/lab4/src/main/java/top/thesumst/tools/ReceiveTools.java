@@ -46,10 +46,10 @@ public class ReceiveTools
     private InputResult receiveInput(GameMode currentGame, GameList gameList)
     {
         InputParser.setBoardSize(currentGame.getSize());
-        String tips = getTips(currentGame, gameList);
         while(true)
         {
-            System.out.println(tips);
+            PrintTools.printInputPanel(gameList);
+
             String input = printTools.sc.nextLine();
 
             InputResult result = InputParser.parse(input);
@@ -62,29 +62,5 @@ public class ReceiveTools
 
             return result;
         }
-    }
-
-    /**
-     * * getTips方法，获取提示信息
-     * @param currentGame
-     * @param gameList
-     * @return tips 提示信息
-     */
-    private String getTips(GameMode currentGame, GameList gameList)
-    {
-        String tips = new String() ;
-        tips += "请输入命令: (" ;
-        tips += "1.坐标[1A-" + currentGame.getSize() + (char)('A'+currentGame.getSize()-1) +"](支持大小写+乱序) ";
-        tips += "2.切换棋盘[1-" + GameList.getGameNumber() + "] ";
-        switch(currentGame.getGameMode())
-        {
-            case "peace":
-                tips += "3.增加棋盘(peace/reversi) 4.退出游戏(quit))";
-                break;
-            case "reversi":
-                tips += "3.跳过(pass) 4.增加棋盘(peace/reversi) 5.退出游戏(quit))";
-                break;
-        }
-        return tips;
     }
 }

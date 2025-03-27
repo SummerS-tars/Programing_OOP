@@ -41,14 +41,40 @@ public abstract class GameMode
      */
     public abstract boolean receiveOperation(String operation) ;
 
+    /**
+     * * getters and setters
+     */
     public int getSize()
     {
         return maxSize;
     }
-
     public String getGameMode()
     {
         return gameMode;
+    }
+    public boolean isOver()
+    {
+        return isOver;
+    }
+    public boolean isBlackTurn()
+    {
+        return isBlackTurn;
+    }
+    public Player getPlayer1()
+    {
+        return player1;
+    }
+    public Player getPlayer2()
+    {
+        return player2;
+    }
+    public Player getCurrentPlayer()
+    {
+        return player1.getColor() == ChessColor.BLACK ? player1 : player2;
+    }
+    public ChessBoard getBoard()
+    {
+        return board;
     }
 
     /**
@@ -59,8 +85,8 @@ public abstract class GameMode
      */
     public void printPlayerInfo()
     {
-        System.out.printf("[Player1]%s %c : %d\n", player1.getName(), player1.getColor().getSymbol(), player1.getChessNumber());
-        System.out.printf("[Player2]%s %c : %d\n", player2.getName(), player2.getColor().getSymbol(), player2.getChessNumber());
+        System.out.printf("[Player1]%-10s %c : %-4d\n", player1.getName(), player1.getColor().getSymbol(), player1.getChessNumber());
+        System.out.printf("[Player2]%-10s %c : %-4d\n", player2.getName(), player2.getColor().getSymbol(), player2.getChessNumber());
     }
 
     /**

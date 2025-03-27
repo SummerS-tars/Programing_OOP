@@ -3,5 +3,6 @@
     "java.configuration.updateBuildConfiguration": "interactive",
     "cSpell.words": [
         "Reversi"
-    ]
+    ],
+    "java.dependency.packagePresentation": "hierarchical"
 }
