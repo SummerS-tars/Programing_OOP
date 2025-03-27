@@ -53,7 +53,6 @@ public class ReversiMode extends GameMode
                     shouldPass = false ;
                     if(isOver)
                     {
-                        System.out.println("当前游戏已结束，无法使用pass操作");
                         return false;
                     }
                     else

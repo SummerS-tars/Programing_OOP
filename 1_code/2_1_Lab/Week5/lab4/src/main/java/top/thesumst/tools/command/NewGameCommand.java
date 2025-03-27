@@ -23,9 +23,15 @@ public class NewGameCommand implements GameCommand {
             return CommandResult.failure("不支持的游戏类型: " + gameType);
         }
 
-        gameList.addGame(gameType);
-        PrintTools.printGameList(gameList);
-        return CommandResult.success("已创建新的" + gameType + "游戏");
+        if(gameList.addGame(gameType))
+        {
+            PrintTools.printGameList(gameList);
+            return CommandResult.success("已创建新的" + gameType + "游戏");
+        }
+        else
+        {
+            return CommandResult.failure("因游戏数量已达上限，无法创建新游戏");
+        }
     }
     
     public String getGameType() 

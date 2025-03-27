@@ -40,10 +40,8 @@ public class PeaceMode extends GameMode
     {
         switch (operation) {
             case "quit":
-                System.out.println("quit成功，游戏即将结束");
                 return true;
             case "pass":
-                System.out.println("和平模式下无法进行pass操作");
                 return false;
             default:
                 return false;

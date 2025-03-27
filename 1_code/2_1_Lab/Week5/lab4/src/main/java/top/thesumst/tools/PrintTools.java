@@ -35,14 +35,21 @@ public class PrintTools
     {
         Player player1 = currentGame.getPlayer1() ;
         Player player2 = currentGame.getPlayer2() ;
+        String player1Info = String.format("[Player1]%-10s %c", player1.getName(), player1.getColor().getSymbol());
+        String player2Info = String.format("[Player2]%-10s %c", player2.getName(), player2.getColor().getSymbol());
+        if(currentGame.getGameMode().equals("reversi"))
+        {
+            player1Info += String.format(" : %-4d", player1.getChessNumber());
+            player2Info += String.format(" : %-4d", player2.getChessNumber());
+        }
         goToPoint(getPlayerInfoPosition());
         System.out.printf("%30s", "");
         goToPoint(getPlayerInfoPosition());
-        System.out.printf("[Player1]%-10s %c : %-4d\n", player1.getName(), player1.getColor().getSymbol(), player1.getChessNumber());
+        System.out.printf("%s", player1Info);
         goToPoint(getPlayerInfoPosition(), 1);
         System.out.printf("%30s", "");
         goToPoint(getPlayerInfoPosition(), 1);
-        System.out.printf("[Player2]%-10s %c : %-4d\n", player2.getName(), player2.getColor().getSymbol(), player2.getChessNumber());
+        System.out.printf("%s", player2Info);
     }
 
     public static void printGameList(GameList gameList)
@@ -72,8 +79,7 @@ public class PrintTools
     public static void printInputPanel(GameList gameList)
     {
         GameMode currentGame = gameList.getGame(GameContainer.getCurrentGameOrder()) ;
-        Player currentPlayer = currentGame.getCurrentPlayer() ;
-        String turnInfo = "当前回合: " + currentPlayer.getName() + " " + currentPlayer.getColor().getSymbol() + " : ";
+        String turnInfo = getTurnInfo(currentGame) ;
         String inputTips = getTips(gameList) ;
         goToPoint(getInputPosition());
         clearConsoleAfterCursor();
@@ -148,7 +154,6 @@ public class PrintTools
 
     /**
      * * getTips方法，获取提示信息
-     * @param currentGame
      * @param gameList
      * @return tips 提示信息
      */
@@ -157,18 +162,44 @@ public class PrintTools
         GameMode currentGame = gameList.getGame(GameContainer.getCurrentGameOrder()) ;
         String tips = new String() ;
         tips += "请输入命令:\n " ;
-        tips += "1. 坐标[1A-" + currentGame.getSize() + (char)('A'+currentGame.getSize()-1) +"](支持大小写+乱序)\n ";
-        tips += "2. 切换棋盘[1-" + GameList.getGameNumber() + "]\n ";
-        switch(currentGame.getGameMode())
+        if(currentGame.isOver())   //未结束
         {
-            case "peace":
-                tips += "3. 增加棋盘(peace/reversi)\n 4. 退出游戏(quit)";
-                break;
-            case "reversi":
-                tips += "3. 跳过(pass)\n 4. 增加棋盘(peace/reversi)\n 5. 退出游戏(quit)";
-                break;
+            tips += "1. 切换棋盘[1-" + GameList.getGameNumber() + "]\n ";
+            tips += "2. 增加棋盘(peace/reversi)\n 3. 退出游戏(quit)";
+        }
+        else
+        {
+            tips += "1. 坐标[1A-" + currentGame.getSize() + (char)('A'+currentGame.getSize()-1) +"](支持大小写+乱序)\n ";
+            tips += "2. 切换棋盘[1-" + GameList.getGameNumber() + "]\n ";
+            switch(currentGame.getGameMode())
+            {
+                case "peace":
+                    tips += "3. 增加棋盘(peace/reversi)\n 4. 退出游戏(quit)";
+                    break;
+                case "reversi":
+                    tips += "3. 跳过(pass)\n 4. 增加棋盘(peace/reversi)\n 5. 退出游戏(quit)";
+                    break;
+            }
         }
         return tips;
+    }
+
+    /**
+     * * getTurnInfo方法，获取回合信息
+     * @param currentGame
+     * @return turnInfo 回合信息
+     */
+    private static String getTurnInfo(GameMode currentGame)
+    {
+        String turnInfo ;
+        if(currentGame.isOver())
+            turnInfo = "本局游戏已经结束，请输入其他操作！" ;
+        else
+        {
+            Player currentPlayer = currentGame.getCurrentPlayer() ;
+            turnInfo = "当前回合: " + currentPlayer.getName() + " " + currentPlayer.getColor().getSymbol() + " : " ;
+        }
+        return turnInfo ;
     }
 
     private static Point getBoartPosition()
@@ -207,7 +238,7 @@ class TerminalOutputPositionSets
         int playerInfoStartRow = 1 + size / 2;
         int playerInfoStartCol = 3 + 2 * size + 4 ;
         int gameListStartRow = playerInfoStartRow - 2 ;
-        int gameListStartCol = playerInfoStartCol + 30 ;
+        int gameListStartCol = playerInfoStartCol + 40 ;
         int inputRow = 1 + size + 2 ;
         int inputCol = 1 ;
 
@@ -216,20 +247,3 @@ class TerminalOutputPositionSets
         inputPosition = new Point(inputRow, inputCol) ;
     }
 }
-
-/*
-raw
-1 + size / 2
-col
-3 + 2 * size + 4 start player info
-*/
-
-/*
-col
-[Player]%-10s %c : %-4d
-8 + 10 + 5 + 4 + 3 = 30
-*/
-
-/*
-25
-*/

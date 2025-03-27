@@ -13,9 +13,9 @@ public class PassCommand implements GameCommand {
     {
         boolean success = game.receiveOperation("pass");
         PrintTools.printBoard(game);
-        
+
         // 执行跳过操作
-        if(success) return CommandResult.success();
+        if(success) return CommandResult.success("pass成功");
         else return CommandResult.failure("pass失败");
     }
 }

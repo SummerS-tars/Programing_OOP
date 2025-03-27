@@ -31,22 +31,29 @@ public class GameList
      * @param gameMode 游戏模式:
      * 1. peace: 和平模式
      * 2. reversi: 翻转棋
+     * @return boolean 是否成功
      */
-    public void addGame(String gameMode)
+    public boolean addGame(String gameMode)
     {
+        int maxNumber = 8 ;
+        if(gameNumber >= maxNumber)
+        {
+            return false ;
+        }
+
         gameNumber++ ;
         int size = 8 ;
         switch (gameMode) {
             case "peace":
                 games.add(new PeaceMode(gameNumber, gameMode, size, player1Name, player2Name, player1Color, player2Color));
-                break;
+                return true;
             case "reversi":
                 games.add(new ReversiMode(gameNumber, gameMode, size, player1Name, player2Name, player1Color, player2Color));
-                break;
+                return true;
             default:
                 PauseTools.pause("游戏模式错误！");
-                break;
         }
+        return false;
     }
 
     /**

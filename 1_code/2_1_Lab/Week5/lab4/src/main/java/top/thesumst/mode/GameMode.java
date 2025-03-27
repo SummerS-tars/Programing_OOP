@@ -42,6 +42,16 @@ public abstract class GameMode
     public abstract boolean receiveOperation(String operation) ;
 
     /**
+     * * toString方法，返回游戏模式信息
+     * @return String 游戏模式信息  
+     */
+    @Override
+    public String toString() 
+    {
+        return gameOrder + ". " + gameMode;
+    }
+
+    /**
      * * getters and setters
      */
     public int getSize()
@@ -70,7 +80,7 @@ public abstract class GameMode
     }
     public Player getCurrentPlayer()
     {
-        return player1.getColor() == ChessColor.BLACK ? player1 : player2;
+        return (player1.getColor() == (isBlackTurn ? ChessColor.BLACK : ChessColor.WHITE )) ? player1 : player2;
     }
     public ChessBoard getBoard()
     {
@@ -78,6 +88,7 @@ public abstract class GameMode
     }
 
     /**
+     * // deprecated 现只用于测试
      * * printPlayerInfo方法，打印玩家信息
      * * 不同游戏模式有不同的打印方式
      * ! 将来可能会该改变
@@ -90,6 +101,7 @@ public abstract class GameMode
     }
 
     /**
+     * // deprecated 现只用于测试
      * * printBoard方法，打印棋盘
      * ! 将来可能会该改变
      * ! TODO 优化显示方式
@@ -109,15 +121,5 @@ public abstract class GameMode
             }
             System.out.println() ;
         }
-    }
-
-    /**
-     * * toString方法，返回游戏模式信息
-     * @return String 游戏模式信息  
-     */
-    @Override
-    public String toString() 
-    {
-        return gameOrder + ". " + gameMode;
     }
 }
