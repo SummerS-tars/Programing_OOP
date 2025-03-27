@@ -20,7 +20,6 @@ public class PeaceMode extends GameMode
     {
         if(isOver)
         {
-            System.out.println("游戏已结束");
             return false;
         }
         return go(point);
@@ -74,7 +73,6 @@ public class PeaceMode extends GameMode
         {
             return true ;
         }
-        System.out.println("输入无效，当前位置已有棋子");
         return false ;
     }
 

@@ -25,16 +25,13 @@ public class ReversiMode extends GameMode
     @Override
     public boolean receiveOperation(Point point) 
     {
-        // TODO：完善游戏结束判断及信息显示
         if(isOver)
         {
-            System.out.println("游戏已结束，无法继续落子");
             return false;
         }
 
         if(shouldPass)
         {
-            System.out.println("当前玩家无合法位置，执行pass操作");
             return false;
         }
 
@@ -44,7 +41,6 @@ public class ReversiMode extends GameMode
     @Override
     public boolean receiveOperation(String operation)
     {
-        // TODO: 测试pass操作
         switch (operation) {
             case "pass":
                 if(shouldPass)
@@ -63,14 +59,11 @@ public class ReversiMode extends GameMode
                 }
                 else
                 {
-                    System.out.println("当前玩家有合法位置，无法使用pass操作");
                     return false;
                 }
             case "quit":
-                System.out.println("quit成功，游戏即将结束");
                 return true;
             default:
-                PauseTools.pause("无效操作，请按回车键后重新输入");
                 return false;
         }
     }

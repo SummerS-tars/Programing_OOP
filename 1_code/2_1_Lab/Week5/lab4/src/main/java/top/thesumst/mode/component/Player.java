@@ -34,6 +34,4 @@ public class Player
     {
         return chessNumber ;
     }
-    
-    // TODO: 或许可以加上 toString() 方法
 }
