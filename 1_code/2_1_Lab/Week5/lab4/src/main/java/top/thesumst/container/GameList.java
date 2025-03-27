@@ -31,22 +31,29 @@ public class GameList
      * @param gameMode 游戏模式:
      * 1. peace: 和平模式
      * 2. reversi: 翻转棋
+     * @return boolean 是否成功
      */
-    public void addGame(String gameMode)
+    public boolean addGame(String gameMode)
     {
+        int maxNumber = 8 ;
+        if(gameNumber >= maxNumber)
+        {
+            return false ;
+        }
+
         gameNumber++ ;
         int size = 8 ;
         switch (gameMode) {
             case "peace":
                 games.add(new PeaceMode(gameNumber, gameMode, size, player1Name, player2Name, player1Color, player2Color));
-                break;
+                return true;
             case "reversi":
                 games.add(new ReversiMode(gameNumber, gameMode, size, player1Name, player2Name, player1Color, player2Color));
-                break;
+                return true;
             default:
                 PauseTools.pause("游戏模式错误！");
-                break;
         }
+        return false;
     }
 
     /**
@@ -111,56 +118,5 @@ public class GameList
         player2Name = printTools.sc.nextLine() ;
 
         player2Color = (player1Color == ChessColor.BLACK) ? ChessColor.WHITE : ChessColor.BLACK ;
-    }
-
-    public static void main(String[] args) 
-    {
-        GameList gameList = new GameList() ;
-        PrintTools.clearConsole();
-
-        // 测试初始化信息输入
-        System.out.println(player1Name + " " + player1Color);
-        System.out.println(player2Name + " " + player2Color);
-        System.out.println(GameList.getGameNumber());
-        PauseTools.pause("请按回车键以继续");
-        PrintTools.clearConsole();
-
-        // 测试游戏添加
-        GameMode game ;
-        game = gameList.getGame(1) ;
-        System.out.println(game);
-        game.printBoard();
-        game.printPlayerInfo();
-        PauseTools.pause("请按回车键以继续");
-        PrintTools.clearConsole();
-
-        game = gameList.getGame(2) ;
-        System.out.println(game);
-        game.printBoard();
-        game.printPlayerInfo();
-        PauseTools.pause("请按回车键以继续");
-        PrintTools.clearConsole();
-
-        // 测试额外添加
-        gameList.addGame("peace") ;
-        game = gameList.getGame(3) ;
-        System.out.println("After add peace, gameNumber : " + GameList.getGameNumber());
-        System.out.println(game);
-        game.printBoard();
-        game.printPlayerInfo();
-        PauseTools.pause("请按回车键以继续");
-        PrintTools.clearConsole();
-
-        gameList.addGame("reversi") ;
-        game = gameList.getGame(4) ;
-        System.out.println("After add peace, gameNumber : " + GameList.getGameNumber());
-        System.out.println(game);
-        game.printBoard();
-        game.printPlayerInfo();
-        PauseTools.pause("请按回车键以继续");
-        PrintTools.clearConsole();
-
-        PauseTools.pause("测试完毕，请按回车键以退出");
-        return ;
     }
 }

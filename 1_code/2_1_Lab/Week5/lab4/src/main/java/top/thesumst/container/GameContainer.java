@@ -15,6 +15,11 @@ public class GameContainer
         gameList = new GameList() ;
         currentGameOrder = 1 ;
         isRunning = true ;
+        PrintTools.clearConsole();
+        PrintTools.initializePositionsSet(gameList.getGame(currentGameOrder));
+        PrintTools.printBoard(gameList.getGame(currentGameOrder));
+        PrintTools.printPlayerInfo(gameList.getGame(currentGameOrder));
+        PrintTools.printGameList(gameList);
     }
 
     /**
@@ -29,14 +34,11 @@ public class GameContainer
             // 获取当前游戏
             GameMode currentGame = gameList.getGame(currentGameOrder) ;
 
-            // 显示游戏信息
-            displayGameState(currentGame) ; // TODO 游戏信息显示模块
-
             // 接收输入并执行命令
             CommandResult result = receiver.receiveAndExecuteCommand(currentGame, gameList) ;
 
             // 处理命令结果
-            handleCommandResult(result) ; // TODO 命令结果处理模块
+            handleCommandResult(result) ;
         }
     }
 
@@ -50,24 +52,17 @@ public class GameContainer
     }
 
     /**
-     * 显示当前游戏状态
+     * 获取当前游戏序号
+     * @return 当前游戏序号
      */
-    private void displayGameState(GameMode game) {
-        PrintTools.clearConsole();
-        
-        // 显示游戏列表
-        System.out.println("----- 游戏列表 -----");
-        for (int i = 1; i <= GameList.getGameNumber(); i++) 
-        {
-            GameMode g = gameList.getGame(i);
-            String current = (i == currentGameOrder) ? "[当前] " : "       ";
-            System.out.printf("%s\n", current + g);
-        }
-        System.out.println("--------------------");
-        
-        // 显示当前游戏状态
-        game.printBoard();
-        game.printPlayerInfo();   
+    public static int getCurrentGameOrder()
+    {
+        return currentGameOrder ;
+    }
+
+    public GameList getGameList()
+    {
+        return gameList ;
     }
 
     /**
@@ -75,13 +70,15 @@ public class GameContainer
      */
     private void handleCommandResult(CommandResult result) 
     {
+        PrintTools.goToResultPosition();
+
         // 处理失败情况
         if (!result.isSuccess()) 
         {
             PauseTools.pause(result.getMessage() + "，请按回车键以重新输入...");
             return;
         }
-        
+
         // 显示成功消息
         PauseTools.pause(result.getMessage() + " 请按回车键以继续");
 
@@ -91,14 +88,5 @@ public class GameContainer
             isRunning = false;
             return;
         }
-    }
-
-    public static void main(String[] args) 
-    {
-        // 创建游戏容器
-        GameContainer container = new GameContainer() ;
-
-
-        container.runGame() ;
     }
 }

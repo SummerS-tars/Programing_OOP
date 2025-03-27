@@ -41,50 +41,6 @@ public abstract class GameMode
      */
     public abstract boolean receiveOperation(String operation) ;
 
-    public int getSize()
-    {
-        return maxSize;
-    }
-
-    public String getGameMode()
-    {
-        return gameMode;
-    }
-
-    /**
-     * * printPlayerInfo方法，打印玩家信息
-     * * 不同游戏模式有不同的打印方式
-     * ! 将来可能会该改变
-     * ! TODO 优化显示方式
-     */
-    public void printPlayerInfo()
-    {
-        System.out.printf("[Player1]%s %c : %d\n", player1.getName(), player1.getColor().getSymbol(), player1.getChessNumber());
-        System.out.printf("[Player2]%s %c : %d\n", player2.getName(), player2.getColor().getSymbol(), player2.getChessNumber());
-    }
-
-    /**
-     * * printBoard方法，打印棋盘
-     * ! 将来可能会该改变
-     * ! TODO 优化显示方式
-     */
-    public void printBoard()
-    {
-        System.out.printf("%3s", "");
-        for(int i = 0 ; i < maxSize ; i ++ )
-            System.out.printf("%c ", 'A' + i) ;
-        System.out.println() ;
-        for(int i = 0 ; i < maxSize ; i ++ )
-        {
-            System.out.printf("%2d ", i + 1) ;
-            for(int j = 0 ; j < maxSize ; j ++ )
-            {
-                System.out.printf("%c " , board.getChessColor(new Point(i,j)).getSymbol()) ;
-            }
-            System.out.println() ;
-        }
-    }
-
     /**
      * * toString方法，返回游戏模式信息
      * @return String 游戏模式信息  
@@ -93,5 +49,41 @@ public abstract class GameMode
     public String toString() 
     {
         return gameOrder + ". " + gameMode;
+    }
+
+    /**
+     * * getters and setters
+     */
+    public int getSize()
+    {
+        return maxSize;
+    }
+    public String getGameMode()
+    {
+        return gameMode;
+    }
+    public boolean isOver()
+    {
+        return isOver;
+    }
+    public boolean isBlackTurn()
+    {
+        return isBlackTurn;
+    }
+    public Player getPlayer1()
+    {
+        return player1;
+    }
+    public Player getPlayer2()
+    {
+        return player2;
+    }
+    public Player getCurrentPlayer()
+    {
+        return (player1.getColor() == (isBlackTurn ? ChessColor.BLACK : ChessColor.WHITE )) ? player1 : player2;
+    }
+    public ChessBoard getBoard()
+    {
+        return board;
     }
 }
