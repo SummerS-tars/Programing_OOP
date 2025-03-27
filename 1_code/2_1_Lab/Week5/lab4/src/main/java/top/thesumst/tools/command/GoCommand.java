@@ -21,7 +21,8 @@ public class GoCommand implements GameCommand {
         // 执行下棋操作
         boolean success = game.receiveOperation(position);
         
-        if (success) return CommandResult.success();
+        String result = "("+(position.x+1)+","+(char)('A'+position.y)+")"+"着棋成功";
+        if (success) return CommandResult.success(result);
         else return CommandResult.failure("无效的下棋位置");
     }
 }

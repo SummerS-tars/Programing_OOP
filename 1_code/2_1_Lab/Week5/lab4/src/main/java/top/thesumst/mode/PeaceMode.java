@@ -40,7 +40,7 @@ public class PeaceMode extends GameMode
     {
         switch (operation) {
             case "quit":
-                PauseTools.pause("游戏结束，按回车键退出");
+                System.out.println("quit成功，游戏即将结束");
                 return true;
             case "pass":
                 System.out.println("和平模式下无法进行pass操作");
@@ -80,7 +80,6 @@ public class PeaceMode extends GameMode
             return true ;
         }
         System.out.println("输入无效，当前位置已有棋子");
-        PauseTools.pause();
         return false ;
     }
 

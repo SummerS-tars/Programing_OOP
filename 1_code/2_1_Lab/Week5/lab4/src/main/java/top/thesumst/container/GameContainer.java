@@ -78,7 +78,7 @@ public class GameContainer
         // 处理失败情况
         if (!result.isSuccess()) 
         {
-            PauseTools.pause(result.getMessage() + " 请按回车键以重新输入");
+            PauseTools.pause(result.getMessage() + "，请按回车键以重新输入...");
             return;
         }
         

@@ -69,7 +69,7 @@ public class ReversiMode extends GameMode
                     return false;
                 }
             case "quit":
-                PauseTools.pause("游戏结束，按回车键退出");
+                System.out.println("quit成功，游戏即将结束");
                 return true;
             default:
                 PauseTools.pause("无效操作，请按回车键后重新输入");

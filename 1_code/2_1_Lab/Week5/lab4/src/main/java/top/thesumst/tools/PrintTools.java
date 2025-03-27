@@ -50,17 +50,3 @@ public class PrintTools
         System.out.flush();
     }
 }
-
-class PrintToolsTestDrive
-{
-    public static void main(String[] args)
-    {
-        PrintTools.clearConsole();
-        System.out.print("Hello World!");
-        PrintTools.rememberCursor();
-        System.out.print("Hello World!");
-        PrintTools.restoreCursor();
-        System.out.print("Hello World!");
-        PrintTools.clearConsoleAfterCursor();
-    }
-}

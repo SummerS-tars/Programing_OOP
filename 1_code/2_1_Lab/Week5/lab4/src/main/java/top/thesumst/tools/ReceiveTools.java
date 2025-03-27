@@ -79,10 +79,10 @@ public class ReceiveTools
         switch(currentGame.getGameMode())
         {
             case "peace":
-                tips += "3.增加棋盘(peace/reversi) 4.退出游戏)";
+                tips += "3.增加棋盘(peace/reversi) 4.退出游戏(quit))";
                 break;
             case "reversi":
-                tips += "3.跳过(pass) 4.增加棋盘(peace/reversi) 5.退出游戏)";
+                tips += "3.跳过(pass) 4.增加棋盘(peace/reversi) 5.退出游戏(quit))";
                 break;
         }
         return tips;
