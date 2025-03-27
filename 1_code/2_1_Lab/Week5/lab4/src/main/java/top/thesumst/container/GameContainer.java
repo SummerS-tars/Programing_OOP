@@ -60,6 +60,11 @@ public class GameContainer
         return currentGameOrder ;
     }
 
+    public GameList getGameList()
+    {
+        return gameList ;
+    }
+
     /**
      * 处理命令执行结果
      */
@@ -83,14 +88,5 @@ public class GameContainer
             isRunning = false;
             return;
         }
-    }
-
-    public static void main(String[] args) 
-    {
-        // 创建游戏容器
-        GameContainer container = new GameContainer() ;
-
-
-        container.runGame() ;
     }
 }

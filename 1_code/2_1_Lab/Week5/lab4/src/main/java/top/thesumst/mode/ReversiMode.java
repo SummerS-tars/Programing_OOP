@@ -314,15 +314,7 @@ public class ReversiMode extends GameMode
     {
         return p.getColor();
     }
-    // private void printBoard()
-    // {
-    //     for(int i = 0; i < maxSize; i++)
-    //     {
-    //         for(int j = 0; j < maxSize; j++)
-    //             System.out.print(board.getChessColor(new Point(i, j)).getSymbol()+" ") ;
-    //         System.out.println();
-    //     }     
-    // }
+
 
     public static void main(String[] args) 
     {

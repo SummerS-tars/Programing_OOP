@@ -58,7 +58,7 @@
           <configuration>
             <archive>
               <manifest>
-                <mainClass>top.thesumst.StartGame</mainClass>
+                <mainClass>top.thesumst.Main</mainClass>
               </manifest>
             </archive>
           </configuration>
