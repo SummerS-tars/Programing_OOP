@@ -2,7 +2,6 @@ package top.thesumst.mode;
 
 import top.thesumst.mode.component.Player;
 import top.thesumst.tools.PauseTools;
-import top.thesumst.tools.PrintTools;
 import top.thesumst.type.ChessColor;
 import top.thesumst.type.Direction;
 import java.awt.Point;
@@ -76,24 +75,23 @@ public class ReversiMode extends GameMode
         }
     }
 
+    // ! 以下public方法必须将GameMode向下转型为ReversiMode才能调用
     /**
-     * * getChessColor方法，获取point位置棋盘棋子颜色
-     * @param point
-     * @return ChessColor
+     * shouldPass方法，返回当前玩家是否需要pass
+     * @return boolean
      */
-    public ChessColor getChessColor(Point point)
+    public boolean shouldPass()
     {
-        return board.getChessColor(point) ;
+        return shouldPass ;
     }
-
     /**
-     * * setChessColor方法，设置point位置棋盘棋子
-     * @param point
-     * @param color
+     * getWinner方法，获取胜者
+     * @return Player 胜者，若平局则返回null
      */
-    public void setChessColor(Point point , ChessColor color)
+    public Player getWinner()
     {
-        board.setChessColor(point, color);
+        return player1.getChessNumber() > player2.getChessNumber() ? player1 :
+               player1.getChessNumber() < player2.getChessNumber() ? player2 : null ;
     }
 
     /**
@@ -304,75 +302,22 @@ public class ReversiMode extends GameMode
     }
 
     /**
-     * test output
+     * * getChessColor方法，获取point位置棋盘棋子颜色
+     * @param point
+     * @return ChessColor
      */
-    private String getPlayerName(Player p)
+    private ChessColor getChessColor(Point point)
     {
-        return p.getName();
-    }
-    private ChessColor getPlayerChessColor(Player p)
-    {
-        return p.getColor();
+        return board.getChessColor(point) ;
     }
 
-
-    public static void main(String[] args) 
+    /**
+     * * setChessColor方法，设置point位置棋盘棋子
+     * @param point
+     * @param color
+     */
+    private void setChessColor(Point point , ChessColor color)
     {
-        ReversiMode reversi = new ReversiMode(1, "reversi", 8, 
-                            "test1", "test2", ChessColor.BLACK, ChessColor.WHITE) ;    
-
-        System.out.println("test part 1");
-        System.out.printf("player1: name = %s, color = %c\nplayer2: name = %s, color = %c\n",
-                        reversi.getPlayerName(reversi.player1), reversi.getPlayerChessColor(reversi.player1).getSymbol(),
-                        reversi.getPlayerName(reversi.player2), reversi.getPlayerChessColor(reversi.player2).getSymbol());
-        reversi.printBoard();
-        System.out.println(reversi);
-        PauseTools.pause();
-
-        reversi.receiveOperation("pass");
-        reversi.receiveOperation("test");
-        PauseTools.pause();
-
-        while(!reversi.isOver)
-        {
-            PrintTools.clearConsole();
-            System.out.println("test part 2");
-            
-            // 无论是否要跳过，都显示当前棋盘和玩家信息
-            reversi.printBoard();
-            System.out.printf("[Player1]%s %c : %d\n[Player2]%s %c : %d\n",
-                            reversi.getPlayerName(reversi.player1), reversi.getPlayerChessColor(reversi.player1).getSymbol(),reversi.player1.getChessNumber(),
-                            reversi.getPlayerName(reversi.player2), reversi.getPlayerChessColor(reversi.player2).getSymbol(),reversi.player2.getChessNumber());
-            System.out.println("当前玩家：" + (reversi.isBlackTurn ? reversi.player1.getName() : reversi.player2.getName())
-                                + " " + (reversi.isBlackTurn ? reversi.player1.getColor().getSymbol() : reversi.player2.getColor().getSymbol()));
-            
-            if(!reversi.shouldPass)
-            {
-                // 随机选择一个有效位置
-                Point randomPoint = null;
-                if (!reversi.validPointsCache.isEmpty()) {
-                    // 使用更简洁的方法随机选择一个点
-                    java.util.List<Point> points = new java.util.ArrayList<>(reversi.validPointsCache.keySet());
-                    randomPoint = points.get((int)(Math.random() * points.size()));
-                }
-                
-                System.out.println("randomPoint = " + randomPoint);
-                if (randomPoint != null) {
-                    reversi.receiveOperation(randomPoint);
-                    // 已经在go方法中有处理，这里不需要再次暂停
-                }
-            }
-            else 
-            {
-                System.out.println("当前玩家无法下棋，执行pass操作");
-                reversi.receiveOperation("pass");
-            }
-            
-            PauseTools.pause("按回车继续...");
-        }
-
-        PrintTools.clearConsole();
-        System.out.println("isOver = " + reversi.isOver);
-        reversi.receiveOperation("quit");
+        board.setChessColor(point, color);
     }
 }

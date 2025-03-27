@@ -1,9 +1,6 @@
 package top.thesumst.mode;
 
 import top.thesumst.type.ChessColor;
-import top.thesumst.mode.component.Player;
-import top.thesumst.tools.PauseTools;
-import top.thesumst.tools.PrintTools;
 import java.awt.Point;
 
 public class PeaceMode extends GameMode

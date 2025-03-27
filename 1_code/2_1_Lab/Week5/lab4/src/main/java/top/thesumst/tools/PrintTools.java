@@ -1,6 +1,6 @@
 package top.thesumst.tools;
 
-import top.thesumst.mode.GameMode;
+import top.thesumst.mode.*;
 import top.thesumst.mode.component.*;
 import top.thesumst.container.*;
 import java.util.Scanner;
@@ -193,11 +193,24 @@ public class PrintTools
     {
         String turnInfo ;
         if(currentGame.isOver())
-            turnInfo = "本局游戏已经结束，请输入其他操作！" ;
+        {    
+            turnInfo = "本局游戏已经结束!" ;
+            if(currentGame.getGameMode().equals("reversi"))
+            {
+                Player winner = ((ReversiMode)currentGame).getWinner() ;
+                if(winner != null)
+                    turnInfo += " 胜者: " + winner.getName() + " " + winner.getColor().getSymbol() ;
+                else
+                    turnInfo += " 平局!" ;
+            }
+            turnInfo += "\n请输入指令 : " ;
+        }
         else
         {
             Player currentPlayer = currentGame.getCurrentPlayer() ;
             turnInfo = "当前回合: " + currentPlayer.getName() + " " + currentPlayer.getColor().getSymbol() + " : " ;
+            if(currentGame.getGameMode().equals("reversi") && ((ReversiMode)currentGame).shouldPass())
+                turnInfo += "当前玩家无有效位置! " ;
         }
         return turnInfo ;
     }
