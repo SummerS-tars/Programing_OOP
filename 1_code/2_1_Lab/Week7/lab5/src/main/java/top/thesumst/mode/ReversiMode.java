@@ -1,6 +1,7 @@
 package top.thesumst.mode;
 
 import top.thesumst.mode.component.Player;
+import top.thesumst.mode.component.Step;
 import top.thesumst.type.ChessColor;
 import top.thesumst.type.Direction;
 import java.awt.Point;
@@ -16,7 +17,7 @@ public class ReversiMode extends GameMode
     public ReversiMode(int order, String mode, int size, String name1, String name2, ChessColor color1, ChessColor color2)
     {
         super(order, mode, size, name1, name2, color1, color2);
-        
+
         int mid = size / 2 ;
         setChessColor(new Point(mid - 1, mid - 1), ChessColor.WHITE);
         setChessColor(new Point(mid - 1, mid), ChessColor.BLACK);
@@ -102,10 +103,12 @@ public class ReversiMode extends GameMode
     {
         if(checkGo(point))
         {
+            ChessColor color = isBlackTurn ? ChessColor.BLACK : ChessColor.WHITE ;
+            addStep(new Step(point, color));
             reverse(point, validPointsCache.get(point));
             updatePlayerChessNumber();
             isBlackTurn = !isBlackTurn ;
-            refreshValidPoints();
+            refreshValidPoints() ;
             shouldPass = validPointsCache.isEmpty() ;
             return true ;
         }

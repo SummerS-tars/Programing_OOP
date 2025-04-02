@@ -1,5 +1,6 @@
 package top.thesumst.mode;
 
+import top.thesumst.mode.component.Step;
 import top.thesumst.type.ChessColor;
 import java.awt.Point;
 
@@ -60,8 +61,9 @@ public class PeaceMode extends GameMode
     {
         if(checkPoint(point))
         {
-            ChessColor putColor = isBlackTurn ? player1.getColor() : player2.getColor() ;
-            setChessColor(point, putColor);
+            ChessColor color = isBlackTurn ? ChessColor.BLACK : ChessColor.WHITE ;
+            addStep(new Step(point, color));
+            setChessColor(point, color);
             isBlackTurn = !isBlackTurn ;
             isOver = checkGameOver() ;
             return true ;
