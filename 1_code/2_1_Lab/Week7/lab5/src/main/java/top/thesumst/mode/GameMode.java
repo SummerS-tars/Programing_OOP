@@ -1,9 +1,9 @@
 package top.thesumst.mode;
 
-import top.thesumst.mode.component.ChessBoard;
-import top.thesumst.mode.component.Player;
+import top.thesumst.mode.component.*;
 import top.thesumst.type.ChessColor;
 import java.awt.Point;
+import java.util.Stack;
 
 public abstract class GameMode 
 {
@@ -13,6 +13,7 @@ public abstract class GameMode
     private ChessBoard board;
     protected Player player1, player2;
     protected boolean isBlackTurn, isOver;
+    private Stack<Step> stepStack, undoStack;
 
     GameMode(int order, String mode,int size, String name1, String name2, ChessColor color1, ChessColor color2)
     {
@@ -22,6 +23,8 @@ public abstract class GameMode
         board = new ChessBoard(maxSize);
         player1 = new Player(name1, color1);
         player2 = new Player(name2, color2);
+        stepStack = new Stack<>();
+        undoStack = new Stack<>();
         isBlackTurn = true;
         isOver = false;
     }
@@ -40,6 +43,13 @@ public abstract class GameMode
      * @return boolean 是否成功
      */
     public abstract boolean receiveOperation(String operation) ;
+
+    // /**
+    //  * * rollback方法，回退一步
+    //  * @return
+    //  */
+    // protected abstract boolean rollback() ;
+    // to be added
 
     /**
      * * toString方法，返回游戏模式信息
@@ -86,6 +96,10 @@ public abstract class GameMode
     {
         return board;
     }
+    public int getTurnNumber()
+    {
+        return stepStack.size();
+    }
     protected ChessColor getChessColor(Point point)
     {
         return board.getChessColor(point);
@@ -97,5 +111,9 @@ public abstract class GameMode
     protected int getChessNumber(ChessColor color)
     {
         return board.getChessNumber(color);
+    }
+    protected void addStep(Step step)
+    {
+        stepStack.push(step);
     }
 }
