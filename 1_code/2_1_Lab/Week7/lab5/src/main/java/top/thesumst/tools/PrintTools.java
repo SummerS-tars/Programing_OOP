@@ -37,7 +37,7 @@ public class PrintTools
         Player player2 = currentGame.getPlayer2() ;
         String player1Info = String.format("[Player1]%-10s %c", player1.getName(), player1.getColor().getSymbol());
         String player2Info = String.format("[Player2]%-10s %c", player2.getName(), player2.getColor().getSymbol());
-        if(currentGame.getGameMode().equals("reversi"))
+        if(currentGame instanceof ReversiMode)
         {
             player1Info += String.format(" : %-4d", player1.getChessNumber());
             player2Info += String.format(" : %-4d", player2.getChessNumber());
@@ -195,7 +195,7 @@ public class PrintTools
         if(currentGame.isOver())
         {    
             turnInfo = "本局游戏已经结束!" ;
-            if(currentGame.getGameMode().equals("reversi"))
+            if(currentGame instanceof ReversiMode)
             {
                 Player winner = ((ReversiMode)currentGame).getWinner() ;
                 if(winner != null)
@@ -209,7 +209,7 @@ public class PrintTools
         {
             Player currentPlayer = currentGame.getCurrentPlayer() ;
             turnInfo = "当前回合: " + currentPlayer.getName() + " " + currentPlayer.getColor().getSymbol() + " : " ;
-            if(currentGame.getGameMode().equals("reversi") && ((ReversiMode)currentGame).shouldPass())
+            if(currentGame instanceof ReversiMode && ((ReversiMode)currentGame).shouldPass())
                 turnInfo += "当前玩家无有效位置! " ;
         }
         return turnInfo ;
