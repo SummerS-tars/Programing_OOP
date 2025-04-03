@@ -205,9 +205,12 @@ public class PrintTools
         if(currentGame.isOver())
         {    
             turnInfo = "本局游戏已经结束!" ;
-            if(currentGame instanceof ReversiMode)
+            if(currentGame instanceof ReversiMode || currentGame instanceof GomokuMode)
             {
-                Player winner = ((ReversiMode)currentGame).getWinner() ;
+                Player winner ;
+                if(currentGame instanceof ReversiMode) winner = ((ReversiMode)currentGame).getWinner() ;
+                else if(currentGame instanceof GomokuMode) winner = ((GomokuMode)currentGame).getWinner() ;
+                else winner = null ;
                 if(winner != null)
                     turnInfo += " 胜者: " + winner.getName() + " " + winner.getColor().getSymbol() ;
                 else
