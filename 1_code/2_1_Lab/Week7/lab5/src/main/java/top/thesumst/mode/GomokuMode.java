@@ -19,7 +19,7 @@ public class GomokuMode extends GameMode
     @Override
     public boolean receiveOperation(Point point) 
     {
-
+        return go(point);
     }
 
     @Override
@@ -88,7 +88,6 @@ public class GomokuMode extends GameMode
      */
     private boolean checkLink(Point point)
     {
-        // TODO: 检测当前落子是否满足胜利条件，已完成，待测试
         EnumSet<Direction> directions = EnumSet.allOf(Direction.class);
         int[] linkedNumber = {1, 1, 1, 1};
         for(Direction direction : directions)
@@ -161,14 +160,5 @@ public class GomokuMode extends GameMode
     {
         winner = (player1.getColor() == (isBlackTurn ? ChessColor.BLACK : ChessColor.WHITE) )
                 ? player1 : player2;
-    }
-
-    public static void main(String[] args) 
-    {
-        Direction[] directions = Direction.values();
-        for(Direction direction : directions)
-        {
-            System.out.println(direction.ordinal());
-        }
     }
 }
