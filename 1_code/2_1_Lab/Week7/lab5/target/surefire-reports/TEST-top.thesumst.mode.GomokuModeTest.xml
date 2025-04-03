@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="top.thesumst.mode.GomokuModeTest" time="0.036" tests="7" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="top.thesumst.mode.GomokuModeTest" time="0.034" tests="7" errors="0" skipped="0" failures="0">
   <properties>
     <property name="socksProxyHost" value="127.0.0.1"/>
     <property name="http.proxyHost" value="127.0.0.1"/>
@@ -15,7 +15,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="CN"/>
     <property name="sun.boot.library.path" value="/opt/homebrew/Cellar/openjdk/23.0.2/libexec/openjdk.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/thesumst/ComputerLearning/Programing_OOP/1_code/2_1_Lab/Week7/lab5/target/surefire/surefirebooter17133734637150074366.jar /Users/thesumst/ComputerLearning/Programing_OOP/1_code/2_1_Lab/Week7/lab5/target/surefire 2025-04-03T15-09-40_444-jvmRun1 surefire5724110461081810755tmp surefire_06354539537530000403tmp"/>
+    <property name="sun.java.command" value="/Users/thesumst/ComputerLearning/Programing_OOP/1_code/2_1_Lab/Week7/lab5/target/surefire/surefirebooter12513969344367550266.jar /Users/thesumst/ComputerLearning/Programing_OOP/1_code/2_1_Lab/Week7/lab5/target/surefire 2025-04-03T16-20-02_997-jvmRun1 surefire29485198010420977tmp surefire_05383918529704727229tmp"/>
     <property name="http.nonProxyHosts" value="127.0.0.1|192.168.0.0/16|*.192.168.0.0/16|10.0.0.0/8|*.10.0.0.0/8|172.16.0.0/12|*.172.16.0.0/12|172.29.0.0/16|*.172.29.0.0/16|localhost|*.localhost|local|*.local|crashlytics.com|*.crashlytics.com|&lt;local&gt;|*.&lt;local&gt;"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/Users/thesumst/ComputerLearning/Programing_OOP/1_code/2_1_Lab/Week7/lab5/target/test-classes:/Users/thesumst/ComputerLearning/Programing_OOP/1_code/2_1_Lab/Week7/lab5/target/classes:/Users/thesumst/.m2/repository/org/junit/jupiter/junit-jupiter/5.9.2/junit-jupiter-5.9.2.jar:/Users/thesumst/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.9.2/junit-jupiter-api-5.9.2.jar:/Users/thesumst/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/Users/thesumst/.m2/repository/org/junit/platform/junit-platform-commons/1.9.2/junit-platform-commons-1.9.2.jar:/Users/thesumst/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/thesumst/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.9.2/junit-jupiter-params-5.9.2.jar:/Users/thesumst/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.9.2/junit-jupiter-engine-5.9.2.jar:/Users/thesumst/.m2/repository/org/junit/platform/junit-platform-engine/1.9.2/junit-platform-engine-1.9.2.jar:"/>
@@ -33,7 +33,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="apple.awt.application.name" value="ForkedBooter"/>
-    <property name="surefire.real.class.path" value="/Users/thesumst/ComputerLearning/Programing_OOP/1_code/2_1_Lab/Week7/lab5/target/surefire/surefirebooter17133734637150074366.jar"/>
+    <property name="surefire.real.class.path" value="/Users/thesumst/ComputerLearning/Programing_OOP/1_code/2_1_Lab/Week7/lab5/target/surefire/surefirebooter12513969344367550266.jar"/>
     <property name="user.script" value="Hans"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="127.0.0.1|192.168.0.0/16|*.192.168.0.0/16|10.0.0.0/8|*.10.0.0.0/8|172.16.0.0/12|*.172.16.0.0/12|172.29.0.0/16|*.172.29.0.0/16|localhost|*.localhost|local|*.local|crashlytics.com|*.crashlytics.com|&lt;local&gt;|*.&lt;local&gt;"/>
@@ -65,11 +65,11 @@
     <property name="java.class.version" value="67.0"/>
     <property name="http.proxyPort" value="7897"/>
   </properties>
-  <testcase name="testReverseDiagonalWin" classname="top.thesumst.mode.GomokuModeTest" time="0.02"/>
-  <testcase name="testBasicMoves" classname="top.thesumst.mode.GomokuModeTest" time="0.002"/>
-  <testcase name="testDraw" classname="top.thesumst.mode.GomokuModeTest" time="0.004"/>
-  <testcase name="testDiagonalWin" classname="top.thesumst.mode.GomokuModeTest" time="0.002"/>
-  <testcase name="testStringOperations" classname="top.thesumst.mode.GomokuModeTest" time="0"/>
+  <testcase name="testReverseDiagonalWin" classname="top.thesumst.mode.GomokuModeTest" time="0.018"/>
+  <testcase name="testBasicMoves" classname="top.thesumst.mode.GomokuModeTest" time="0.001"/>
+  <testcase name="testDraw" classname="top.thesumst.mode.GomokuModeTest" time="0.003"/>
+  <testcase name="testDiagonalWin" classname="top.thesumst.mode.GomokuModeTest" time="0.001"/>
+  <testcase name="testStringOperations" classname="top.thesumst.mode.GomokuModeTest" time="0.001"/>
   <testcase name="testVerticalWin" classname="top.thesumst.mode.GomokuModeTest" time="0.001"/>
   <testcase name="testHorizontalWin" classname="top.thesumst.mode.GomokuModeTest" time="0.001"/>
 </testsuite>
