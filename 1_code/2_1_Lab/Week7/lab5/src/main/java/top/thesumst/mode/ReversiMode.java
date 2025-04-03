@@ -13,6 +13,7 @@ public class ReversiMode extends GameMode
 {
     private Map<Point, Byte> validPointsCache ;
     private boolean shouldPass ;
+    private Player winner ;
 
     public ReversiMode(int order, String mode, int size, String name1, String name2, ChessColor color1, ChessColor color2)
     {
@@ -50,7 +51,11 @@ public class ReversiMode extends GameMode
                     else
                     {
                         isBlackTurn = !isBlackTurn ;
-                        checkGameOver() ;
+                        if(checkGameOver())
+                        {
+                            isOver = true;
+                            setWinner();    // TODO: 待测试
+                        }
                         return true ;
                     }
                 }
@@ -80,8 +85,7 @@ public class ReversiMode extends GameMode
      */
     public Player getWinner()
     {
-        return player1.getChessNumber() > player2.getChessNumber() ? player1 :
-               player1.getChessNumber() < player2.getChessNumber() ? player2 : null ;
+        return winner ;
     }
 
     /**
@@ -285,11 +289,23 @@ public class ReversiMode extends GameMode
     /**
      * * checkGameOver方法，检查游戏是否结束
      * * 在每次pass后触发，如果未找到有效位置，说明双方均无法下棋，游戏结束
+     * @return true 游戏结束 false 游戏未结束
      */
-    private void checkGameOver()
+    private boolean checkGameOver()
     {
         refreshValidPoints();
         if(validPointsCache.isEmpty())
-            isOver = true ;
+            return true;
+        return false;
+    }
+
+    /**
+     * * setWinner方法，在监测到胜利条件时，设置棋子更多的一方为赢家
+     * * 如果棋子数量相同，则设置为null
+     */
+    private void setWinner()
+    {
+        winner = player1.getChessNumber() > player2.getChessNumber() ? player1 :
+        player1.getChessNumber() < player2.getChessNumber() ? player2 : null ;
     }
 }
