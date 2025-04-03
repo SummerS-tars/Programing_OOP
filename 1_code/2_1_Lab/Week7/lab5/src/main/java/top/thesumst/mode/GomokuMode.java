@@ -26,7 +26,6 @@ public class GomokuMode extends GameMode
     public boolean receiveOperation(String operation)
     {
         switch(operation) {
-            // TODO: 尝试将pass过滤移至Command中处理
             case "quit":
                 return true;
             default:

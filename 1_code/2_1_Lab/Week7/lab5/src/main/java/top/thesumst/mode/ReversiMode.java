@@ -32,16 +32,6 @@ public class ReversiMode extends GameMode
     @Override
     public boolean receiveOperation(Point point) 
     {
-        if(isOver)
-        {
-            return false;
-        }
-
-        if(shouldPass)
-        {
-            return false;
-        }
-
         return go(point);
     }
 

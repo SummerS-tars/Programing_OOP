@@ -26,10 +26,6 @@ public class PeaceMode extends GameMode
     @Override
     public boolean receiveOperation(Point point) 
     {
-        if(isOver)
-        {
-            return false;
-        }
         return go(point);
     }
 
@@ -45,8 +41,6 @@ public class PeaceMode extends GameMode
         switch (operation) {
             case "quit":
                 return true;
-            case "pass":
-                return false;
             default:
                 return false;
         }
