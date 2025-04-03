@@ -23,7 +23,7 @@ public class InputParser
     private static final Pattern BOARD_NUMBER = Pattern.compile("^([1-9]\\d*)$");
     
     // 命令格式: quit, pass, peace, reversi
-    private static final Pattern COMMAND_PATTERN = Pattern.compile("^(quit|pass|peace|reversi)$", Pattern.CASE_INSENSITIVE);
+    private static final Pattern COMMAND_PATTERN = Pattern.compile("^(quit|pass|peace|reversi|gomoku)$", Pattern.CASE_INSENSITIVE);
     
     // 棋盘当前大小
     private static int boardSize = 8;
@@ -90,6 +90,7 @@ public class InputParser
                     return InputResult.pass();
                 case "peace":
                 case "reversi":
+                case "gomoku":
                     return InputResult.newGame(command);
             }
         }

@@ -1,8 +1,6 @@
 package top.thesumst.container;
 
-import top.thesumst.mode.GameMode;
-import top.thesumst.mode.PeaceMode;
-import top.thesumst.mode.ReversiMode;
+import top.thesumst.mode.*;
 import top.thesumst.tools.PauseTools;
 import top.thesumst.tools.PrintTools;
 import top.thesumst.type.ChessColor;
@@ -24,7 +22,8 @@ public class GameList
         setInitializeInfo() ;
         addGame("peace") ;
         addGame("reversi") ;
-    }    
+        addGame("gomoku") ;
+    }
 
     /**
      * * addGame方法用于添加游戏
@@ -49,6 +48,9 @@ public class GameList
                 return true;
             case "reversi":
                 games.add(new ReversiMode(gameNumber, gameMode, size, player1Name, player2Name, player1Color, player2Color));
+                return true;
+            case "gomoku":
+                games.add(new GomokuMode(gameNumber, gameMode, size, player1Name, player2Name, player1Color, player2Color));
                 return true;
             default:
                 PauseTools.pause("游戏模式错误！");
