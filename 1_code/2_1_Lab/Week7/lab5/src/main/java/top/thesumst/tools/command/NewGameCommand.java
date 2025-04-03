@@ -18,7 +18,9 @@ public class NewGameCommand implements GameCommand {
     @Override
     public CommandResult execute(GameMode game, GameList gameList) 
     {
-        if (!gameType.equals("peace") && !gameType.equals("reversi")) 
+        if (!gameType.equals("peace") && 
+            !gameType.equals("reversi") &&
+            !gameType.equals("gomoku")) 
         {
             return CommandResult.failure("不支持的游戏类型: " + gameType);
         }
