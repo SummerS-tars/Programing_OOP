@@ -166,23 +166,28 @@ public class PrintTools
     {
         GameMode currentGame = gameList.getGame(GameContainer.getCurrentGameOrder()) ;
         String tips = new String() ;
+        String addGameInfo = "增加棋盘(peace/reversi/gomoku)";
+        String quitGameInfo = "退出游戏(quit)";
+        String passGameInfo = "跳过(pass)";
+        String switchGameInfo = String.format("切换棋盘[1-%d]", GameList.getGameNumber()) ;
         tips += "请输入命令:\n " ;
-        if(currentGame.isOver())   //未结束
+        if(currentGame.isOver())
         {
-            tips += "1. 切换棋盘[1-" + GameList.getGameNumber() + "]\n ";
-            tips += "2. 增加棋盘(peace/reversi)\n 3. 退出游戏(quit)";
+            tips += String.format("1. %s\n ", switchGameInfo);
+            tips += String.format("2. %s\n 3. %s", addGameInfo, quitGameInfo);
         }
         else
         {
-            tips += "1. 坐标[1A-" + currentGame.getSize() + (char)('A'+currentGame.getSize()-1) +"](支持大小写+乱序)\n ";
-            tips += "2. 切换棋盘[1-" + GameList.getGameNumber() + "]\n ";
+            tips += String.format("1. 坐标[1A-%d%c](支持大小写+乱序)\n ", currentGame.getSize(), 'A'+currentGame.getSize()-1);
+            tips += String.format("2. %s\n ", switchGameInfo);
             switch(currentGame.getGameMode())
             {
                 case "peace":
-                    tips += "3. 增加棋盘(peace/reversi)\n 4. 退出游戏(quit)";
+                case "gomoku":
+                    tips += String.format("3. %s\n 4. %s", addGameInfo, quitGameInfo);
                     break;
                 case "reversi":
-                    tips += "3. 跳过(pass)\n 4. 增加棋盘(peace/reversi)\n 5. 退出游戏(quit)";
+                    tips += String.format("3. %s\n 4. %s\n 5. %s", passGameInfo, addGameInfo, quitGameInfo);
                     break;
             }
         }
