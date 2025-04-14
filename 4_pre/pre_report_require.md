@@ -1,6 +1,6 @@
-# PRE report require
+# PRE Report Requirements
 
-## requirement details
+## requirement Details
 
 报告及讨论的内容:  
 
@@ -13,3 +13,18 @@
 3. 在版本Lab\[n\]到Lab\[n+1\]转换的过程中，有因为Lab\[n\]的结构不好，导致⼯作量⽐较⼤，但是运⽤了⽬前已经掌握的OOP的⽅法\[包括抽象、封装、组合、继承、多态\]，Lab\[n+1\]版结构有了明显的优化。在组员中找到这样⼀个或两个案例，给出分析和说明。  
 4. 【可选】在讨论(1.1, 1.2)的优点和不⾜的时候，可以考虑⼀下⽬前的设计对之后实现图形化界⾯有
 什么影响。  
+
+## Output Requirements
+
+以上为讨论要求，在此处我们着重注意分析的部分，具体需要分析并且输出要求如下：  
+
+将内容输出至`pre_report_thesumst.md`文件中  
+侧重点及要求内容：  
+
+1. Part1 不用选出最好的代码，只需要对lab5代码进行分析  
+2. Part2 不需要选出改进余地比较大的代码，只需要指出lab5的改进的建议和理由
+3. Part3 对我的lab2到lab5逐个进行分析，按照要求分别输入到如下part中：  
+    - Part3.1 lab2到lab3的转换分析  
+    - Part3.2 lab3到lab4的转换分析  
+    - Part3.3 lab4到lab5的转换分析
+4. Part4 要求回答，按照要求进行回答
