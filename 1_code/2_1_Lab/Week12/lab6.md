@@ -18,5 +18,22 @@
     1. 系统自动操作游戏以展示游戏玩法  
     2. 具体来说为使用`playback.cmd`中的内容进行演示  
 
+## Advise from AI
+
+prompt:  
+
+```txt
+Please help me to analyize the project lab6 based on the existing code
+
+several prepared attention points:
+
+what i need to do is the requirements in lab6.md
+in the later devlopment, I need to use JavaFX to right a gui for this project
+Attention several important question:
+
+to realize my requirements, is the structure of the project right now good enough? where should be changed or improved?
+introduce some basic information about JavaFX and to introduce it to my project, what should I do in brief?
+```
+
 ## Implementation Thoughts
 
