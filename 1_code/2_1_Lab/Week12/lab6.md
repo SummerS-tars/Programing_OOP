@@ -37,3 +37,14 @@ introduce some basic information about JavaFX and to introduce it to my project,
 
 ## Implementation Thoughts
 
+1. test the size interface of the board  
+2. refactor the part about move attempt input  
+    1. del the feat to accept arbitrary sequence of input position  
+    2. add the feat to accept the input of `bomb` cmd  
+    3. add the `playback` cmd  
+3. refactor some parts about wrong info report  
+    using exception to report some wrong cmds  
+4. implement the `playback` cmd  
+    1. read the file line by line  
+    2. parse the cmd and execute it
+5. introduce the observer pattern to project to refactor the structure better  

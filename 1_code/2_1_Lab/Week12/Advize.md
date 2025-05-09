@@ -2,7 +2,7 @@
 
 ---
 
-- [1. Round 1](#1-round-1)
+- [1. Round 1 : Brief Analysis](#1-round-1--brief-analysis)
     - [1.1. 项目结构分析与改进建议](#11-项目结构分析与改进建议)
         - [1.1.1. `GameMode` 抽象类和具体游戏模式](#111-gamemode-抽象类和具体游戏模式)
         - [1.1.2. `Tools` 包中的工具类](#112-tools-包中的工具类)
@@ -10,28 +10,33 @@
         - [1.1.4. `Container` 包](#114-container-包)
     - [1.2. 可应用的常用结构（设计模式）](#12-可应用的常用结构设计模式)
     - [1.3. 结合 Lab 要求](#13-结合-lab-要求)
-- [2. Round 2](#2-round-2)
+- [2. Round 2 : Exception Introduction](#2-round-2--exception-introduction)
     - [2.1. 当前错误处理机制分析](#21-当前错误处理机制分析)
     - [2.2. 改进建议：引入异常处理（Exceptions）](#22-改进建议引入异常处理exceptions)
-- [3. Round 3](#3-round-3)
+- [3. Round 3 : Whether to Use Exception](#3-round-3--whether-to-use-exception)
     - [3.1. 对你的重构想法的分析](#31-对你的重构想法的分析)
     - [3.2. 回答你的问题](#32-回答你的问题)
     - [3.3. 优化方案结合你的想法](#33-优化方案结合你的想法)
-- [4. Round 4](#4-round-4)
+- [4. Round 4 : How to Support GUI Development](#4-round-4--how-to-support-gui-development)
     - [4.1. 当前结构迁移到 GUI 的挑战](#41-当前结构迁移到-gui-的挑战)
     - [4.2. 为了更好地支持 GUI 开发需要注意的事项和调整建议](#42-为了更好地支持-gui-开发需要注意的事项和调整建议)
     - [4.3. 如何设计 GUI 项目的结构（MV\* 模式）](#43-如何设计-gui-项目的结构mv-模式)
-- [5. Round 5](#5-round-5)
+- [5. Round 5 : How to Use JavaFX to Develop GUI](#5-round-5--how-to-use-javafx-to-develop-gui)
     - [5.1. 使用 JavaFX 开发 GUI 需要做什么准备？](#51-使用-javafx-开发-gui-需要做什么准备)
     - [5.2. 针对你的项目，需要具体改变和创建的部分](#52-针对你的项目需要具体改变和创建的部分)
     - [5.3. JavaFX 简介和学习资料](#53-javafx-简介和学习资料)
-- [6. Round 6](#6-round-6)
+- [6. Round 6 : How to Improve the Design of PrintTools](#6-round-6--how-to-improve-the-design-of-printtools)
     - [6.1. 如何重构这部分？](#61-如何重构这部分)
     - [6.2. 对 CLI 版和 GUI 版的重要性](#62-对-cli-版和-gui-版的重要性)
+- [7. Round 7 : How to Use Observer Pattern in Your Project](#7-round-7--how-to-use-observer-pattern-in-your-project)
+    - [7.1. 视图层如何获取棋盘和玩家信息 (通用方式)](#71-视图层如何获取棋盘和玩家信息-通用方式)
+    - [7.2. 观察者模式在项目中的应用示例](#72-观察者模式在项目中的应用示例)
 
 ---
 
-## 1. Round 1
+## 1. Round 1 : Brief Analysis
+
+你好！我是你的Java面向对象编程（OOP）教授，很高兴能帮助你分析你的实验项目。我已经看过了你上传的代码文件和实验要求文档。
 
 你的项目实现了一个包含多种棋类游戏（和平模式、翻转棋、五子棋）的控制台应用。项目结构包含 `container`（容器）、`mode`（游戏模式）、`tools`（工具）和 `type`（类型）等包，并且在 `test` 目录下有相应的测试文件。
 
@@ -76,26 +81,115 @@
 在你的项目中，你已经无意识地使用了一些设计模式，例如简单工厂模式（`CommandFactory`）和命令模式（`GameCommand` 接口和各种 `*Command` 类）。这里我再推荐一些其他常用的设计模式，你可以思考是否适用于你的项目进一步优化：
 
 1. **单例模式（Singleton Pattern）：** 对于 `PauseTools` 这样的工具类，如果确保整个应用只需要一个实例来管理 `Scanner` 资源，可以将其设计成单例模式。这样可以避免多个实例造成的资源冲突或浪费。
+
+    ```mermaid
+    classDiagram
+        class PauseTools {
+            -static PauseTools instance
+            -Scanner scanner
+            -PauseTools()
+            +static PauseTools getInstance()
+            +pause(String message)
+            +close()
+        }
+        PauseTools --> Scanner
+    ```
+
+    - **说明：** 将构造函数私有化，提供一个静态方法 `getInstance()` 来获取唯一的实例。
+
 2. **工厂模式（Factory Method Pattern）或抽象工厂模式（Abstract Factory Pattern）：** 虽然你已经使用了简单工厂模式来创建命令，但如果未来游戏模式或命令类型变得非常复杂，可以考虑更进一步使用工厂方法模式或抽象工厂模式来创建游戏实例或命令实例。
+
+    - **工厂方法模式：** 定义一个创建对象的接口，让子类决定实例化哪个类。工厂方法模式将实例化延迟到子类。
+
+        ```mermaid
+        classDiagram
+            class GameManager {
+                +<<abstract>> createGame(String gameType)
+                +playGame()
+            }
+            class SimpleGameManager {
+                +createGame(String gameType)
+            }
+            class AdvanceGameManager {
+                +createGame(String gameType)
+            }
+            GameManager <|-- SimpleGameManager
+            GameManager <|-- AdvanceGameManager
+            SimpleGameManager ..> GameMode : creates
+            AdvanceGameManager ..> GameMode : creates
+        ```
+
+    - **抽象工厂模式：** 提供一个创建一系列相关或相互依赖对象的接口，而无需指定它们具体的类。
+
 3. **策略模式（Strategy Pattern）：** 如果不同游戏模式在某些行为上有较大的差异（除了已经通过继承实现的），可以将这些差异化的行为封装到独立的策略类中，然后在游戏模式类中引用这些策略对象。例如，如果五子棋未来有多种不同的胜利判定规则，可以将胜利判定作为策略。
+
+    ```mermaid
+    classDiagram
+        class GameMode {
+            -WinCondition winCondition
+            +checkWin()
+        }
+        class WinCondition {
+            <<interface>>
+            +isWinning(Board board, Point lastMove)
+        }
+        class FiveInARowWinCondition {
+            +isWinning(Board board, Point lastMove)
+        }
+        class OtherWinCondition {
+            +isWinning(Board board, Point lastMove)
+        }
+        GameMode --> WinCondition
+        WinCondition <|-- FiveInARowWinCondition
+        WinCondition <|-- OtherWinCondition
+    ```
+
+    - **说明：** `GameMode` 包含一个 `WinCondition` 接口的引用，具体的胜利判定逻辑由实现了 `WinCondition` 接口的类来实现。
+
 4. **观察者模式（Observer Pattern）：** 如果游戏状态的变化需要通知多个不同的组件（例如，棋盘状态变化需要通知打印模块刷新显示，也可能需要通知AI模块进行计算），可以考虑使用观察者模式。游戏模式作为被观察者，各个需要更新的组件作为观察者，订阅游戏状态的变化。
+
+    ```mermaid
+    classDiagram
+        class GameMode {
+            -List<GameObserver> observers
+            +addObserver(GameObserver observer)
+            +removeObserver(GameObserver observer)
+            +notifyObservers()
+            +changeState()
+        }
+        class GameObserver {
+            <<interface>>
+            +update(GameMode game)
+        }
+        class PrintModule {
+            +update(GameMode game)
+        }
+        class AIModule {
+            +update(GameMode game)
+        }
+        GameMode --> GameObserver
+        GameObserver <|-- PrintModule
+        GameObserver <|-- AIModule
+    ```
+
+    - **说明：** `GameMode` 维护一个观察者列表，并在状态变化时通知所有注册的观察者。
 
 ### 1.3. 结合 Lab 要求
 
-回顾 Lab 要求文档，你的项目已经实现了 Lab4、Lab5 的大部分核心功能，包括多局游戏管理、不同游戏模式的实现（和平模式、翻转棋、五子棋）、棋盘打印、玩家信息显示、游戏列表显示、输入解析和命令执行等。
+回顾 Lab 要求文档（[cite: 1, 19, 24]），你的项目已经实现了 Lab4、Lab5 的大部分核心功能，包括多局游戏管理、不同游戏模式的实现（和平模式、翻转棋、五子棋）、棋盘打印、玩家信息显示、游戏列表显示、输入解析和命令执行等。
 
-Lab6 的要求在五子棋模式上增加了新的功能，包括 15x15 棋盘、障碍物（Barrier）、炸弹（Bomb）道具和演示模式（Demo）。对于这些新功能，你的代码结构应该能够比较容易地进行扩展。
+Lab6 的要求（[cite: 1]）在五子棋模式上增加了新的功能，包括 15x15 棋盘、障碍物（Barrier）、炸弹（Bomb）道具和演示模式（Demo）。对于这些新功能，你的代码结构应该能够比较容易地进行扩展。
 
-- **15x15 棋盘和坐标：** 修改棋盘大小以及输入解析部分，以适应 16 进制行号和 A-O 列号的要求。
-- **障碍物：** 在 `ChessBoard` 或 `GomokuMode` 中增加对障碍物位置的管理和落子判断。
-- **炸弹道具：** 这部分可以很好地运用命令模式进行扩展。可以增加一个 `BombCommand`，并在 `InputParser` 中识别炸弹的使用输入（如 `@行列`）。在 `GomokuMode` 中实现炸弹的使用逻辑（移除对方棋子、放置弹坑）。玩家类的属性中需要增加炸弹数量的记录，并在打印玩家信息时显示。
+- **15x15 棋盘和坐标：** 修改棋盘大小以及输入解析部分，以适应 16 进制行号和 A-O 列号的要求（[cite: 1]）。
+- **障碍物：** 在 `ChessBoard` 或 `GomokuMode` 中增加对障碍物位置的管理和落子判断（[cite: 1]）。
+- **炸弹道具：** 这部分可以很好地运用命令模式进行扩展。可以增加一个 `BombCommand`，并在 `InputParser` 中识别炸弹的使用输入（如 `@行列` [cite: 1]）。在 `GomokuMode` 中实现炸弹的使用逻辑（移除对方棋子、放置弹坑 [cite: 1]）。玩家类的属性中需要增加炸弹数量的记录，并在打印玩家信息时显示（[cite: 1, 3]）。
 - **演示模式：** 演示模式的实现可能需要一个新的“玩家”类型，它不是接收用户输入，而是根据一定的算法或预设的步骤自动进行操作。这部分可以在 `GameContainer` 或 `GomokuMode` 中加入相应的逻辑来判断当前是否是演示模式，并调用自动下棋的方法。
 
 总的来说，你的项目结构是合理的，为后续的扩展打下了基础。通过引入一些设计模式，可以使代码更加灵活和易于维护。
 
 希望这些分析和建议对你有帮助！如果你对某个特定的点或者设计模式有疑问，或者想进一步讨论代码的某个部分，随时都可以告诉我。
 
-## 2. Round 2
+## 2. Round 2 : Exception Introduction
 
 好的，我们来深入分析一下你的错误处理机制。你提到当前有时无法获得更具体的错误信息，并且对是否应该使用异常处理（Exception）感到困惑。
 
@@ -155,7 +249,7 @@ private void handleCommandResult(CommandResult result)
 - 在翻转棋中落子未能翻转任何对方棋子
 - 在不该 Pass 的时候 Pass
 - 炸弹数量不足（Lab6 新增）
-- 在不能使用炸弹的位置使用炸弹（Lab6 新增）
+- 在不能使用炸弹的位置使用炸弹
 
 这些情况都是在游戏运行时可能发生的“异常”情况，它们不是程序设计的逻辑错误，而是用户操作或游戏规则导致的问题。使用异常处理来表示这些错误具有以下优点：
 
@@ -290,7 +384,7 @@ private void handleCommandResult(CommandResult result)
 
 希望这些建议能帮助你改进项目的错误处理！如果你在实践过程中遇到任何问题，或者对异常处理有更深入的疑问，随时都可以继续交流。
 
-## 3. Round 3
+## 3. Round 3 : Whether to Use Exception
 
 好的，你的想法非常有条理，区分了不同层级的错误处理方式。我们来逐条分析，并讨论是否适合你的项目场景。
 
@@ -430,7 +524,7 @@ private void handleCommandResult(CommandResult result)
 
 希望这个详细的分析和建议对你有所帮助！在实际编码过程中，可以从小处着手，逐步引入异常处理。
 
-## 4. Round 4
+## 4. Round 4 : How to Support GUI Development
 
 好的，从控制台应用迁移到 GUI 应用是一个很常见的需求。如果你现在就开始调整项目结构以更好地支持未来的 JavaFX GUI 开发，这是一个非常有前瞻性的做法。
 
@@ -540,7 +634,7 @@ graph TD
 
 希望这个分析和建议能为你转向 GUI 开发提供清晰的方向！
 
-## 5. Round 5
+## 5. Round 5 : How to Use JavaFX to Develop GUI
 
 好的，很高兴你对使用 JavaFX 开发 GUI 感兴趣！这是一项非常有用的技能，能让你的程序拥有更友好的交互界面。
 
@@ -653,7 +747,7 @@ public class SimpleJavaFXApp extends Application {
 
 如果在学习和开发过程中遇到任何具体问题，随时都可以回来向我提问！
 
-## 6. Round 6
+## 6. Round 6 : How to Improve the Design of PrintTools
 
 你提出了一个非常关键且重要的问题！你在 `PrintTools` 中直接访问 `GameMode` 实例，并且使用了向下转型 (`instanceof` 和强制类型转换) 来获取特定游戏模式的信息（例如，在 `printPlayerInfo` 中获取翻转棋的分数，在 `getTurnInfo` 和 `getTips` 中判断是否是 `ReversiMode` 来决定显示哪些信息和提示）。
 
@@ -674,7 +768,7 @@ public class SimpleJavaFXApp extends Application {
 **重构步骤和建议：**
 
 1. **在 `GameMode` 中定义获取展示信息的通用方法：**
-    -` **获取玩家分数展示信息：** 在 `GameMode` 中添加一个方法，返回用于显示玩家分数的字符串。对于和平模式，这个方法可以返回空字符串或 "N/A"；对于翻转棋，返回棋子数量；对于五子棋，可能不需要显示分数。
+    - **获取玩家分数展示信息：** 在 `GameMode` 中添加一个方法，返回用于显示玩家分数的字符串。对于和平模式，这个方法可以返回空字符串或 "N/A"；对于翻转棋，返回棋子数量；对于五子棋，可能不需要显示分数。
 
     ```java
     // filepath: e:\_ComputerLearning\3_Programing_OOP\1_code\2_1_Lab\Week12\GameMode.java
@@ -685,7 +779,7 @@ public class SimpleJavaFXApp extends Application {
     // }
     ```
 
-    -` **获取游戏特有提示信息：** 在 `GameMode` 中添加一个方法，返回游戏模式特有的提示信息（如翻转棋的 Pass 提示，Lab6 五子棋的炸弹提示）。
+    - **获取游戏特有提示信息：** 在 `GameMode` 中添加一个方法，返回游戏模式特有的提示信息（如翻转棋的 Pass 提示，Lab6 五子棋的炸弹提示）。
 
     ```java
     // filepath: e:\_ComputerLearning\3_Programing_OOP\1_code\2_1_Lab\Week12\GameMode.java
@@ -696,7 +790,7 @@ public class SimpleJavaFXApp extends Application {
     // }
     ```
 
-    -` **获取游戏结束信息：** 在 `GameMode` 中添加一个方法，返回游戏结束时的结果信息（如谁赢了，平局）。
+    - **获取游戏结束信息：** 在 `GameMode` 中添加一个方法，返回游戏结束时的结果信息（如谁赢了，平局）。
 
     ```java
     // filepath: e:\_ComputerLearning\3_Programing_OOP\1_code\2_1_Lab\Week12\GameMode.java
@@ -812,6 +906,336 @@ public class SimpleJavaFXApp extends Application {
 - **CLI 版：** 通过这种重构，你的 `PrintTools` 类将不再耦合于具体的游戏模式子类，提高了代码的可维护性和可扩展性。增加新的游戏模式时，只需要实现 `GameMode` 中的通用方法，而无需修改 `PrintTools`。
 - **GUI 版：** 这种重构对于 GUI 版至关重要。GUI 的 View 组件（例如，负责显示棋盘的 `ChessBoardPane`，显示玩家信息的 `PlayerInfoPane`）将通过 Controller/Presenter 从 Model 获取信息。如果 Model 层提供了这些通用的方法，View 组件就可以调用 `currentGame.getPlayerScoreDisplay(player)` 或 `currentGame.getBoard().getChessColor(point)` 等通用方法，而无需知道 `currentGame` 是 `ReversiMode` 还是 `GomokuMode`。这使得 View 组件更加通用和可复用。Controller/Presenter 也只需要与 `GameMode` 接口或抽象类交互。
 
-通过这种方式，你将游戏模式特有的**“如何获取用于展示的信息”**的逻辑放回到了游戏模式本身，而 View 层（`PrintTools` 或 GUI 组件）只负责**“如何展示接收到的信息”**。这是一种更符合 OOP 原则和软件设计模式的设计。
+通过这种方式，你将游戏模式特有的 **“如何获取用于展示的信息”** 的逻辑放回到了游戏模式本身，而 View 层（`PrintTools` 或 GUI 组件）只负责 **“如何展示接收到的信息”** 。这是一种更符合 OOP 原则和软件设计模式的设计。
 
 开始重构时，你可以先从 `PrintTools` 中用到 `instanceof` 和向下转型的地方入手，思考如何通过在 `GameMode` 中添加抽象方法或带有默认实现的方法来替代这些判断和转型。这是一个循序渐进的过程。
+
+## 7. Round 7 : How to Use Observer Pattern in Your Project
+
+好的，我们来讨论一下视图层（无论是 CLI 的 `PrintTools` 还是未来的 JavaFX GUI 组件）如何获取棋盘和玩家信息，以及如何在你的项目中使用观察者模式。
+
+### 7.1. 视图层如何获取棋盘和玩家信息 (通用方式)
+
+关键在于让 Model 层提供一个**稳定且通用的接口**，而 View 层只通过这个接口来访问数据，不依赖于 Model 具体的实现类。
+
+你当前的 `GameMode` 抽象类已经提供了一些很好的基础：
+
+- **获取棋盘信息：**
+
+    - `GameMode` 有 `getBoard()` 方法返回 `ChessBoard` 对象。
+    - `ChessBoard` 有 `getChessColor(Point point)` 方法获取指定位置的棋子颜色，以及 `getSize()` 获取棋盘大小。
+    - **改进：** 这部分获取棋盘数据的结构已经是通用的了，`PrintTools.printBoard` 就使用了 `currentGame.getSize()` 和 `board.getChessColor(new Point(i, j))`，做得很好。**请继续保持这种方式。**
+    - **需要调整的是**：`ChessColor` 中包含了 `VALID('+')` 这个用于翻转棋提示的颜色。将这种**显示相关的状态**直接放在核心数据类型 `ChessColor` 和 `ChessBoard` 中不是最优设计。更好的做法是让 Model (具体游戏模式) 提供**合法落子位置列表**，而 View 根据这个列表**决定如何显示**。
+
+        - **建议：** 在 `GameMode` 中添加一个方法 `public abstract List<Point> getValidMoves();`。
+        - 在 `PeaceMode` 和 `GomokuMode` 中实现此方法返回空列表。
+        - 在 `ReversiMode` 中实现此方法返回 `validPointsCache.keySet()` 的列表。
+        - 修改 `PrintTools.printBoard`：遍历棋盘时，先获取 `board.getChessColor(point)`，如果不是 `BLANK`，则打印对应的棋子符号；如果是 `BLANK`，再调用 `currentGame.getValidMoves()` 并检查当前 `point` 是否在这个列表中，如果在，则打印提示符号(例如 '+')；否则打印空白符号。这样 `ChessColor` 枚举就不再需要 `VALID` 类型，`ChessBoard` 只存储实际的棋子颜色。
+
+- **获取玩家信息：**
+
+    - `GameMode` 有 `getPlayer1()`、`getPlayer2()`、`getCurrentPlayer()` 方法返回 `Player` 对象。
+    - `Player` 有 `getName()` 和 `getColor()` 方法。
+    - **改进：** 获取玩家名称和颜色已经很通用了。
+    - **需要调整的是**：玩家的**分数**（翻转棋）和**炸弹数量**（五子棋，Lab6 新增）是游戏模式特有的信息，它们不应该直接作为 `Player` 类本身的通用属性（虽然你当前已经加在了 `Player` 里，但这会让 `Player` 类耦合到特定游戏模式）。同时，View 获取这些信息时不应向下转型。
+
+        - **建议：** 将玩家的棋子数量 (`chessNumber`) 移出 `Player` 类，或者至少将其视为 ReversiMode 在 `Player` 对象上设置的一个特定属性。在 `GameMode` 中添加我们在上一个回复中讨论的通用方法，例如 `public abstract String getPlayerScoreDisplay(Player player);` 和 `public abstract int getPlayerBombCount(Player player);`。
+        - `PrintTools` 在打印玩家信息时，调用 `currentGame.getPlayerScoreDisplay(player)` 和 `currentGame.getPlayerBombCount(player)` 来获取要显示的分数和炸弹数量字符串或数值，而无需知道当前是哪种游戏模式。具体的计算或获取逻辑在各游戏模式子类中实现。
+
+**总结获取信息的方式：**
+
+View 层应该通过调用 `GameMode` 抽象类（或其接口）中定义的**通用方法**来获取所有需要显示的信息。这些通用方法在不同的游戏模式子类中实现，以返回该模式下特有的数据或展示字符串。View 层不应该直接访问 Model 内部的特定属性，也不应该使用 `instanceof` 或向下转型。
+
+### 7.2. 观察者模式在项目中的应用示例
+
+观察者模式（Observer Pattern）用于在对象之间建立一种一对多的依赖关系，使得当一个对象的状态发生改变时，所有依赖于它的对象都得到通知并被自动更新。
+
+在你的项目中：
+
+- **被观察者 (Observable):** 游戏模式 (`GameMode`) 是最主要被观察的对象，因为游戏状态（棋盘变化、回合变化、游戏结束等）发生时，View 需要刷新。
+- **观察者 (Observer):** 视图层需要更新的部分就是观察者。在 CLI 版中，可以是一个专门负责控制台显示的类；在 GUI 版中，可以是棋盘面板、玩家信息面板等 JavaFX 组件或它们的控制器。
+
+**实现步骤和代码示例：**
+
+1. **定义观察者接口：** 创建一个接口，所有想观察游戏状态的对象都实现它。
+
+    ```java
+    // src/main/java/top/thesumst/observer/GameObserver.java (新建 observer 包)
+    package top.thesumst.observer;
+
+    import top.thesumst.mode.GameMode;
+
+    public interface GameObserver {
+        void update(GameMode game); // 当游戏状态变化时被调用，传入当前游戏对象
+    }
+    ```
+
+2. **在被观察者中（`GameMode`）添加观察者管理方法和通知方法：**
+
+    ```java
+    // src/main/java/top/thesumst/mode/GameMode.java
+    package top.thesumst.mode;
+
+    import top.thesumst.mode.component.*;
+    import top.thesumst.type.ChessColor;
+    import top.thesumst.observer.GameObserver; // 导入观察者接口
+    import java.awt.Point;
+    import java.util.Stack;
+    import java.util.List; // 导入 List
+    import java.util.ArrayList; // 导入 ArrayList
+
+    public abstract class GameMode
+    {
+        // ... 现有字段 ...
+        private List<GameObserver> observers = new ArrayList<>(); // 观察者列表
+
+        GameMode(int order, String mode,int size, String name1, String name2, ChessColor color1, ChessColor color2)
+        {
+            // ... 现有构造函数逻辑 ...
+        }
+
+        // 添加观察者
+        public void addObserver(GameObserver observer) {
+            observers.add(observer);
+        }
+
+        // 移除观察者
+        public void removeObserver(GameObserver observer) {
+            observers.remove(observer);
+        }
+
+        // 通知所有观察者状态已更新
+        protected void notifyObservers() {
+            // 遍历观察者列表，调用它们的 update 方法
+            for (GameObserver observer : observers) {
+                observer.update(this); // 将当前 GameMode 对象传给观察者
+            }
+        }
+
+        // ... 其他抽象方法和现有方法 ...
+
+        // 示例：在状态改变的地方调用 notifyObservers()
+        // 例如，在receiveOperation方法（或其内部调用go方法）成功执行，并且棋盘状态或回合改变后
+        @Override
+        public boolean receiveOperation(Point point) {
+            // ... 原有的 go() 逻辑 ...
+            if (go(point)) { // 假设 go() 成功并改变了状态
+                // 状态已改变，通知观察者
+                notifyObservers();
+                return true;
+            }
+            return false;
+        }
+
+         @Override
+        public boolean receiveOperation(String operation) {
+            // ... 原有的逻辑 ...
+            boolean success = false;
+            switch (operation) {
+                case "pass":
+                    // ... pass 逻辑 ...
+                    success = true; // 假设 pass 成功
+                    break;
+                case "quit":
+                     success = true; // quit 操作本身成功
+                    break;
+                // ... 其他操作 ...
+            }
+
+            if (success) {
+                 // 状态可能改变（比如翻转棋的 pass 改变回合），通知观察者
+                 // 对于 quit，虽然状态没变但可能也需要通知视图（例如显示退出信息）
+                 // 需要根据实际需求判断哪些操作需要通知
+                 if (!"quit".equals(operation)) { // Quit 可能不需要立即刷新棋盘，由上层处理退出流程
+                      notifyObservers();
+                 }
+                 return true;
+            }
+            return false;
+        }
+
+        // 在游戏结束时也需要通知
+        // 可以在 checkGameOver() 返回 true 后调用 notifyObservers()
+        protected void checkGameOver() {
+            // ... 现有检查逻辑 ...
+            boolean gameOver = // ... 检查游戏结束条件 ...
+            if (gameOver && !isOver) { // 确保只通知一次游戏结束
+                isOver = true;
+                // 设置赢家等最终状态
+                // ...
+                notifyObservers(); // 通知游戏结束
+            }
+            return isOver;
+        }
+
+         // 在切换回合时通知
+        protected void switchTurn() {
+            isBlackTurn = !isBlackTurn;
+            notifyObservers(); // 通知回合改变
+        }
+
+
+         // 添加获取合法落子位置的通用方法（上面讨论的改进）
+        public abstract List<Point> getValidMoves();
+
+        // 添加获取玩家分数展示的通用方法
+        public abstract String getPlayerScoreDisplay(Player player);
+
+        // 添加获取游戏特有提示信息的通用方法
+        public abstract String getModeSpecificTips();
+
+        // 添加获取游戏结束结果展示的通用方法
+        public abstract String getGameOverResultDisplay();
+
+        // 添加判断是否需要 Pass 操作的通用方法
+        public abstract boolean requiresPass();
+
+        // 添加获取玩家炸弹数量的通用方法 (Lab6)
+        public abstract int getPlayerBombCount(Player player);
+    }
+    ```
+
+3. **创建观察者实现类（CLI 版示例 - `ConsoleView`）：** 创建一个类来实现 `GameObserver` 接口，并在 `update` 方法中调用 `PrintTools` 来刷新控制台显示。
+
+    ```java
+    // src/main/java/top/thesumst/view/ConsoleView.java (新建 view 包)
+    package top.thesumst.view;
+
+    import top.thesumst.observer.GameObserver;
+    import top.thesumst.mode.GameMode;
+    import top.thesumst.container.GameList; // 需要 GameList 来打印游戏列表
+    import top.thesumst.tools.PrintTools; // 使用 PrintTools 进行打印
+    import top.thesumst.container.GameContainer; // 需要 GameContainer 来获取当前游戏列表
+
+    public class ConsoleView implements GameObserver {
+
+        private GameContainer gameContainer; // 需要访问 GameContainer 来获取 GameList
+
+        public ConsoleView(GameContainer gameContainer) {
+            this.gameContainer = gameContainer;
+        }
+
+        @Override
+        public void update(GameMode game) {
+            // 当游戏状态更新时，清屏并重新打印所有信息
+            PrintTools.clearConsole();
+            PrintTools.initializePositionsSet(game); // 重新初始化打印位置（如果棋盘大小变化的话）
+            PrintTools.printBoard(game); // 打印棋盘 (需要修改 printBoard 使用 getValidMoves)
+            PrintTools.printPlayerInfo(game); // 打印玩家信息 (需要修改 printPlayerInfo 使用通用方法)
+            PrintTools.printGameList(gameContainer.getGameList()); // 打印游戏列表
+            // PrintTools.printInputPanel(gameContainer.getGameList()); // 输入提示在接收输入前打印，这里可以省略或调整
+        }
+
+        // 你需要在 GameContainer 初始化时将 ConsoleView 添加为当前游戏的观察者
+        // 并且在切换游戏时，将 ConsoleView 从旧游戏中移除，添加到新游戏中
+    }
+    ```
+
+4. **在 `GameContainer` 中注册观察者：** 在 `GameContainer` 初始化时以及切换游戏时，将 `ConsoleView` 实例注册到当前活跃的 `GameMode` 对象上。
+
+    ```java
+    // src/main/java/top/thesumst/container/GameContainer.java
+    package top.thesumst.container;
+
+    import top.thesumst.tools.*;
+    import top.thesumst.mode.*;
+    import top.thesumst.tools.command.*;
+    import top.thesumst.view.ConsoleView; // 导入 ConsoleView
+
+    public class GameContainer
+    {
+        private GameList gameList ;
+        private static int currentGameOrder ;
+        private boolean isRunning ;
+        private ConsoleView consoleView; // 添加 ConsoleView 成员
+
+        public GameContainer()
+        {
+            gameList = new GameList() ;
+            currentGameOrder = 1 ;
+            isRunning = true ;
+            consoleView = new ConsoleView(this); // 初始化 ConsoleView
+
+            // 初始化时将 ConsoleView 添加到第一个游戏
+            gameList.getGame(currentGameOrder).addObserver(consoleView);
+
+            // 初始显示由 ConsoleView 的 update 方法触发
+            // 不再在这里直接调用 PrintTools 的打印方法
+            // PrintTools.clearConsole();
+            // PrintTools.initializePositionsSet(gameList.getGame(currentGameOrder));
+            // PrintTools.printBoard(gameList.getGame(currentGameOrder));
+            // PrintTools.printPlayerInfo(gameList.getGame(currentGameOrder));
+            // PrintTools.printGameList(gameList);
+
+            // 初始状态设置完成后，手动触发一次更新，显示初始棋盘
+            gameList.getGame(currentGameOrder).notifyObservers(); // 触发初次显示
+        }
+
+        /**
+         * 切换游戏
+         * @param order
+         */
+        public static void switchGameOrder(int order)
+        {
+             // 在切换前，将 ConsoleView 从旧游戏中移除
+             gameList.getGame(currentGameOrder).removeObserver(consoleView); // 注意：需要 gameList 实例才能访问，静态方法有问题，GameList 成员不应是静态的
+
+            currentGameOrder = order ;
+
+             // 切换后，将 ConsoleView 添加到新游戏
+             gameList.getGame(currentGameOrder).addObserver(consoleView);
+
+            // 切换游戏后，立即触发一次更新以显示新棋盘
+            gameList.getGame(currentGameOrder).notifyObservers();
+        }
+
+        // ... runGame 方法 ...
+
+        // handleCommandResult 方法中，成功时不再直接打印和刷新，因为状态变化会通过观察者模式触发更新
+        private void handleCommandResult(CommandResult result)
+        {
+            PrintTools.goToResultPosition();
+
+            // 处理失败情况
+            if (!result.isSuccess())
+            {
+                PauseTools.pause(result.getMessage() + "，请按回车键以重新输入...");
+                // 失败操作不改变游戏状态，不需要通知观察者
+            }
+            else
+            {
+                // 处理成功消息
+                 if (result.getMessage() != null && !result.getMessage().isEmpty()) {
+                     // 成功消息显示，但不在这里刷新棋盘等
+                     PauseTools.pause(result.getMessage() + " 请按回车键以继续");
+                 } else {
+                      // 无消息的成功（如 Pass）可能也需要暂停提示
+                       PauseTools.pause("操作成功，请按回车键以继续");
+                 }
+
+
+                // 处理退出命令 (成功结果中的一个特殊情况)
+                if (result.shouldQuit())
+                {
+                    isRunning = false;
+                }
+
+                // 重要的变化：成功操作后，不在这里显式调用 PrintTools.printBoard 等
+                // 而是依赖 GameMode 内部的状态变化（例如下棋、Pass 改变回合）调用 notifyObservers()
+                // 观察者 (ConsoleView) 收到通知后会刷新整个视图
+            }
+        }
+    }
+    ```
+
+**Observer Pattern 在 GUI 版中的应用：**
+
+在 GUI 版中，你的 JavaFX UI 组件（如 `ChessBoardPane`）会实现 `GameObserver` 接口。在 `update(GameMode game)` 方法中，`ChessBoardPane` 会：
+
+1. 获取更新后的 `GameMode` 对象。
+2. 调用 `game.getBoard()` 获取 `ChessBoard`。
+3. 调用 `game.getValidMoves()` 获取合法落子位置列表。
+4. 遍历棋盘的每个位置，根据 `board.getChessColor(point)` 和 `getValidMoves()` 列表，在 GUI 界面上绘制相应的棋子或提示符号。
+5. 类似地，显示玩家信息的面板会获取更新后的 `Player` 对象，调用 `game.getPlayerScoreDisplay(player)` 等方法，并更新 GUI 标签或文本。
+
+通过观察者模式，Model 层只需要负责管理游戏状态并在状态改变时发送通知，而 View 层负责接收通知并根据 Model 的最新状态刷新自己的显示。它们之间的耦合度大大降低，使得代码更加模块化和易于维护，尤其对于复杂的 GUI 界面。
