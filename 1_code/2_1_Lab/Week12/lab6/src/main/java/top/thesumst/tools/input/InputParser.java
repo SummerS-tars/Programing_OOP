@@ -13,10 +13,10 @@ import java.util.regex.Pattern;
  */
 public class InputParser 
 {
-    // 可变大小的棋盘位置格式
-    // 匹配 A1-Z99 或 1A-99Z 格式
+    // TODO: need to change to raw+col and the order number change to hex+char
     private static final Pattern CHESS_POSITION = Pattern.compile(
-        "([A-Za-z])([1-9]\\d{0,1})|([1-9]\\d{0,1})([A-Za-z])"
+        "^([1-9a-f][a-o])$" ,
+        Pattern.CASE_INSENSITIVE
     );
     
     // 棋盘编号格式: 1, 2, 3...
@@ -109,6 +109,8 @@ public class InputParser
                position.y >= 0 && position.y < boardSize;
     }
     
+    // TODO: need to change to new regex pattern
+    // TODO: need to test
     /**
      * 从匹配结果解析棋盘位置
      * @param matcher 正则匹配结果
@@ -116,25 +118,11 @@ public class InputParser
      */
     private static Point parsePosition(Matcher matcher) 
     {
-        String letter = null;
-        String number = null;
-        
-        // 格式A1: 第一组是字母，第二组是数字
-        if (matcher.group(1) != null && matcher.group(2) != null) 
-        {
-            letter = matcher.group(1);
-            number = matcher.group(2);
-        } 
-        // 格式1A: 第三组是数字，第四组是字母
-        else 
-        {
-            letter = matcher.group(4);
-            number = matcher.group(3);
-        }
-        
-        // 将坐标转换
-        int row = Integer.parseInt(number) - 1;  // 行号从1开始转为0开始
-        int col = Character.toLowerCase(letter.charAt(0)) - 'a';  // 列号A-Z转为0-25
+        String positionString = matcher.group(1);
+
+        // 坐标转换
+        int row = Integer.parseInt(Character.toString(positionString.charAt(0)), 16) - 1;  // 行号作为十六进制数读入转为10进制数，范围为0-14
+        int col = Character.toLowerCase(positionString.charAt(1)) - 'a';  // 列号A-O转为0-14
         
         return new Point(row, col);
     }
@@ -174,6 +162,7 @@ class InputParserTestDrive
         PrintTools.clearConsole();
     }
 
+    // TODO: need to update and test
     private static void testInput() 
     {
         System.out.println("Input A1 " + InputParser.parse("A1"));
@@ -186,11 +175,13 @@ class InputParserTestDrive
         System.out.println("Input 3 " + InputParser.parse("3"));
     }
     
+    // TODO: need to update and test
     private static void testMoreInputs() 
     {
-        System.out.println("Input J10 " + InputParser.parse("J10"));
-        System.out.println("Input 15O " + InputParser.parse("15O"));
-        System.out.println("Input K12 " + InputParser.parse("K12"));
-        System.out.println("Input Z26 " + InputParser.parse("Z26")); // 超出范围
+        System.out.println("Input AB " + InputParser.parse("AB"));
+        System.out.println("Input do " + InputParser.parse("do"));
+        System.out.println("Input jk " + InputParser.parse("jk"));
+        System.out.println("Input f1 " + InputParser.parse("f1"));
+        System.out.println("Input abc " + InputParser.parse("abc"));
     }
 }
