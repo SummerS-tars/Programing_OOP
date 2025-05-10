@@ -189,6 +189,8 @@ class InputParserTestDrive
         System.out.println("Input @1a " + InputParser.parse("@1a"));
         System.out.println("Input @7C " + InputParser.parse("@7C"));
         System.out.println("Input @6 " + InputParser.parse("@6"));
+        System.out.println("Input reversi " + InputParser.parse("reversi"));
+        System.out.println("Input gomoku " + InputParser.parse("gomoku"));
         System.out.println("Input 9 " + InputParser.parse("9"));
         System.out.println("Input 3 " + InputParser.parse("3"));
     }
@@ -202,6 +204,7 @@ class InputParserTestDrive
         System.out.println("Input abc " + InputParser.parse("abc"));
         System.out.println("Input @fo " + InputParser.parse("@fo"));
         System.out.println("Input @gA " + InputParser.parse("@gA"));
+        System.out.println("Input peace " + InputParser.parse("peace"));
         System.out.println("Input @a " + InputParser.parse("@a"));
     }
 }
