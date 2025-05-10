@@ -37,17 +37,17 @@ introduce some basic information about JavaFX and to introduce it to my project,
 
 ## Implementation Thoughts
 
-1. test the size interface of the board  
-2. refactor the part about move attempt input  
-    1. del the feat to accept arbitrary sequence of input position  
-    2. add the feat to accept the input of `bomb` cmd  
-    3. add the `playback` cmd  
-3. refactor some parts about wrong info report  
+1. [x] test the size interface of the board  
+2. [x] refactor the part about move attempt input  
+    1. [x] del the feat to accept arbitrary sequence of input position  
+    2. [x] add the feat to accept the input of `bomb` cmd  
+    3. [x] add the `playback {filename.cmd}` cmd  
+3. [ ] refactor some parts about wrong info report  
     using exception to report some wrong cmds  
-4. implement the `playback` cmd  
-    1. read the file line by line  
-    2. parse the cmd and execute it
-5. introduce the observer pattern to project to refactor the structure better  
+4. [ ] implement the `playback` cmd  
+    1. [ ] read the file line by line  
+    2. [ ] parse the cmd and execute it
+5. [ ] introduce the observer pattern to project to refactor the structure better  
 
 ## Specification Implementation
 
@@ -94,3 +94,16 @@ introduce some basic information about JavaFX and to introduce it to my project,
 好吧其实没什么必要  
 
 回放功能也是要用的  
+之前看漏了，除了命令本身，还需要一个参数，用于表示回放的文件名  
+（这里还需要考虑一个问题就是路径问题，大概率是要放在某个项目文件夹中的，但是如何进行指定呢？不过不是这里输入解析功能实现需要担忧的）  
+
+如何考虑输入呢？似乎是要在同一行输入，那么还是考虑使用正则表达式来匹配吧  
+
+#### 一些问题及想法
+
+可能想到一个问题：指令比较相近正确指令了，要不要更具体的提示？
+但是考虑后关于此问题，  
+我的所有可能的输入都有相关提示，那么假如输入错误了  
+导致了未知命令的发生  
+那么不是我应该具体告知的部分  
+所以这里不进行具体的提示部分的实现  
