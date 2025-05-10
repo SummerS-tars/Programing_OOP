@@ -109,6 +109,7 @@ public class InputParser
             // 验证位置是否在棋盘范围内
             if (isValidPosition(position)) {
                 // TODO: perform bomb cmd
+                return InputResult.useBomb(position);
             }
         }
         

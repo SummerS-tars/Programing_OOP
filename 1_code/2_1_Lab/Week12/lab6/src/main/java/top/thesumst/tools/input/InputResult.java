@@ -47,6 +47,11 @@ public class InputResult
     {
         return new InputResult(InputType.INVALID, null);
     }
+
+    public static InputResult useBomb(Point position) 
+    {
+        return new InputResult(InputType.USE_BOMB, position);
+    }
     
     // Getter方法
     public InputType getType() 

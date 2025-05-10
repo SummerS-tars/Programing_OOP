@@ -10,5 +10,6 @@ public enum InputType
     NEW_GAME,      // 新建游戏
     PASS,          // 跳过回合
     QUIT,          // 退出游戏
-    INVALID        // 无效输入
+    INVALID,       // 无效输入
+    USE_BOMB       // 使用炸弹
 }
