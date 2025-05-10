@@ -7,6 +7,7 @@ import top.thesumst.tools.PrintTools;
 import java.awt.Point;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.io.*;
 
 /**
  * 输入解析器 - 负责解析用户输入
@@ -144,13 +145,17 @@ public class InputParser
 
 class InputParserTestDrive
 {
-    private static GameList gameList = new GameList();
-    
-    
     public static void main(String[] args) 
     {
+        InputStream originalIn = System.in;
+        String simulatedInput = "test1\n1\n2\n";
+        System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
+        GameList gameList = new GameList();
+        System.setIn(originalIn);
+    
         gameList.addGame("peace");
         gameList.addGame("reversi");
+        gameList.addGame("gomoku");
         System.out.println("Game number: " + GameList.getGameNumber());
         PauseTools.pause();
         PrintTools.clearConsole();
