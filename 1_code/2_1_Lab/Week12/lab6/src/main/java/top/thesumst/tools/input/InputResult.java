@@ -97,6 +97,9 @@ public class InputResult
                 return "跳过回合";
             case QUIT:
                 return "退出游戏";
+            case USE_BOMB:
+                Point bombPos = getPosition();
+                return "使用炸弹: (" + (char)(bombPos.y + 'A') + (bombPos.x + 1) + ")";
             default:
                 return "无效输入";
         }
