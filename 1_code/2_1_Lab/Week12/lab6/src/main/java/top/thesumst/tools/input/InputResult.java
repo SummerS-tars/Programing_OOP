@@ -71,6 +71,7 @@ public class InputResult
         return (T) data;
     }
     
+    // TODO: 这里不是类型安全的获取方法，应该需要重构一下
     public Point getPosition() 
     {
         return (Point) data;
@@ -92,6 +93,7 @@ public class InputResult
         switch (type) 
         {
             case CHESS_MOVE:
+                // TODO: 没有使用类型安全的获取方法，下面同
                 Point p = getPosition();
                 return "下棋: (" + (char)(p.y + 'A') + (p.x + 1) + ")";
             case SWITCH_BOARD:
