@@ -30,6 +30,9 @@ public class InputParser
     
     // 命令格式: quit, pass, peace, reversi
     private static final Pattern COMMAND_PATTERN = Pattern.compile("^(quit|pass|peace|reversi|gomoku)$", Pattern.CASE_INSENSITIVE);
+
+    // DEMO模式：playback test1.cmd ...
+    private static final Pattern PLAYBACK_PATTERN = Pattern.compile("^(playback)\\s+([a-zA-Z0-9_\\-]{1,50}\\.cmd)$");
     
     // 棋盘当前大小
     private static int boardSize = 8;
@@ -109,6 +112,13 @@ public class InputParser
             if (isValidPosition(position)) {
                 return InputResult.useBomb(position);
             }
+        }
+        
+        Matcher playbackMatcher = PLAYBACK_PATTERN.matcher(input);
+        if(playbackMatcher.matches()) 
+        {
+            String fileName = playbackMatcher.group(2);
+            return InputResult.playback(fileName);
         }
         
         return InputResult.invalid();
