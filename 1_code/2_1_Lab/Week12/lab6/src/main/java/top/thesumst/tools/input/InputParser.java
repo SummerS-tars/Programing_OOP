@@ -13,11 +13,13 @@ import java.util.regex.Pattern;
  */
 public class InputParser 
 {
-    // TODO: need to change to raw+col and the order number change to hex+char
+    // 棋盘位置格式：1A, 2b, AH, FO ...
     private static final Pattern CHESS_POSITION = Pattern.compile(
         "^([1-9a-f][a-o])$" ,
         Pattern.CASE_INSENSITIVE
     );
+
+    // TODO: regex for bomb cmd
     
     // 棋盘编号格式: 1, 2, 3...
     private static final Pattern BOARD_NUMBER = Pattern.compile("^([1-9]\\d*)$");
@@ -94,6 +96,8 @@ public class InputParser
                     return InputResult.newGame(command);
             }
         }
+
+        // TODO: add parse part for bomb cmd
         
         return InputResult.invalid();
     }
@@ -109,8 +113,6 @@ public class InputParser
                position.y >= 0 && position.y < boardSize;
     }
     
-    // TODO: need to change to new regex pattern
-    // TODO: need to test
     /**
      * 从匹配结果解析棋盘位置
      * @param matcher 正则匹配结果
@@ -162,7 +164,8 @@ class InputParserTestDrive
         PrintTools.clearConsole();
     }
 
-    // TODO: need to update and test
+    // TODO: add test for bomb cmd
+
     private static void testInput() 
     {
         System.out.println("Input A1 " + InputParser.parse("A1"));
@@ -175,7 +178,6 @@ class InputParserTestDrive
         System.out.println("Input 3 " + InputParser.parse("3"));
     }
     
-    // TODO: need to update and test
     private static void testMoreInputs() 
     {
         System.out.println("Input AB " + InputParser.parse("AB"));
