@@ -20,7 +20,6 @@ public class InputParser
         Pattern.CASE_INSENSITIVE
     );
 
-    // TODO: regex for bomb cmd
     private static final Pattern BOMB_POSITION = Pattern.compile(
         "^(@)([1-9a-f][a-o])$" ,
         Pattern.CASE_INSENSITIVE
@@ -102,14 +101,12 @@ public class InputParser
             }
         }
 
-        // TODO: add parse part for bomb cmd
         Matcher bombMatcher = BOMB_POSITION.matcher(input);
         if(bombMatcher.matches()) 
         {
             Point position = parsePosition(bombMatcher.group(2));
             // 验证位置是否在棋盘范围内
             if (isValidPosition(position)) {
-                // TODO: perform bomb cmd
                 return InputResult.useBomb(position);
             }
         }
@@ -180,8 +177,6 @@ class InputParserTestDrive
         PauseTools.pause();
         PrintTools.clearConsole();
     }
-
-    // TODO: add test for bomb cmd
 
     private static void testInput() 
     {
