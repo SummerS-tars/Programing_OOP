@@ -11,5 +11,6 @@ public enum InputType
     PASS,          // 跳过回合
     QUIT,          // 退出游戏
     INVALID,       // 无效输入
-    USE_BOMB       // 使用炸弹
+    USE_BOMB,      // 使用炸弹
+    PLAYBACK,      // 播放回放
 }

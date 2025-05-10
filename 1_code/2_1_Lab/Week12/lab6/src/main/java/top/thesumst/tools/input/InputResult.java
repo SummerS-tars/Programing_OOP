@@ -53,6 +53,11 @@ public class InputResult
         return new InputResult(InputType.USE_BOMB, position);
     }
     
+    public static InputResult playback(String filename)
+    {
+        return new InputResult(InputType.PLAYBACK, filename);
+    }
+    
     // Getter方法
     public InputType getType() 
     {
@@ -100,6 +105,10 @@ public class InputResult
             case USE_BOMB:
                 Point bombPos = getPosition();
                 return "使用炸弹: (" + (char)(bombPos.y + 'A') + (bombPos.x + 1) + ")";
+            case PLAYBACK:
+                // ? TODO: String.class的 class 是用来做什么的？
+                String filename = getDataAs(String.class);
+                return "播放DEMO: " + filename;
             default:
                 return "无效输入";
         }
