@@ -48,3 +48,9 @@ introduce some basic information about JavaFX and to introduce it to my project,
     1. read the file line by line  
     2. parse the cmd and execute it
 5. introduce the observer pattern to project to refactor the structure better  
+
+## Specification Implementation
+
+### Size Interface for Gomoku Change
+
+修改`GameList`中的新建模式  

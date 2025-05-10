@@ -42,6 +42,7 @@ public class GameList
 
         gameNumber++ ;
         int size = 8 ;
+        int gomokuSize = 15 ;
         switch (gameMode) {
             case "peace":
                 games.add(new PeaceMode(gameNumber, gameMode, size, player1Name, player2Name, player1Color, player2Color));
@@ -50,7 +51,7 @@ public class GameList
                 games.add(new ReversiMode(gameNumber, gameMode, size, player1Name, player2Name, player1Color, player2Color));
                 return true;
             case "gomoku":
-                games.add(new GomokuMode(gameNumber, gameMode, size, player1Name, player2Name, player1Color, player2Color));
+                games.add(new GomokuMode(gameNumber, gameMode, gomokuSize, player1Name, player2Name, player1Color, player2Color));
                 return true;
             default:
                 PauseTools.pause("游戏模式错误！");
