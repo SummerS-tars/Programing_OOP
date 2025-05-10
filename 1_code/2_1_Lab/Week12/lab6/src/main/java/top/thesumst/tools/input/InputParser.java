@@ -20,6 +20,10 @@ public class InputParser
     );
 
     // TODO: regex for bomb cmd
+    private static final Pattern BOMB_POSITION = Pattern.compile(
+        "^(@)([1-9a-f][a-o])$" ,
+        Pattern.CASE_INSENSITIVE
+    );
     
     // 棋盘编号格式: 1, 2, 3...
     private static final Pattern BOARD_NUMBER = Pattern.compile("^([1-9]\\d*)$");
@@ -58,7 +62,7 @@ public class InputParser
         Matcher positionMatcher = CHESS_POSITION.matcher(input);
         if (positionMatcher.matches()) 
         {
-            Point position = parsePosition(positionMatcher);
+            Point position = parsePosition(positionMatcher.group(1));
             // 验证位置是否在棋盘范围内
             if (isValidPosition(position)) {
                 return InputResult.chessMove(position);
@@ -98,6 +102,15 @@ public class InputParser
         }
 
         // TODO: add parse part for bomb cmd
+        Matcher bombMatcher = BOMB_POSITION.matcher(input);
+        if(bombMatcher.matches()) 
+        {
+            Point position = parsePosition(bombMatcher.group(2));
+            // 验证位置是否在棋盘范围内
+            if (isValidPosition(position)) {
+                // TODO: perform bomb cmd
+            }
+        }
         
         return InputResult.invalid();
     }
@@ -118,10 +131,8 @@ public class InputParser
      * @param matcher 正则匹配结果
      * @return 棋盘位置
      */
-    private static Point parsePosition(Matcher matcher) 
+    private static Point parsePosition(String positionString) 
     {
-        String positionString = matcher.group(1);
-
         // 坐标转换
         int row = Integer.parseInt(Character.toString(positionString.charAt(0)), 16) - 1;  // 行号作为十六进制数读入转为10进制数，范围为0-14
         int col = Character.toLowerCase(positionString.charAt(1)) - 'a';  // 列号A-O转为0-14
@@ -174,6 +185,9 @@ class InputParserTestDrive
         System.out.println("Input 8H " + InputParser.parse("8H"));
         System.out.println("Input 2a " + InputParser.parse("2a"));
         System.out.println("Input f7 " + InputParser.parse("f7"));
+        System.out.println("Input @1a " + InputParser.parse("@1a"));
+        System.out.println("Input @7C " + InputParser.parse("@7C"));
+        System.out.println("Input @6 " + InputParser.parse("@6"));
         System.out.println("Input 9 " + InputParser.parse("9"));
         System.out.println("Input 3 " + InputParser.parse("3"));
     }
@@ -185,5 +199,8 @@ class InputParserTestDrive
         System.out.println("Input jk " + InputParser.parse("jk"));
         System.out.println("Input f1 " + InputParser.parse("f1"));
         System.out.println("Input abc " + InputParser.parse("abc"));
+        System.out.println("Input @fo " + InputParser.parse("@fo"));
+        System.out.println("Input @gA " + InputParser.parse("@gA"));
+        System.out.println("Input @a " + InputParser.parse("@a"));
     }
 }
