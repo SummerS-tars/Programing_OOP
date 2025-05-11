@@ -42,12 +42,19 @@ introduce some basic information about JavaFX and to introduce it to my project,
     1. [x] del the feat to accept arbitrary sequence of input position  
     2. [x] add the feat to accept the input of `bomb` cmd  
     3. [x] add the `playback {filename.cmd}` cmd  
-3. [ ] refactor some parts about wrong info report  
+3. [ ] arbitrary barry position `#` implementation  
+4. [x] refactor some parts about wrong info report  
     using exception to report some wrong cmds  
-4. [ ] implement the `playback` cmd  
+5. [ ] implement the `playback` cmd  
     1. [ ] read the file line by line  
     2. [ ] parse the cmd and execute it
-5. [ ] introduce the observer pattern to project to refactor the structure better  
+6. [ ] introduce the observer pattern to project to refactor the structure better  
+7. [ ] update the `PrintTools`  
+    1. [ ] new input position prompt  
+    2. [ ] error input some little refactor  
+    3. [ ] new cmd prompt  
+8. [ ] refactor the method to get specific game(it's not good now)  
+9. [x] quit may be no need to be passed to game  
 
 ## Specification Implementation
 
@@ -107,3 +114,28 @@ introduce some basic information about JavaFX and to introduce it to my project,
 导致了未知命令的发生  
 那么不是我应该具体告知的部分  
 所以这里不进行具体的提示部分的实现  
+
+### Bomb Command
+
+1. add new info to `Player` class to store the bomb number?  
+    not proper, only available in `Gomoku` class  
+    so add to `GomokuMode` class  
+    and add method to control it  
+2. add legality test method for bomb cmd  
+3. add command for use bomb cmd  
+4. maybe need to refactor some part of the `move` method in `GomokuMode` class?
+
+### Exception Handling Refactor
+
+refactor the `GameMode` to make it support exception handling  
+
+#### exception kinds
+
+1. `IllegalMoveException`  
+2. `IllegalCommandException`  
+
+#### handling
+
+all handled in the command classes  
+report can carry some info  
+which will be extracted to the result of command  
