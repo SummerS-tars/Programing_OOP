@@ -4,6 +4,7 @@ import top.thesumst.container.GameList;
 import top.thesumst.mode.GameMode;
 import top.thesumst.mode.ReversiMode;
 import top.thesumst.tools.PrintTools;
+import top.thesumst.exception.IllegalCommandException;
 
 /**
  * 跳过回合命令
@@ -12,15 +13,15 @@ public class PassCommand implements GameCommand {
     @Override
     public CommandResult execute(GameMode game, GameList gameList) 
     {
-        if(game instanceof ReversiMode)
-        {
-            boolean success = game.receiveOperation("pass");
+        try {
+            if(!game.receiveOperation("pass"))
+                throw new IllegalCommandException("跳过回合失败");
+            return CommandResult.success("跳过回合成功");
+        } catch (IllegalCommandException e) {
+            return CommandResult.failure("跳过回合失败: " + e.getMessage());
+        } finally {
             PrintTools.printBoard(game);
-    
-            // 执行跳过操作
-            if(success) return CommandResult.success("pass成功");
-            else return CommandResult.failure("pass失败");
+            PrintTools.printPlayerInfo(game);
         }
-        else return CommandResult.failure("当前模式不支持pass操作");
     }
 }

@@ -10,7 +10,6 @@ public class QuitCommand implements GameCommand {
     @Override
     public CommandResult execute(GameMode game, GameList gameList) 
     {
-        game.receiveOperation("quit");
         return CommandResult.quit();
     }
 }
