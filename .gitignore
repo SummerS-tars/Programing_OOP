@@ -1,9 +1,11 @@
 0_workspace/0_extraLibs/
 0_workspace/apache-maven-3.9.9/
 3_tool/0_javaInstallPack/
+1_code/4_PresentationCode/
 5_else/
 
 .idea/
 *.pdf
 *.zip
 .DS_Store
+1_code/4_PresentationCode/thinking-In-Java
