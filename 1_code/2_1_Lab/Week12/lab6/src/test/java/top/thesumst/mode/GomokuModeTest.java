@@ -23,7 +23,7 @@ public class GomokuModeTest {
     }
 
     @Test
-    public void testBasicMoves() {
+    public void testBasicMoves() throws Exception {
         System.out.println("\n=== 测试基本落子操作 ===");
         
         // 测试有效落子
@@ -55,7 +55,7 @@ public class GomokuModeTest {
     }
 
     @Test
-    public void testHorizontalWin() {
+    public void testHorizontalWin() throws Exception {
         System.out.println("\n=== 测试水平连线胜利 ===");
         
         // 黑棋在水平方向连成五子
@@ -84,7 +84,7 @@ public class GomokuModeTest {
     }
     
     @Test
-    public void testVerticalWin() {
+    public void testVerticalWin() throws Exception {
         System.out.println("\n=== 测试垂直连线胜利 ===");
         
         // 白棋在垂直方向连成五子
@@ -117,7 +117,7 @@ public class GomokuModeTest {
     }
     
     @Test
-    public void testDiagonalWin() {
+    public void testDiagonalWin() throws Exception {
         System.out.println("\n=== 测试对角线连线胜利 ===");
         
         // 黑棋在对角线方向连成五子
@@ -146,7 +146,7 @@ public class GomokuModeTest {
     }
     
     @Test
-    public void testReverseDiagonalWin() {
+    public void testReverseDiagonalWin() throws Exception {
         System.out.println("\n=== 测试反对角线连线胜利 ===");
         
         // 白棋在反对角线方向连成五子
@@ -179,7 +179,7 @@ public class GomokuModeTest {
     }
     
     @Test
-    public void testDraw() {
+    public void testDraw() throws Exception {
         System.out.println("\n=== 测试平局情况（棋盘填满） ===");
         
         // 为了简化测试，我们创建一个较小的棋盘
@@ -210,7 +210,7 @@ public class GomokuModeTest {
     }
     
     @Test
-    public void testStringOperations() {
+    public void testStringOperations() throws Exception {
         System.out.println("\n=== 测试字符串操作 ===");
         
         // 测试退出命令

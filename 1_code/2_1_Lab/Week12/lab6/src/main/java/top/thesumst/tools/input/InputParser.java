@@ -160,9 +160,14 @@ class InputParserTestDrive
         GameList gameList = new GameList();
         System.setIn(originalIn);
     
-        gameList.addGame("peace");
-        gameList.addGame("reversi");
-        gameList.addGame("gomoku");
+        try {
+            gameList.addGame("peace");
+            gameList.addGame("reversi");
+            gameList.addGame("gomoku");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
         System.out.println("Game number: " + GameList.getGameNumber());
         PauseTools.pause();
         PrintTools.clearConsole();
