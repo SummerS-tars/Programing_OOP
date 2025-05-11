@@ -6,7 +6,8 @@ import top.thesumst.tools.command.*;
 
 public class GameContainer 
 {
-    private GameList gameList ;
+    // * 此处默认以及一个程序只会有一个容器运行，且只有一个游戏列表
+    private static GameList gameList ;
     private static int currentGameOrder ;
     private boolean isRunning ;
 

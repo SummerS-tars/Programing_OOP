@@ -12,7 +12,7 @@ import java.util.InputMismatchException;
 public class GameList
 {
     private static int gameNumber ;
-    private List<GameMode> games ;
+    private static List<GameMode> games ;
     private static String player1Name , player2Name ;
     private static ChessColor player1Color , player2Color ;
 
@@ -37,7 +37,7 @@ public class GameList
      * 2. reversi: 翻转棋
      * @return boolean 是否成功
      */
-    public boolean addGame(String gameMode) throws IllegalCommandException
+    public static boolean addGame(String gameMode) throws IllegalCommandException
     {
         int maxNumber = 8 ;
         if(gameNumber >= maxNumber)
@@ -67,7 +67,7 @@ public class GameList
      * @param gameNum 游戏编号
      * @return GameMode 游戏
      */
-    public GameMode getGame(int gameNum)
+    public static GameMode getGame(int gameNum)
     {
         return games.get(gameNum - 1) ;
     }
@@ -85,9 +85,9 @@ public class GameList
      * * setInitializeInfo方法用于设置游戏初始化信息
      * * 包括玩家名称和棋子颜色
      */
-    private void setInitializeInfo()
+    private static void setInitializeInfo()
     {
-        PrintTools printTools = new PrintTools();
+        PrintTools printTools = new PrintTools(); // TODO: printTools或许需要成单例模式
         PrintTools.clearConsole(); 
         System.out.println("请输入1号玩家的名称：");
         player1Name = printTools.sc.nextLine() ;
