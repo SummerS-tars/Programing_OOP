@@ -2,6 +2,7 @@ package top.thesumst.mode;
 
 import top.thesumst.mode.component.Step;
 import top.thesumst.type.ChessColor;
+import top.thesumst.exception.*;
 import java.awt.Point;
 
 public class PeaceMode extends GameMode
@@ -24,8 +25,9 @@ public class PeaceMode extends GameMode
      * @return boolean 是否成功
      */
     @Override
-    public boolean receiveOperation(Point point) 
+    public boolean receiveOperation(Point point) throws IllegalMoveException
     {
+        if(isOver) throw new IllegalMoveException("游戏已经结束，无法下棋") ;
         return go(point);
     }
 
@@ -36,11 +38,11 @@ public class PeaceMode extends GameMode
      * @return boolean 是否成功
      */
     @Override
-    public boolean receiveOperation(String operation) 
+    public boolean receiveOperation(String operation) throws IllegalCommandException
     {
         switch (operation) {
-            case "quit":
-                return true;
+            case "pass":  
+                throw new IllegalCommandException("peace模式不支持pass操作");
             default:
                 return false;
         }
@@ -51,7 +53,7 @@ public class PeaceMode extends GameMode
      * @param point 尝试落子位置
      * @return true 落子成功 false 落子失败
      */
-    private boolean go(Point point) 
+    private boolean go(Point point) throws IllegalMoveException
     {
         if(checkPoint(point))
         {
@@ -62,7 +64,7 @@ public class PeaceMode extends GameMode
             isOver = checkGameOver() ;
             return true ;
         }
-        return false ;
+        throw new IllegalMoveException("落子位置不合法") ;
     }
 
     /**

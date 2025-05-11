@@ -4,6 +4,7 @@ import top.thesumst.mode.component.Player;
 import top.thesumst.mode.component.Step;
 import top.thesumst.type.ChessColor;
 import top.thesumst.type.Direction;
+import top.thesumst.exception.*;
 import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,40 +32,33 @@ public class ReversiMode extends GameMode
     }
 
     @Override
-    public boolean receiveOperation(Point point) 
+    public boolean receiveOperation(Point point) throws IllegalMoveException 
     {
+        if(isOver) throw new IllegalMoveException("游戏已经结束，无法下棋") ;
+        if(shouldPass) throw new IllegalMoveException("当前无有效下棋位置，无法下棋，请执行pass") ;
         return go(point);
     }
 
     @Override
-    public boolean receiveOperation(String operation)
+    public boolean receiveOperation(String operation) throws IllegalCommandException
     {
         switch (operation) {
             case "pass":
                 if(shouldPass)
                 {
-                    shouldPass = false ;
-                    if(isOver)
-                    {
-                        return false;
-                    }
+                    if(isOver) throw new IllegalCommandException("游戏已经结束，无法执行pass") ;
                     else
                     {
-                        isBlackTurn = !isBlackTurn ;
-                        if(checkGameOver())
-                        {
-                            isOver = true;
-                            setWinner();    // TODO: 待测试
-                        }
+                        updateGameState();
+                        // if(checkGameOver()) // TODO: refactor the end game check logic
+                        // {
+                        //     isOver = true;
+                        //     setWinner();
+                        // }
                         return true ;
                     }
                 }
-                else
-                {
-                    return false;
-                }
-            case "quit":
-                return true;
+                else throw new IllegalCommandException("当前有有效下棋位置，无法执行pass") ;
             default:
                 return false;
         }
@@ -91,9 +85,8 @@ public class ReversiMode extends GameMode
     /**
      * * go方法，尝试落子
      * @param point 尝试落子位置
-     * @return true 落子成功 false 落子失败
      */
-    private boolean go(Point point)
+    private boolean go(Point point) throws IllegalMoveException
     {
         if(checkGo(point))
         {
@@ -101,12 +94,13 @@ public class ReversiMode extends GameMode
             addStep(new Step(point, color));
             reverse(point, validPointsCache.get(point));
             updatePlayerChessNumber();
-            isBlackTurn = !isBlackTurn ;
-            refreshValidPoints() ;
-            shouldPass = validPointsCache.isEmpty() ;
+
+            // TODO: update game state: should pass or end game
+            updateGameState() ;
+
             return true ;
         }
-        return false ;
+        throw new IllegalMoveException("不是合法下棋位置") ;
     }
 
     /**
@@ -291,13 +285,13 @@ public class ReversiMode extends GameMode
      * * 在每次pass后触发，如果未找到有效位置，说明双方均无法下棋，游戏结束
      * @return true 游戏结束 false 游戏未结束
      */
-    private boolean checkGameOver()
-    {
-        refreshValidPoints();
-        if(validPointsCache.isEmpty())
-            return true;
-        return false;
-    }
+    // private boolean checkGameOver()
+    // {
+    //     refreshValidPoints();
+    //     if(validPointsCache.isEmpty())
+    //         return true;
+    //     return false;
+    // }
 
     /**
      * * setWinner方法，在监测到胜利条件时，设置棋子更多的一方为赢家
@@ -307,5 +301,44 @@ public class ReversiMode extends GameMode
     {
         winner = player1.getChessNumber() > player2.getChessNumber() ? player1 :
         player1.getChessNumber() < player2.getChessNumber() ? player2 : null ;
+    }
+
+    /**
+     * * updateGameState方法，更新游戏状态
+     */
+    private void updateGameState()
+    {
+        // 换手
+        isBlackTurn = !isBlackTurn ;
+        refreshValidPoints() ;
+
+        // * 检查游戏是否结束
+        if(validPointsCache.isEmpty())
+        {
+            /**
+             * * 逻辑解释：
+             * * 若已经有一方pass过，且此时还是没有有效位置
+             * * 那么游戏结束
+             * * 准备设置赢家以表示游戏结束
+             */
+            if(shouldPass) // * 当前玩家pass后另一方没有合法位置
+            {
+                isOver = true ;
+                setWinner() ;
+                return ;
+            }
+            else // * 正常下棋后另一方没有合法位置
+            {
+                shouldPass = true ;
+                return ;
+            }
+        }
+
+        // * 到达这里说明是一方执行了pass操作后另一方有合法下棋位置
+        if(shouldPass)
+        {
+            // * 说明当前玩家有合法下棋位置，取消pass
+            shouldPass = false ;
+        }
     }
 }

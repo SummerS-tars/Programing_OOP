@@ -2,6 +2,7 @@ package top.thesumst.mode;
 
 import top.thesumst.mode.component.*;
 import top.thesumst.type.ChessColor;
+import top.thesumst.exception.*;
 import java.awt.Point;
 import java.util.Stack;
 
@@ -33,16 +34,20 @@ public abstract class GameMode
      * * receiveOperation方法，接受下棋操作，在输入前就过滤超出棋盘范围的操作
      * @param Point 下棋位置
      * @return boolean 是否成功
+     * @throws IllegalMoveException
      */
-    public abstract boolean receiveOperation(Point point) ;
+    public abstract boolean receiveOperation(Point point) 
+    throws IllegalMoveException;
 
     /**
      * * receiveOperation方法，接受下棋操作，在输入前就过滤超出棋盘范围的操作
      * @param String 操作
      * 应该是pass或者quit，其中pass只有在ReversiMode中有用
      * @return boolean 是否成功
+     * @throws IllegalCommandException
      */
-    public abstract boolean receiveOperation(String operation) ;
+    public abstract boolean receiveOperation(String operation) 
+    throws IllegalCommandException ;
 
     // /**
     //  * * rollback方法，回退一步

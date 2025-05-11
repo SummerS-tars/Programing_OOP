@@ -2,6 +2,7 @@ package top.thesumst.mode;
 
 import top.thesumst.mode.component.*;
 import top.thesumst.type.*;
+import top.thesumst.exception.*;
 import java.awt.Point;
 import java.util.EnumSet;
 
@@ -17,17 +18,17 @@ public class GomokuMode extends GameMode
     }
 
     @Override
-    public boolean receiveOperation(Point point) 
+    public boolean receiveOperation(Point point) throws IllegalMoveException
     {
+        if(isOver) throw new IllegalMoveException("游戏已经结束，无法下棋") ;
         return go(point);
     }
 
     @Override
-    public boolean receiveOperation(String operation)
+    public boolean receiveOperation(String operation)  throws IllegalCommandException
     {
         switch(operation) {
-            case "quit":
-                return true;
+            case "pass": throw new IllegalCommandException("gomoku模式不支持pass操作") ;
             default:
                 return false;
         }
@@ -43,7 +44,7 @@ public class GomokuMode extends GameMode
         return winner;
     }
 
-    private boolean go(Point point)
+    private boolean go(Point point) throws IllegalMoveException
     {
         if(checkPoint(point))
         {
@@ -67,7 +68,7 @@ public class GomokuMode extends GameMode
             isBlackTurn = !isBlackTurn;
             return true;
         }
-        return false;
+        throw new IllegalMoveException("落子位置不合法");
     }
 
     private boolean checkPoint(Point point)

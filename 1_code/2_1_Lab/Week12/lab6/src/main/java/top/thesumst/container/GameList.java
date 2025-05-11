@@ -1,6 +1,7 @@
 package top.thesumst.container;
 
 import top.thesumst.mode.*;
+import top.thesumst.exception.*;
 import top.thesumst.tools.PauseTools;
 import top.thesumst.tools.PrintTools;
 import top.thesumst.type.ChessColor;
@@ -20,9 +21,13 @@ public class GameList
         gameNumber = 0 ;
         games = new ArrayList<GameMode>() ;
         setInitializeInfo() ;
-        addGame("peace") ;
-        addGame("reversi") ;
-        addGame("gomoku") ;
+        try {
+            addGame("peace") ;
+            addGame("reversi") ;
+            addGame("gomoku") ;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -32,13 +37,11 @@ public class GameList
      * 2. reversi: 翻转棋
      * @return boolean 是否成功
      */
-    public boolean addGame(String gameMode)
+    public boolean addGame(String gameMode) throws IllegalCommandException
     {
         int maxNumber = 8 ;
         if(gameNumber >= maxNumber)
-        {
-            return false ;
-        }
+            throw new IllegalCommandException("游戏数量已达上限！") ;
 
         gameNumber++ ;
         int size = 8 ;
