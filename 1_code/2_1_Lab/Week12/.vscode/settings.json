@@ -1,4 +1,13 @@
 {
     "java.configuration.updateBuildConfiguration": "interactive",
-    "java.dependency.packagePresentation": "hierarchical"
+    "java.dependency.packagePresentation": "hierarchical",
+    "cSpell.words": [
+        "Adoptium",
+        "gomoku",
+        "javafx",
+        "Liberica",
+        "println",
+        "reversi",
+        "vogella"
+    ]
 }

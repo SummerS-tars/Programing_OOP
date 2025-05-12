@@ -23,12 +23,12 @@
 prompt:  
 
 ```txt
-Please help me to analyize the project lab6 based on the existing code
+Please help me to analyze the project lab6 based on the existing code
 
 several prepared attention points:
 
 what i need to do is the requirements in lab6.md
-in the later devlopment, I need to use JavaFX to right a gui for this project
+in the later development, I need to use JavaFX to right a gui for this project
 Attention several important question:
 
 to realize my requirements, is the structure of the project right now good enough? where should be changed or improved?
@@ -139,3 +139,8 @@ refactor the `GameMode` to make it support exception handling
 all handled in the command classes  
 report can carry some info  
 which will be extracted to the result of command  
+
+### Barrier Position Implementation
+
+only available in `Gomoku` class  
+add type in

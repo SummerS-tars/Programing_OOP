@@ -771,7 +771,7 @@ public class SimpleJavaFXApp extends Application {
     - **获取玩家分数展示信息：** 在 `GameMode` 中添加一个方法，返回用于显示玩家分数的字符串。对于和平模式，这个方法可以返回空字符串或 "N/A"；对于翻转棋，返回棋子数量；对于五子棋，可能不需要显示分数。
 
     ```java
-    // filepath: e:\_ComputerLearning\3_Programing_OOP\1_code\2_1_Lab\Week12\GameMode.java
+    // filepath: e:\_ComputerLearning\3_programming_OOP\1_code\2_1_Lab\Week12\GameMode.java
     public abstract String getPlayerScoreDisplay(Player player);
     // 或者提供一个默认实现
     // public String getPlayerScoreDisplay(Player player) {
@@ -782,7 +782,7 @@ public class SimpleJavaFXApp extends Application {
     - **获取游戏特有提示信息：** 在 `GameMode` 中添加一个方法，返回游戏模式特有的提示信息（如翻转棋的 Pass 提示，Lab6 五子棋的炸弹提示）。
 
     ```java
-    // filepath: e:\_ComputerLearning\3_Programing_OOP\1_code\2_1_Lab\Week12\GameMode.java
+    // filepath: e:\_ComputerLearning\3_programming_OOP\1_code\2_1_Lab\Week12\GameMode.java
     public abstract String getModeSpecificTips();
     // 或者提供一个默认实现
     // public String getModeSpecificTips() {
@@ -793,7 +793,7 @@ public class SimpleJavaFXApp extends Application {
     - **获取游戏结束信息：** 在 `GameMode` 中添加一个方法，返回游戏结束时的结果信息（如谁赢了，平局）。
 
     ```java
-    // filepath: e:\_ComputerLearning\3_Programing_OOP\1_code\2_1_Lab\Week12\GameMode.java
+    // filepath: e:\_ComputerLearning\3_programming_OOP\1_code\2_1_Lab\Week12\GameMode.java
     public abstract String getGameOverResultDisplay();
     // 或者提供一个默认实现（例如，只在有赢家或平局时返回信息）
     // public String getGameOverResultDisplay() {
@@ -809,7 +809,7 @@ public class SimpleJavaFXApp extends Application {
     - **判断是否需要 Pass 操作：** 在 `GameMode` 中添加一个方法，判断当前玩家是否需要 Pass。只有翻转棋需要 Pass。
 
     ```java
-    // filepath: e:\_ComputerLearning\3_Programing_OOP\1_code\2_1_Lab\Week12\GameMode.java
+    // filepath: e:\_ComputerLearning\3_programming_OOP\1_code\2_1_Lab\Week12\GameMode.java
     public abstract boolean requiresPass();
     // 或者提供一个默认实现
     // public boolean requiresPass() {
@@ -820,7 +820,7 @@ public class SimpleJavaFXApp extends Application {
     - **获取玩家炸弹数量（Lab6）：** 在 `GameMode` 中添加方法获取玩家炸弹数量。只有五子棋（GomokuMode）需要显示炸弹数量。
 
     ```java
-    // filepath: e:\_ComputerLearning\3_Programing_OOP\1_code\2_1_Lab\Week12\GameMode.java
+    // filepath: e:\_ComputerLearning\3_programming_OOP\1_code\2_1_Lab\Week12\GameMode.java
     public abstract int getPlayerBombCount(Player player);
     // 或者提供一个默认实现
     // public int getPlayerBombCount(Player player) {
