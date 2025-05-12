@@ -30,7 +30,10 @@ public class CommandFactory {
                 
             case QUIT:
                 return new QuitCommand();
-                
+
+            case USE_BOMB:
+                return new BombCommand(result.getPosition());
+
             case INVALID:
             default:
                 return null;

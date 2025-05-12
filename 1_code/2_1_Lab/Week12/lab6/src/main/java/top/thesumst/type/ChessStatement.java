@@ -6,7 +6,8 @@ public enum ChessStatement
     BLACK('○'),
     BLANK('·'),
     VALID('+'),
-    BARRIER('#');
+    BARRIER('#'),
+    BOMBED('@');
 
     private final char symbol;
 

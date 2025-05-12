@@ -9,6 +9,8 @@ import java.util.*;
 public class GomokuMode extends GameMode
 {
     private Player winner ;
+    private int blackBombNum = 2 ;
+    private int whiteBombNum = 3 ;
 
     public GomokuMode(int order, String mode, int size, String name1, String name2, ChessStatement color1, ChessStatement color2)
     {
@@ -42,6 +44,21 @@ public class GomokuMode extends GameMode
             default:
                 throw new IllegalCommandException("不支持的操作类型");
         }
+    }
+
+    // ! 以下public方法必须将GameMode向下转型为GomokuMode才能调用
+    /**
+     * * getBombNumber方法，获取炸弹数量
+     * @param player
+     * @return int
+     * 返回炸弹数量
+     */
+    public int getBombNumber(Player player)
+    {
+        if(player.getColor() == ChessStatement.BLACK)
+            return blackBombNum ;
+        else
+            return whiteBombNum ;
     }
 
     /**
@@ -189,5 +206,33 @@ public class GomokuMode extends GameMode
 
         for(Point p : barrierSet)
             setChessColor(p, ChessStatement.BARRIER);
+    }
+
+    // TODO: implement bomb usage
+    private boolean useBomb(Point point)
+    {
+        if(checkBomb(point))
+        {
+            if(isBlackTurn) blackBombNum-- ;
+            else whiteBombNum-- ;
+            setChessColor(point, ChessStatement.BOMBED);
+            isBlackTurn = !isBlackTurn;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * * checkBomb方法，检查炸弹使用是否合法
+     * @param point
+     * @return boolean
+     */
+    private boolean checkBomb(Point point)
+    {
+        if((isBlackTurn ? blackBombNum : whiteBombNum) <= 0)
+            throw new IllegalCommandException("炸弹数量不足") ;
+        if(getChessStatement(point) != (isBlackTurn ? ChessStatement.WHITE : ChessStatement.BLACK))
+            throw new IllegalCommandException("并非有效炸弹位置") ;
+        return true;
     }
 }
