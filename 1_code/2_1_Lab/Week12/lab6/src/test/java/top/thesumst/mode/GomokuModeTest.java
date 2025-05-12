@@ -15,7 +15,7 @@ public class GomokuModeTest {
     @BeforeEach
     public void setUp() {
         // 初始化五子棋模式，指定游戏参数
-        gomokuMode = new GomokuMode(1, "Gomoku", boardSize, "Player1", "Player2", ChessColor.BLACK, ChessColor.WHITE);
+        gomokuMode = new GomokuMode(1, "Gomoku", boardSize, "Player1", "Player2", ChessStatement.BLACK, ChessStatement.WHITE);
         System.out.println("=== 初始化新的五子棋游戏 ===");
         System.out.println("棋盘大小: " + boardSize + "x" + boardSize);
         System.out.println("玩家1: Player1 (黑棋)");
@@ -30,14 +30,14 @@ public class GomokuModeTest {
         Point validPoint = new Point(7, 7);
         boolean result = gomokuMode.receiveOperation(validPoint);
         assertTrue(result, "落子应当成功");
-        assertEquals(ChessColor.BLACK, gomokuMode.getChessColor(validPoint), "第一步应为黑棋");
+        assertEquals(ChessStatement.BLACK, gomokuMode.getChessStatement(validPoint), "第一步应为黑棋");
         System.out.println("黑棋落子成功: (" + validPoint.x + ", " + validPoint.y + ")");
         
         // 测试落子后切换玩家
         Point validPoint2 = new Point(7, 8);
         result = gomokuMode.receiveOperation(validPoint2);
         assertTrue(result, "落子应当成功");
-        assertEquals(ChessColor.WHITE, gomokuMode.getChessColor(validPoint2), "第二步应为白棋");
+        assertEquals(ChessStatement.WHITE, gomokuMode.getChessStatement(validPoint2), "第二步应为白棋");
         System.out.println("白棋落子成功: (" + validPoint2.x + ", " + validPoint2.y + ")");
         
         // 测试重复落子
@@ -79,8 +79,8 @@ public class GomokuModeTest {
         assertTrue(gomokuMode.isOver());
         Player winner = gomokuMode.getWinner();
         assertNotNull(winner, "应该有获胜者");
-        assertEquals(ChessColor.BLACK, winner.getColor(), "黑方应当获胜");
-        System.out.println("游戏结束，获胜者: " + winner.getName() + " (" + (winner.getColor() == ChessColor.BLACK ? "黑棋" : "白棋") + ")");
+        assertEquals(ChessStatement.BLACK, winner.getColor(), "黑方应当获胜");
+        System.out.println("游戏结束，获胜者: " + winner.getName() + " (" + (winner.getColor() == ChessStatement.BLACK ? "黑棋" : "白棋") + ")");
     }
     
     @Test
@@ -112,8 +112,8 @@ public class GomokuModeTest {
         assertTrue(gomokuMode.isOver());
         Player winner = gomokuMode.getWinner();
         assertNotNull(winner);
-        assertEquals(ChessColor.WHITE, winner.getColor());
-        System.out.println("游戏结束，获胜者: " + winner.getName() + " (" + (winner.getColor() == ChessColor.BLACK ? "黑棋" : "白棋") + ")");
+        assertEquals(ChessStatement.WHITE, winner.getColor());
+        System.out.println("游戏结束，获胜者: " + winner.getName() + " (" + (winner.getColor() == ChessStatement.BLACK ? "黑棋" : "白棋") + ")");
     }
     
     @Test
@@ -141,8 +141,8 @@ public class GomokuModeTest {
         assertTrue(gomokuMode.isOver());
         Player winner = gomokuMode.getWinner();
         assertNotNull(winner);
-        assertEquals(ChessColor.BLACK, winner.getColor());
-        System.out.println("游戏结束，获胜者: " + winner.getName() + " (" + (winner.getColor() == ChessColor.BLACK ? "黑棋" : "白棋") + ")");
+        assertEquals(ChessStatement.BLACK, winner.getColor());
+        System.out.println("游戏结束，获胜者: " + winner.getName() + " (" + (winner.getColor() == ChessStatement.BLACK ? "黑棋" : "白棋") + ")");
     }
     
     @Test
@@ -174,8 +174,8 @@ public class GomokuModeTest {
         assertTrue(gomokuMode.isOver());
         Player winner = gomokuMode.getWinner();
         assertNotNull(winner);
-        assertEquals(ChessColor.WHITE, winner.getColor());
-        System.out.println("游戏结束，获胜者: " + winner.getName() + " (" + (winner.getColor() == ChessColor.BLACK ? "黑棋" : "白棋") + ")");
+        assertEquals(ChessStatement.WHITE, winner.getColor());
+        System.out.println("游戏结束，获胜者: " + winner.getName() + " (" + (winner.getColor() == ChessStatement.BLACK ? "黑棋" : "白棋") + ")");
     }
     
     @Test
@@ -183,7 +183,7 @@ public class GomokuModeTest {
         System.out.println("\n=== 测试平局情况（棋盘填满） ===");
         
         // 为了简化测试，我们创建一个较小的棋盘
-        GomokuMode smallGomoku = new GomokuMode(1, "Gomoku", 3, "Player1", "Player2", ChessColor.BLACK, ChessColor.WHITE);
+        GomokuMode smallGomoku = new GomokuMode(1, "Gomoku", 3, "Player1", "Player2", ChessStatement.BLACK, ChessStatement.WHITE);
         System.out.println("创建3x3小棋盘用于平局测试");
         
         // 按特定方式填满棋盘，确保没有五连子

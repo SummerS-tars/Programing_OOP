@@ -1,6 +1,6 @@
 package top.thesumst.type;
 
-public enum ChessColor 
+public enum ChessStatement 
 {
     WHITE('●'),
     BLACK('○'),
@@ -9,7 +9,7 @@ public enum ChessColor
 
     private final char symbol;
 
-    ChessColor(char symbol) {
+    ChessStatement(char symbol) {
         this.symbol = symbol;
     }
 
@@ -21,7 +21,7 @@ public enum ChessColor
 class TestEnum 
 {
     public static void main(String[] args) {
-        ChessColor color = ChessColor.BLACK;
+        ChessStatement color = ChessStatement.BLACK;
         System.out.println("Selected color: " + color + " with symbol " + color.getSymbol());
     }
 }

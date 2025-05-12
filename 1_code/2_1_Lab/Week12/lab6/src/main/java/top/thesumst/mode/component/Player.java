@@ -1,14 +1,14 @@
 package top.thesumst.mode.component;
 
-import top.thesumst.type.ChessColor;
+import top.thesumst.type.ChessStatement;
 
 public class Player
 {
     private String name ;
-    private ChessColor color ;
+    private ChessStatement color ;
     private int chessNumber ;
 
-    public Player(String name, ChessColor color)
+    public Player(String name, ChessStatement color)
     {
         this.name = name ;
         this.color = color ;
@@ -20,7 +20,7 @@ public class Player
         return name ;
     }
         
-    public ChessColor getColor() 
+    public ChessStatement getColor() 
     {
         return color;
     }

@@ -3,7 +3,7 @@ package top.thesumst.container;
 import top.thesumst.mode.*;
 import top.thesumst.tools.*;
 import top.thesumst.tools.command.*;
-import top.thesumst.type.ChessColor;
+import top.thesumst.type.ChessStatement;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -61,8 +61,8 @@ public class GameContainerTestDrive {
                     
                     // 检查游戏是否结束
                     if (peaceGame.isOver()) {
-                        System.out.println("和平模式游戏结束！黑棋数: " + peaceGame.getBoard().getChessNumber(ChessColor.BLACK) + 
-                                         ", 白棋数: " + peaceGame.getBoard().getChessNumber(ChessColor.WHITE));
+                        System.out.println("和平模式游戏结束！黑棋数: " + peaceGame.getBoard().getChessNumber(ChessStatement.BLACK) + 
+                                         ", 白棋数: " + peaceGame.getBoard().getChessNumber(ChessStatement.WHITE));
                         Thread.sleep(1000);
                         break;
                     }
@@ -149,8 +149,8 @@ public class GameContainerTestDrive {
                     
                     // 检查游戏是否结束
                     if (reversiGame.isOver()) {
-                        System.out.println("翻转棋游戏结束！黑棋数: " + reversiGame.getBoard().getChessNumber(ChessColor.BLACK) + 
-                                         ", 白棋数: " + reversiGame.getBoard().getChessNumber(ChessColor.WHITE));
+                        System.out.println("翻转棋游戏结束！黑棋数: " + reversiGame.getBoard().getChessNumber(ChessStatement.BLACK) + 
+                                         ", 白棋数: " + reversiGame.getBoard().getChessNumber(ChessStatement.WHITE));
                         gameEnded = true;
                         break;
                     }

@@ -10,7 +10,7 @@ public class GomokuMode extends GameMode
 {
     private Player winner ;
 
-    public GomokuMode(int order, String mode, int size, String name1, String name2, ChessColor color1, ChessColor color2)
+    public GomokuMode(int order, String mode, int size, String name1, String name2, ChessStatement color1, ChessStatement color2)
     {
         super(order, mode, size, name1, name2, color1, color2);
 
@@ -48,7 +48,7 @@ public class GomokuMode extends GameMode
     {
         if(checkPoint(point))
         {
-            ChessColor color = isBlackTurn ? ChessColor.BLACK : ChessColor.WHITE ;
+            ChessStatement color = isBlackTurn ? ChessStatement.BLACK : ChessStatement.WHITE ;
             addStep(new Step(point, color));
             setChessColor(point, color);
 
@@ -73,7 +73,7 @@ public class GomokuMode extends GameMode
 
     private boolean checkPoint(Point point)
     {
-        if(getChessColor(point) == ChessColor.BLANK)
+        if(getChessStatement(point) == ChessStatement.BLANK)
         {
             return true ;
         }
@@ -96,7 +96,7 @@ public class GomokuMode extends GameMode
             Point focus = new Point(point) ;
             while(moveFocus(focus, direction))
             {
-                if(getChessColor(focus) == (isBlackTurn ? ChessColor.BLACK : ChessColor.WHITE))
+                if(getChessStatement(focus) == (isBlackTurn ? ChessStatement.BLACK : ChessStatement.WHITE))
                 {
                     linkedNumber[direction.ordinal() % 4]++ ;
                 }
@@ -125,7 +125,7 @@ public class GomokuMode extends GameMode
     {
         for(int i = 0 ; i < maxSize ; i ++)
             for(int j = 0 ; j < maxSize ; j ++)
-                if(getChessColor(new Point(i, j)) == ChessColor.BLANK)  // * 有空位，说明未满
+                if(getChessStatement(new Point(i, j)) == ChessStatement.BLANK)  // * 有空位，说明未满
                     return false;
         return true;
     }
@@ -159,7 +159,7 @@ public class GomokuMode extends GameMode
      */
     private void setWinner()
     {
-        winner = (player1.getColor() == (isBlackTurn ? ChessColor.BLACK : ChessColor.WHITE) )
+        winner = (player1.getColor() == (isBlackTurn ? ChessStatement.BLACK : ChessStatement.WHITE) )
                 ? player1 : player2;
     }
 }

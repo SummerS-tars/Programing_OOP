@@ -1,7 +1,7 @@
 package top.thesumst.mode;
 
 import top.thesumst.mode.component.*;
-import top.thesumst.type.ChessColor;
+import top.thesumst.type.ChessStatement;
 import top.thesumst.exception.*;
 import java.awt.Point;
 import java.util.Stack;
@@ -17,7 +17,7 @@ public abstract class GameMode
     @SuppressWarnings("unused")
     private Stack<Step> stepStack, undoStack;
 
-    GameMode(int order, String mode,int size, String name1, String name2, ChessColor color1, ChessColor color2)
+    GameMode(int order, String mode,int size, String name1, String name2, ChessStatement color1, ChessStatement color2)
     {
         gameOrder = order;
         gameMode = mode;
@@ -96,7 +96,7 @@ public abstract class GameMode
     }
     public Player getCurrentPlayer()
     {
-        return (player1.getColor() == (isBlackTurn ? ChessColor.BLACK : ChessColor.WHITE )) ? player1 : player2;
+        return (player1.getColor() == (isBlackTurn ? ChessStatement.BLACK : ChessStatement.WHITE )) ? player1 : player2;
     }
     public ChessBoard getBoard()
     {
@@ -106,15 +106,15 @@ public abstract class GameMode
     {
         return stepStack.size();
     }
-    protected ChessColor getChessColor(Point point)
+    protected ChessStatement getChessStatement(Point point)
     {
-        return board.getChessColor(point);
+        return board.getChessStatement(point);
     }
-    protected void setChessColor(Point point, ChessColor color)
+    protected void setChessColor(Point point, ChessStatement color)
     {
-        board.setChessColor(point, color);
+        board.setChessStatement(point, color);
     }
-    protected int getChessNumber(ChessColor color)
+    protected int getChessNumber(ChessStatement color)
     {
         return board.getChessNumber(color);
     }

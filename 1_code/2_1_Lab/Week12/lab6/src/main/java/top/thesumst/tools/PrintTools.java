@@ -27,7 +27,7 @@ public class PrintTools
             goToPoint(getBoartPosition(), i+1);
             System.out.printf("%2d ", i + 1) ;
             for(int j = 0 ; j < size ; j ++ )
-                System.out.printf("%c " , board.getChessColor(new Point(i,j)).getSymbol()) ;
+                System.out.printf("%c " , board.getChessStatement(new Point(i,j)).getSymbol()) ;
         }
     }
 

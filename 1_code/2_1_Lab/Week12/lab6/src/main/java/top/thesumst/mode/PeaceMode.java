@@ -1,22 +1,22 @@
 package top.thesumst.mode;
 
 import top.thesumst.mode.component.Step;
-import top.thesumst.type.ChessColor;
+import top.thesumst.type.ChessStatement;
 import top.thesumst.exception.*;
 import java.awt.Point;
 
 public class PeaceMode extends GameMode
 {
-    public PeaceMode(int order, String mode, int size, String name1, String name2, ChessColor color1, ChessColor color2)
+    public PeaceMode(int order, String mode, int size, String name1, String name2, ChessStatement color1, ChessStatement color2)
     {
         super(order, mode, size, name1, name2, color1, color2);
 
 
         int mid = size / 2 ;
-        setChessColor(new Point(mid - 1, mid - 1), ChessColor.WHITE);
-        setChessColor(new Point(mid - 1, mid), ChessColor.BLACK);
-        setChessColor(new Point(mid, mid - 1), ChessColor.BLACK);
-        setChessColor(new Point(mid, mid), ChessColor.WHITE);
+        setChessColor(new Point(mid - 1, mid - 1), ChessStatement.WHITE);
+        setChessColor(new Point(mid - 1, mid), ChessStatement.BLACK);
+        setChessColor(new Point(mid, mid - 1), ChessStatement.BLACK);
+        setChessColor(new Point(mid, mid), ChessStatement.WHITE);
     }
 
     /**
@@ -57,7 +57,7 @@ public class PeaceMode extends GameMode
     {
         if(checkPoint(point))
         {
-            ChessColor color = isBlackTurn ? ChessColor.BLACK : ChessColor.WHITE ;
+            ChessStatement color = isBlackTurn ? ChessStatement.BLACK : ChessStatement.WHITE ;
             addStep(new Step(point, color));
             setChessColor(point, color);
             isBlackTurn = !isBlackTurn ;
@@ -74,7 +74,7 @@ public class PeaceMode extends GameMode
      */
     private boolean checkPoint(Point point)
     {
-        if(getChessColor(point) == ChessColor.BLANK)
+        if(getChessStatement(point) == ChessStatement.BLANK)
         {
             return true ;
         }
@@ -87,8 +87,8 @@ public class PeaceMode extends GameMode
      */
     private boolean checkGameOver()
     {
-        int blackChess = getChessNumber(ChessColor.BLACK) ;
-        int whiteChess = getChessNumber(ChessColor.WHITE) ;
+        int blackChess = getChessNumber(ChessStatement.BLACK) ;
+        int whiteChess = getChessNumber(ChessStatement.WHITE) ;
         if(blackChess + whiteChess == maxSize * maxSize) return true ;
         return false ;
     }

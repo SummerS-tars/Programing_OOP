@@ -4,7 +4,7 @@ import top.thesumst.mode.*;
 import top.thesumst.exception.*;
 import top.thesumst.tools.PauseTools;
 import top.thesumst.tools.PrintTools;
-import top.thesumst.type.ChessColor;
+import top.thesumst.type.ChessStatement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.InputMismatchException;
@@ -14,7 +14,7 @@ public class GameList
     private static int gameNumber ;
     private static List<GameMode> games ;
     private static String player1Name , player2Name ;
-    private static ChessColor player1Color , player2Color ;
+    private static ChessStatement player1Color , player2Color ;
 
     public GameList()
     {
@@ -102,11 +102,11 @@ public class GameList
                 printTools.sc.nextLine(); // 读取缓冲区中多余的换行符
                 switch (op) {
                     case 1:
-                        player1Color = ChessColor.BLACK;
+                        player1Color = ChessStatement.BLACK;
                         optionAvailable = true;
                         break;
                     case 2:
-                        player1Color = ChessColor.WHITE;
+                        player1Color = ChessStatement.WHITE;
                         optionAvailable = true;
                         break;
                     default:
@@ -123,6 +123,6 @@ public class GameList
         System.out.println("请输入2号玩家的名称：");
         player2Name = printTools.sc.nextLine() ;
 
-        player2Color = (player1Color == ChessColor.BLACK) ? ChessColor.WHITE : ChessColor.BLACK ;
+        player2Color = (player1Color == ChessStatement.BLACK) ? ChessStatement.WHITE : ChessStatement.BLACK ;
     }
 }

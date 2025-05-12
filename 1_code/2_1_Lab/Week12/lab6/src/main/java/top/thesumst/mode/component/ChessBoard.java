@@ -1,22 +1,22 @@
 package top.thesumst.mode.component;
 
-import top.thesumst.type.ChessColor;
+import top.thesumst.type.ChessStatement;
 import java.awt.Point;
 
 public class ChessBoard
 {
-    private ChessColor[][] chessBoard ;
+    private ChessStatement[][] chessBoard ;
     final int size ;
 
     public ChessBoard(int size)
     {
         this.size = size ;
-        chessBoard = new ChessColor[size][size] ;
+        chessBoard = new ChessStatement[size][size] ;
         for(int i = 0; i < size; i++)
         {
             for(int j = 0; j < size; j++)
             {
-                chessBoard[i][j] = ChessColor.BLANK ;
+                chessBoard[i][j] = ChessStatement.BLANK ;
             }
         }
     }
@@ -26,7 +26,7 @@ public class ChessBoard
      * @param point
      * @param color
      */
-    public void setChessColor(Point point , ChessColor color)
+    public void setChessStatement(Point point , ChessStatement color)
     {
         chessBoard[point.x][point.y] = color ;
     }
@@ -36,17 +36,17 @@ public class ChessBoard
      * @param point
      * @return ChessColor
      */
-    public ChessColor getChessColor(Point point)
+    public ChessStatement getChessStatement(Point point)
     {
         return chessBoard[point.x][point.y] ;
     }
 
     /**
      * * getChessNumber方法，获取棋盘上特定颜色的棋子数量
-     * @param ChessColor 查询的颜色
+     * @param ChessStatement 查询的颜色
      * @return int 棋子数量
      */
-    public int getChessNumber(ChessColor color)
+    public int getChessNumber(ChessStatement color)
     {
         int count = 0 ;
         for(int i = 0; i < size; i++)

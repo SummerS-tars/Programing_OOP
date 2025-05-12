@@ -2,7 +2,7 @@ package top.thesumst.mode;
 
 import top.thesumst.mode.component.Player;
 import top.thesumst.mode.component.Step;
-import top.thesumst.type.ChessColor;
+import top.thesumst.type.ChessStatement;
 import top.thesumst.type.Direction;
 import top.thesumst.exception.*;
 import java.awt.Point;
@@ -16,15 +16,15 @@ public class ReversiMode extends GameMode
     private boolean shouldPass ;
     private Player winner ;
 
-    public ReversiMode(int order, String mode, int size, String name1, String name2, ChessColor color1, ChessColor color2)
+    public ReversiMode(int order, String mode, int size, String name1, String name2, ChessStatement color1, ChessStatement color2)
     {
         super(order, mode, size, name1, name2, color1, color2);
 
         int mid = size / 2 ;
-        setChessColor(new Point(mid - 1, mid - 1), ChessColor.WHITE);
-        setChessColor(new Point(mid - 1, mid), ChessColor.BLACK);
-        setChessColor(new Point(mid, mid - 1), ChessColor.BLACK);
-        setChessColor(new Point(mid, mid), ChessColor.WHITE);
+        setChessColor(new Point(mid - 1, mid - 1), ChessStatement.WHITE);
+        setChessColor(new Point(mid - 1, mid), ChessStatement.BLACK);
+        setChessColor(new Point(mid, mid - 1), ChessStatement.BLACK);
+        setChessColor(new Point(mid, mid), ChessStatement.WHITE);
 
         validPointsCache = new HashMap<>();
         shouldPass = false ;
@@ -90,7 +90,7 @@ public class ReversiMode extends GameMode
     {
         if(checkGo(point))
         {
-            ChessColor color = isBlackTurn ? ChessColor.BLACK : ChessColor.WHITE ;
+            ChessStatement color = isBlackTurn ? ChessStatement.BLACK : ChessStatement.WHITE ;
             addStep(new Step(point, color));
             reverse(point, validPointsCache.get(point));
             updatePlayerChessNumber();
@@ -137,7 +137,7 @@ public class ReversiMode extends GameMode
          */
 
         // * 当前位置已经有棋子，非法步骤
-        if(getChessColor(point) != ChessColor.BLANK) return legalDirection ;
+        if(getChessStatement(point) != ChessStatement.BLANK) return legalDirection ;
 
         // * 遍历八个方向寻找是否有合法方向
         EnumSet<Direction> allDirections = EnumSet.allOf(Direction.class);
@@ -148,14 +148,14 @@ public class ReversiMode extends GameMode
             while(legalFlag = moveFocus(focus, direction))
             {
                 // * 判断是否异色
-                if(getChessColor(focus) == (isBlackTurn ? ChessColor.WHITE : ChessColor.BLACK))
+                if(getChessStatement(focus) == (isBlackTurn ? ChessStatement.WHITE : ChessStatement.BLACK))
                 {
                     // * 是异色棋子，维持该方向位数字为1
                     legalDirection |= direction.getValue() ;
                 }
                 else
                 {
-                    if(getChessColor(focus) == ChessColor.BLANK) legalFlag = false ; // * 该方向为空，将legalFlag置为false再退出
+                    if(getChessStatement(focus) == ChessStatement.BLANK) legalFlag = false ; // * 该方向为空，将legalFlag置为false再退出
                     break ;
                     /**
                      * 注意：此处包含多种情况
@@ -200,8 +200,8 @@ public class ReversiMode extends GameMode
     private void clearValidPointsHint()
     {
         for(Point point : validPointsCache.keySet())
-            if(getChessColor(point) == ChessColor.VALID)
-                setChessColor(point, ChessColor.BLANK);
+            if(getChessStatement(point) == ChessStatement.VALID)
+                setChessColor(point, ChessStatement.BLANK);
     }
 
     /**
@@ -210,7 +210,7 @@ public class ReversiMode extends GameMode
     private void refreshValidPointsHint()
     {
         for(Point point : validPointsCache.keySet())
-            setChessColor(point, ChessColor.VALID);
+            setChessColor(point, ChessStatement.VALID);
     }
 
     /**
@@ -221,7 +221,7 @@ public class ReversiMode extends GameMode
     private void reverse(Point point, byte legalDirection)
     {
         // * 本次运行要放置的棋子颜色设置
-        ChessColor color = isBlackTurn ? ChessColor.BLACK : ChessColor.WHITE ;
+        ChessStatement color = isBlackTurn ? ChessStatement.BLACK : ChessStatement.WHITE ;
 
         // * 棋子翻转
         EnumSet<Direction> allDirections = EnumSet.allOf(Direction.class);
@@ -235,7 +235,7 @@ public class ReversiMode extends GameMode
                 moveFocus(focus, direction) ;
 
                 // * 该方向为有效方向，开始翻转棋子
-                while(getChessColor(focus) != color)
+                while(getChessStatement(focus) != color)
                 {
                     setChessColor(focus, color);
                     moveFocus(focus, direction);    // * 此处抛弃了返回值，因为有效方向一定会有同色棋子包夹
