@@ -4,7 +4,7 @@ import top.thesumst.mode.component.*;
 import top.thesumst.type.*;
 import top.thesumst.exception.*;
 import java.awt.Point;
-import java.util.EnumSet;
+import java.util.*;
 
 public class GomokuMode extends GameMode
 {
@@ -13,7 +13,7 @@ public class GomokuMode extends GameMode
     public GomokuMode(int order, String mode, int size, String name1, String name2, ChessStatement color1, ChessStatement color2)
     {
         super(order, mode, size, name1, name2, color1, color2);
-
+        setBarrier();
         winner = null ;
     }
 
@@ -161,5 +161,23 @@ public class GomokuMode extends GameMode
     {
         winner = (player1.getColor() == (isBlackTurn ? ChessStatement.BLACK : ChessStatement.WHITE) )
                 ? player1 : player2;
+    }
+
+    private void setBarrier()
+    {
+        Set<Point> barrierSet = new HashSet<Point>() ;
+        Random random = new Random() ;
+        int barrierNumber = 4 ;
+
+        while(barrierSet.size() < barrierNumber)
+        {
+            int x = random.nextInt(maxSize) ;
+            int y = random.nextInt(maxSize) ;
+            Point point = new Point(x, y) ;
+            barrierSet.add(point) ;
+        }
+
+        for(Point p : barrierSet)
+            setChessColor(p, ChessStatement.BARRIER);
     }
 }
