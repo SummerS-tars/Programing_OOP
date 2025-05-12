@@ -42,19 +42,20 @@ introduce some basic information about JavaFX and to introduce it to my project,
     1. [x] del the feat to accept arbitrary sequence of input position  
     2. [x] add the feat to accept the input of `bomb` cmd  
     3. [x] add the `playback {filename.cmd}` cmd  
-3. [ ] arbitrary barry position `#` implementation  
+3. [x] arbitrary barry position `#` implementation  
 4. [x] refactor some parts about wrong info report  
     using exception to report some wrong cmds  
-5. [ ] implement the `playback` cmd  
+5. [x] implement the `bomb` cmd  
+6. [ ] implement the `playback` cmd  
     1. [ ] read the file line by line  
     2. [ ] parse the cmd and execute it
-6. [ ] introduce the observer pattern to project to refactor the structure better  
-7. [ ] update the `PrintTools`  
+7. [ ] introduce the observer pattern to project to refactor the structure better  
+8. [ ] update the `PrintTools`  
     1. [ ] new input position prompt  
     2. [ ] error input some little refactor  
     3. [ ] new cmd prompt  
-8. [ ] refactor the method to get specific game(it's not good now)  
-9. [x] quit may be no need to be passed to game  
+9. [ ] refactor the method to get specific game(it's not good enough now)  
+10. [x] quit may be no need to be passed to game  
 
 ## Specification Implementation
 
@@ -143,4 +144,10 @@ which will be extracted to the result of command
 ### Barrier Position Implementation
 
 only available in `Gomoku` class  
-add type in
+use hash set to avoid duplicate position  
+
+### Bomb Command Implementation
+
+to make the GameMode able to receive the bomb cmd  
+refactor the receiveOperation method  
+by using a wrapper class `Operation`  
