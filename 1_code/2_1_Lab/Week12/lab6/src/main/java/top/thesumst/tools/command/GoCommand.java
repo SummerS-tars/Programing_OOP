@@ -4,6 +4,7 @@ import top.thesumst.container.GameList;
 import top.thesumst.exception.IllegalMoveException;
 import top.thesumst.mode.GameMode;
 import top.thesumst.tools.PrintTools;
+import top.thesumst.type.*;
 
 import java.awt.Point;
 
@@ -24,7 +25,7 @@ public class GoCommand implements GameCommand
     {
         // 执行下棋操作
         try {
-            if(!game.receiveOperation(position))
+            if(!game.receiveOperation(new Operation<Point>(OperationType.MOVE, position)))
                 throw new IllegalMoveException();
             String result = "("+(position.x+1)+","+(char)('A'+position.y)+")"+"着棋成功";
             return CommandResult.success(result);

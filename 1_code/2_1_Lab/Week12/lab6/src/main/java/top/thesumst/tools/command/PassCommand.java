@@ -4,6 +4,7 @@ import top.thesumst.container.GameList;
 import top.thesumst.mode.GameMode;
 import top.thesumst.tools.PrintTools;
 import top.thesumst.exception.IllegalCommandException;
+import top.thesumst.type.*;
 
 /**
  * 跳过回合命令
@@ -13,7 +14,7 @@ public class PassCommand implements GameCommand {
     public CommandResult execute(GameMode game, GameList gameList) 
     {
         try {
-            if(!game.receiveOperation("pass"))
+            if(!game.receiveOperation(new Operation<Void>(OperationType.PASS, null)))
                 throw new IllegalCommandException("跳过回合失败");
             return CommandResult.success("跳过回合成功");
         } catch (IllegalCommandException e) {

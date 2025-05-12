@@ -2,8 +2,7 @@ package top.thesumst.mode;
 
 import top.thesumst.mode.component.Player;
 import top.thesumst.mode.component.Step;
-import top.thesumst.type.ChessStatement;
-import top.thesumst.type.Direction;
+import top.thesumst.type.*;
 import top.thesumst.exception.*;
 import java.awt.Point;
 import java.util.HashMap;
@@ -31,36 +30,30 @@ public class ReversiMode extends GameMode
         refreshValidPoints();
     }
 
+    /**
+     * * receiveOperation方法，接收操作
+     * @param operation
+     * @return boolean
+     * @throws IllegalMoveException
+     * @throws IllegalCommandException
+     */
     @Override
-    public boolean receiveOperation(Point point) throws IllegalMoveException 
+    public boolean receiveOperation(Operation<?> operation)
+    throws IllegalMoveException, IllegalCommandException
     {
-        if(isOver) throw new IllegalMoveException("游戏已经结束，无法下棋") ;
-        if(shouldPass) throw new IllegalMoveException("当前无有效下棋位置，无法下棋，请执行pass") ;
-        return go(point);
-    }
-
-    @Override
-    public boolean receiveOperation(String operation) throws IllegalCommandException
-    {
-        switch (operation) {
-            case "pass":
-                if(shouldPass)
-                {
-                    if(isOver) throw new IllegalCommandException("游戏已经结束，无法执行pass") ;
-                    else
-                    {
-                        updateGameState();
-                        // if(checkGameOver()) // TODO: refactor the end game check logic
-                        // {
-                        //     isOver = true;
-                        //     setWinner();
-                        // }
-                        return true ;
-                    }
-                }
-                else throw new IllegalCommandException("当前有有效下棋位置，无法执行pass") ;
+        OperationType type = operation.getType();
+        switch (type) {
+            case MOVE:
+                if(isOver) throw new IllegalMoveException("游戏已经结束，无法下棋") ;
+                if(shouldPass) throw new IllegalMoveException("当前玩家无有效下棋位置") ;
+                Point point = (Point) operation.getData();
+                return go(point);
+            case PASS:
+                throw new IllegalCommandException("gomoku模式不支持pass操作") ;
+            case BOMB:
+                throw new IllegalCommandException("reversi模式不支持炸弹操作") ;
             default:
-                return false;
+                throw new IllegalCommandException("不支持的操作类型");
         }
     }
 

@@ -2,6 +2,7 @@ package top.thesumst.mode;
 
 import top.thesumst.mode.component.Step;
 import top.thesumst.type.ChessStatement;
+import top.thesumst.type.*;
 import top.thesumst.exception.*;
 import java.awt.Point;
 
@@ -20,31 +21,28 @@ public class PeaceMode extends GameMode
     }
 
     /**
-     * * receiveOperation方法，接受下棋操作，在输入前就过滤超出棋盘范围的操作
-     * @param Point 下棋位置
-     * @return boolean 是否成功
+     * * receiveOperation方法，接收操作
+     * @param operation
+     * @return boolean
+     * @throws IllegalMoveException
+     * @throws IllegalCommandException
      */
     @Override
-    public boolean receiveOperation(Point point) throws IllegalMoveException
+    public boolean receiveOperation(Operation<?> operation)
+    throws IllegalMoveException, IllegalCommandException
     {
-        if(isOver) throw new IllegalMoveException("游戏已经结束，无法下棋") ;
-        return go(point);
-    }
-
-    /**
-     * * receiveOperation方法，接受下棋操作，在输入前就过滤超出棋盘范围的操作
-     * @param String 操作
-     * 应该是pass或者quit，其中pass只有在ReversiMode中有用
-     * @return boolean 是否成功
-     */
-    @Override
-    public boolean receiveOperation(String operation) throws IllegalCommandException
-    {
-        switch (operation) {
-            case "pass":  
-                throw new IllegalCommandException("peace模式不支持pass操作");
+        OperationType type = operation.getType();
+        switch (type) {
+            case MOVE:
+                if(isOver) throw new IllegalMoveException("游戏已经结束，无法下棋") ;
+                Point point = (Point) operation.getData();
+                return go(point);
+            case PASS:
+                throw new IllegalCommandException("peace模式不支持pass操作") ;
+            case BOMB:
+                throw new IllegalCommandException("peace模式不支持炸弹操作") ;
             default:
-                return false;
+                throw new IllegalCommandException("不支持的操作类型");
         }
     }
     

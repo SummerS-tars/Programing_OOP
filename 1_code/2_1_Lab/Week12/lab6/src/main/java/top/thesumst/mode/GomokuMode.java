@@ -17,20 +17,30 @@ public class GomokuMode extends GameMode
         winner = null ;
     }
 
+    /**
+     * * receiveOperation方法，接收操作
+     * @param operation
+     * @return boolean
+     * @throws IllegalMoveException
+     * @throws IllegalCommandException
+     */
     @Override
-    public boolean receiveOperation(Point point) throws IllegalMoveException
+    public boolean receiveOperation(Operation<?> operation)
+    throws IllegalMoveException, IllegalCommandException
     {
-        if(isOver) throw new IllegalMoveException("游戏已经结束，无法下棋") ;
-        return go(point);
-    }
-
-    @Override
-    public boolean receiveOperation(String operation)  throws IllegalCommandException
-    {
-        switch(operation) {
-            case "pass": throw new IllegalCommandException("gomoku模式不支持pass操作") ;
+        OperationType type = operation.getType();
+        switch (type) {
+            case MOVE:
+                if(isOver) throw new IllegalMoveException("游戏已经结束，无法下棋") ;
+                Point point = (Point) operation.getData();
+                return go(point);
+            case PASS:
+                throw new IllegalCommandException("gomoku模式不支持pass操作") ;
+            case BOMB:
+                Point bombPoint = (Point) operation.getData();
+                return useBomb(bombPoint);
             default:
-                return false;
+                throw new IllegalCommandException("不支持的操作类型");
         }
     }
 
