@@ -1,6 +1,6 @@
 package top.thesumst.exception;
 
-public class IllegalCommandException extends Exception
+public class IllegalCommandException extends RuntimeException
 {
     public IllegalCommandException()
     {
