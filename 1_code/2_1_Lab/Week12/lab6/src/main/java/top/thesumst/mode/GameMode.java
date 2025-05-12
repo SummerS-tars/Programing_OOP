@@ -14,6 +14,7 @@ public abstract class GameMode
     private ChessBoard board;
     protected Player player1, player2;
     protected boolean isBlackTurn, isOver;
+    @SuppressWarnings("unused")
     private Stack<Step> stepStack, undoStack;
 
     GameMode(int order, String mode,int size, String name1, String name2, ChessColor color1, ChessColor color2)

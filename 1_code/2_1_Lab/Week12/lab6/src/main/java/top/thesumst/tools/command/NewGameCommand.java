@@ -20,7 +20,7 @@ public class NewGameCommand implements GameCommand {
     public CommandResult execute(GameMode game, GameList gameList) 
     {
         try {
-            if(gameList.addGame(gameType))
+            if(GameList.addGame(gameType))
             {
                 PrintTools.printGameList(gameList);
                 return CommandResult.success("已创建新的" + gameType + "游戏");

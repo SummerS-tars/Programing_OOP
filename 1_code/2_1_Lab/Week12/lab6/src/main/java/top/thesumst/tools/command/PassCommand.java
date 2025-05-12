@@ -2,7 +2,6 @@ package top.thesumst.tools.command;
 
 import top.thesumst.container.GameList;
 import top.thesumst.mode.GameMode;
-import top.thesumst.mode.ReversiMode;
 import top.thesumst.tools.PrintTools;
 import top.thesumst.exception.IllegalCommandException;
 

@@ -68,7 +68,7 @@ public class PrintTools
         for(int i = 1 ; i <= GameList.getGameNumber() ; i++)
         {
             String preString = i == GameContainer.getCurrentGameOrder() ? "> " : "  ";
-            String gameString = gameList.getGame(i).toString();
+            String gameString = GameList.getGame(i).toString();
             gameString = String.format("%-10s", gameString);
             lists[(i - 1) % 4] += preString + gameString ;
         }
@@ -83,7 +83,7 @@ public class PrintTools
 
     public static void printInputPanel(GameList gameList)
     {
-        GameMode currentGame = gameList.getGame(GameContainer.getCurrentGameOrder()) ;
+        GameMode currentGame = GameList.getGame(GameContainer.getCurrentGameOrder()) ;
         String turnInfo = getTurnInfo(currentGame) ;
         String inputTips = getTips(gameList) ;
         goToPoint(getInputPosition());
@@ -164,7 +164,7 @@ public class PrintTools
      */
     private static String getTips(GameList gameList)
     {
-        GameMode currentGame = gameList.getGame(GameContainer.getCurrentGameOrder()) ;
+        GameMode currentGame = GameList.getGame(GameContainer.getCurrentGameOrder()) ;
         String tips = new String() ;
         String addGameInfo = "增加棋盘(peace/reversi/gomoku)";
         String quitGameInfo = "退出游戏(quit)";

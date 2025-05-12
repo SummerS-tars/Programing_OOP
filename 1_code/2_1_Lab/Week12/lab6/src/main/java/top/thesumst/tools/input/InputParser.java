@@ -157,13 +157,12 @@ class InputParserTestDrive
         InputStream originalIn = System.in;
         String simulatedInput = "test1\n1\n2\n";
         System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
-        GameList gameList = new GameList();
         System.setIn(originalIn);
     
         try {
-            gameList.addGame("peace");
-            gameList.addGame("reversi");
-            gameList.addGame("gomoku");
+            GameList.addGame("peace");
+            GameList.addGame("reversi");
+            GameList.addGame("gomoku");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

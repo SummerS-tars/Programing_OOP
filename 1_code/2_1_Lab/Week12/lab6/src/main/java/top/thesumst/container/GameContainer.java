@@ -17,9 +17,10 @@ public class GameContainer
         currentGameOrder = 1 ;
         isRunning = true ;
         PrintTools.clearConsole();
-        PrintTools.initializePositionsSet(gameList.getGame(currentGameOrder));
-        PrintTools.printBoard(gameList.getGame(currentGameOrder));
-        PrintTools.printPlayerInfo(gameList.getGame(currentGameOrder));
+        GameMode game = GameList.getGame(currentGameOrder) ;
+        PrintTools.initializePositionsSet(game);
+        PrintTools.printBoard(game);
+        PrintTools.printPlayerInfo(game);
         PrintTools.printGameList(gameList);
     }
 
@@ -33,7 +34,7 @@ public class GameContainer
         while(isRunning)
         {
             // 获取当前游戏
-            GameMode currentGame = gameList.getGame(currentGameOrder) ;
+            GameMode currentGame = GameList.getGame(currentGameOrder) ;
 
             // 接收输入并执行命令
             CommandResult result = receiver.receiveAndExecuteCommand(currentGame, gameList) ;

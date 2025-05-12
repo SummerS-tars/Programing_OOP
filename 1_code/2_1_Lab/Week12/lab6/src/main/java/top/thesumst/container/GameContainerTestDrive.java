@@ -24,7 +24,7 @@ public class GameContainerTestDrive {
     private static void testPeaceModeComplete(GameList gameList, int peaceModeOrder) throws InterruptedException {
         System.out.println("\n=== 测试和平模式完整游戏流程 ===");
         GameContainer.switchGameOrder(peaceModeOrder);
-        GameMode peaceGame = gameList.getGame(GameContainer.getCurrentGameOrder());
+        GameMode peaceGame = GameList.getGame(GameContainer.getCurrentGameOrder());
         
         // 确保是和平模式
         if (!(peaceGame instanceof PeaceMode)) {
@@ -93,7 +93,7 @@ public class GameContainerTestDrive {
     private static void testReversiModeComplete(GameList gameList, int reversiModeOrder) throws InterruptedException {
         System.out.println("\n=== 测试翻转棋模式完整游戏流程 ===");
         GameContainer.switchGameOrder(reversiModeOrder);
-        GameMode reversiGame = gameList.getGame(GameContainer.getCurrentGameOrder());
+        GameMode reversiGame = GameList.getGame(GameContainer.getCurrentGameOrder());
         
         // 确保是翻转棋模式
         if (!(reversiGame instanceof ReversiMode)) {
@@ -206,13 +206,13 @@ public class GameContainerTestDrive {
         
         // 创建新游戏测试
         System.out.println("\n测试创建新游戏:");
-        GameMode currentGame = gameList.getGame(GameContainer.getCurrentGameOrder());
+        GameMode currentGame = GameList.getGame(GameContainer.getCurrentGameOrder());
         NewGameCommand newPeaceCmd = new NewGameCommand("peace");
         CommandResult newPeaceResult = newPeaceCmd.execute(currentGame, gameList);
         // 切换到新创建的游戏
         int newGameOrder = GameList.getGameNumber();
         GameContainer.switchGameOrder(newGameOrder);
-        currentGame = gameList.getGame(GameContainer.getCurrentGameOrder());
+        currentGame = GameList.getGame(GameContainer.getCurrentGameOrder());
         
         PrintTools.clearConsole();
         PrintTools.printBoard(currentGame);
@@ -228,7 +228,7 @@ public class GameContainerTestDrive {
         // 切换到新创建的游戏
         newGameOrder = GameList.getGameNumber();
         GameContainer.switchGameOrder(newGameOrder);
-        currentGame = gameList.getGame(GameContainer.getCurrentGameOrder());
+        currentGame = GameList.getGame(GameContainer.getCurrentGameOrder());
         
         PrintTools.clearConsole();
         PrintTools.printBoard(currentGame);
@@ -241,7 +241,7 @@ public class GameContainerTestDrive {
         // 测试游戏切换
         System.out.println("\n测试游戏切换:");
         GameContainer.switchGameOrder(1);
-        currentGame = gameList.getGame(GameContainer.getCurrentGameOrder());
+        currentGame = GameList.getGame(GameContainer.getCurrentGameOrder());
         
         PrintTools.clearConsole();
         PrintTools.printBoard(currentGame);
