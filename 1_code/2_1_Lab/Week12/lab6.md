@@ -151,3 +151,47 @@ use hash set to avoid duplicate position
 to make the GameMode able to receive the bomb cmd  
 refactor the receiveOperation method  
 by using a wrapper class `Operation`  
+
+### Playback Command Implementation
+
+we find a question that our pattern need to type a enter  
+to start next input  
+this may interfere the playback script  
+
+we have several options maybe:  
+
+1. modify the script  
+2. change the input logic
+
+maybe I want to try the first  
+
+as the input from scripts still need to be parsed  
+so the command execution is not in the GameMode classes of course  
+maybe in the GameContainer?  
+or we can create a new class to handle the playback  
+
+overall processes:  
+
+1. read the cmd  
+    finished  
+2. parse the cmd  
+    finished  
+3. try to find the script file  
+    the imagination is to put them under the `playback/scripts` folder  
+    Q1: how to specify this?  
+4. execute the commands contained in the script file  
+    Q2: how to read from the file?  
+5. back to the normal game stream  
+
+### Refactor
+
+### Ask
+
+Now I need to modify my lab project to support playback function
+
+what I need to do first is to refactor the part about interact with user. The way it uses now is strictly bound with System.in stream.
+
+so I want to do:
+
+1. delete Scanner from PrintTools, it's not fit the functoins of the class
+2. add command
