@@ -1,8 +1,9 @@
 package top.thesumst.tools;
 
-import top.thesumst.mode.*;
-import top.thesumst.mode.component.*;
-import top.thesumst.container.*;
+import top.thesumst.core.container.*;
+import top.thesumst.core.mode.*;
+import top.thesumst.core.mode.component.*;
+
 import java.util.Scanner;
 import java.awt.Point;
 
