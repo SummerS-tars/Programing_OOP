@@ -195,3 +195,68 @@ so I want to do:
 
 1. delete Scanner from PrintTools, it's not fit the functoins of the class
 2. add command
+
+### Observe Pattern
+
+具体设计部分：  
+
+架构已经调整过了，  
+基础观察者模式使用的类、接口均放在`Observer`包下  
+
+1. `Observer`  
+2. `Subject`
+    1. `BaseSubject`  
+
+建立`View`层  
+
+1. `ConsoleView`  
+2. `GraphicView`待定  
+
+目前考虑：  
+
+1. `Subject`改造:  
+    1. `GameLoop`  
+2. `Observer`新增:  
+    1. `ConsoleView`  
+3. `GameContainer`与`GameList`彻底static化  
+
+职责变更:  
+
+1. `GameContainer`负责用来进行通知  
+    1. 运行游戏相关状态迁移至`GameList`  
+2. `Command`相关类  
+    1. 不再负责视图相关的部分?  
+
+设想流程：  
+
+1. `Main`  
+    1. 使用`GameList`以及`GameContainer`  
+    2. 根据启动参数分配视图层实例  
+    3. 根据启动参数分配不同的输入流
+2. `GameContainer`  
+
+Observer:  
+
+`update`接口设计:  
+
+第一种:  
+用于需要非具体实例信息的  
+
+1. `InputType`  
+2. `CommandResult`  
+
+第二种：  
+用于获取具体需要具体实例信息的  
+
+1. `InputType`  
+2. `CommandResult`  
+3. `GameMode`  
+
+## 命令输入重构
+
+playback实现
+
+为了后面方便实现和GUI，这里考虑一下  
+如何实现playback换输入流？  
+根据CLI或者GUI模式获得不同的输入流  
+同时游戏中输入playback命令后获取从文件的输入流  
