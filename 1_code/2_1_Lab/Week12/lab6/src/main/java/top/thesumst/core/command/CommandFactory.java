@@ -1,4 +1,4 @@
-package top.thesumst.command;
+package top.thesumst.core.command;
 
 import top.thesumst.io.input.InputResult;
 

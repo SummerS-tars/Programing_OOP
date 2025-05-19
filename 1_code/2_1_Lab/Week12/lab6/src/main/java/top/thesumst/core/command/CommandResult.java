@@ -1,4 +1,4 @@
-package top.thesumst.command;
+package top.thesumst.core.command;
 
 /**
  * 命令执行结果

@@ -1,7 +1,7 @@
 package top.thesumst.core.container;
 
 import top.thesumst.tools.*;
-import top.thesumst.command.*;
+import top.thesumst.core.command.*;
 import top.thesumst.core.mode.*;
 import top.thesumst.io.ReceiveTools;
 
