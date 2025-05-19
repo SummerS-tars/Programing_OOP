@@ -1,5 +1,7 @@
 package top.thesumst.core.command;
 
+import java.awt.Point;
+
 import top.thesumst.io.input.InputResult;
 
 /**
@@ -17,22 +19,22 @@ public class CommandFactory {
         switch (result.getType()) 
         {
             case CHESS_MOVE:
-                return new GoCommand(result.getPosition());
+                return new GoCommand(result.getDataAs(Point.class));
                 
             case SWITCH_BOARD:
-                return new SwitchBoardCommand(result.getBoardNumber());
-                
+                return new SwitchBoardCommand(result.getDataAs(Integer.class));
+
             case PASS:
                 return new PassCommand();
                 
             case NEW_GAME:
-                return new NewGameCommand(result.getGameType());
-                
+                return new NewGameCommand(result.getDataAs(String.class));
+
             case QUIT:
                 return new QuitCommand();
 
             case USE_BOMB:
-                return new BombCommand(result.getPosition());
+                return new BombCommand(result.getDataAs(Point.class));
 
             case INVALID:
             default:

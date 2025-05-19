@@ -43,7 +43,7 @@ public class InputParser
      */
     public static void setBoardSize(int size) 
     {
-        if (size > 0 && size <= 26) // 限制最大为26（A-Z）
+        if (size > 0 && size <= 15) // 限制最大为15（A-O）
             boardSize = size;
     }
 
@@ -56,9 +56,9 @@ public class InputParser
     {
         if (input == null || input.trim().isEmpty()) 
         {
-            return InputResult.invalid();
+            return InputResult.invalid("无效命令");
         }
-        
+
         input = input.trim();
         
         // 1. 检查是否是落子位置
@@ -70,7 +70,7 @@ public class InputParser
             if (isValidPosition(position)) {
                 return InputResult.chessMove(position);
             } else {
-                return InputResult.invalid(); // 超出棋盘范围
+                return InputResult.invalid("超出范围"); // 超出棋盘范围
             }
         }
         
@@ -83,7 +83,7 @@ public class InputParser
             {
                 return InputResult.switchBoard(boardNum);
             }
-            return InputResult.invalid(); // 无效棋盘编号
+            return InputResult.invalid("无效棋盘号"); // 无效棋盘编号
         }
         
         // 3. 检查是否是命令
@@ -129,7 +129,7 @@ public class InputParser
      * @param position 棋盘位置
      * @return 是否有效
      */
-    private static boolean isValidPosition(Point position) 
+    private static boolean isValidPosition(Point position) // TODO: 此处处理逻辑可能会移至游戏内部?
     {
         return position.x >= 0 && position.x < boardSize && 
                position.y >= 0 && position.y < boardSize;

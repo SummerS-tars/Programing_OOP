@@ -48,6 +48,11 @@ public class InputResult
         return new InputResult(InputType.INVALID, null);
     }
 
+    public static InputResult invalid(String message) 
+    {
+        return new InputResult(InputType.INVALID, message);
+    }
+
     public static InputResult useBomb(Point position) 
     {
         return new InputResult(InputType.USE_BOMB, position);
@@ -66,25 +71,9 @@ public class InputResult
     
     // 类型安全的获取方法
     @SuppressWarnings("unchecked")
-    public <T> T getDataAs(Class<T> clazz) 
+    public <T> T getDataAs(Class<T> classType) 
     {
         return (T) data;
-    }
-    
-    // TODO: 这里不是类型安全的获取方法，应该需要重构一下
-    public Point getPosition() 
-    {
-        return (Point) data;
-    }
-    
-    public int getBoardNumber() 
-    {
-        return (Integer) data;
-    }
-    
-    public String getGameType() 
-    {
-        return (String) data;
     }
     
     @Override
@@ -93,22 +82,20 @@ public class InputResult
         switch (type) 
         {
             case CHESS_MOVE:
-                // TODO: 没有使用类型安全的获取方法，下面同
-                Point p = getPosition();
+                Point p = getDataAs(Point.class);
                 return "下棋: (" + (char)(p.y + 'A') + (p.x + 1) + ")";
             case SWITCH_BOARD:
-                return "切换棋盘: " + getBoardNumber();
+                return "切换棋盘: " + getDataAs(Integer.class);
             case NEW_GAME:
-                return "新建游戏: " + getGameType();
+                return "新建游戏: " + getDataAs(String.class);
             case PASS:
                 return "跳过回合";
             case QUIT:
                 return "退出游戏";
             case USE_BOMB:
-                Point bombPos = getPosition();
+                Point bombPos = getDataAs(Point.class);
                 return "使用炸弹: (" + (char)(bombPos.y + 'A') + (bombPos.x + 1) + ")";
             case PLAYBACK:
-                // ? TODO: String.class的 class 是用来做什么的？
                 String filename = getDataAs(String.class);
                 return "播放DEMO: " + filename;
             default:
