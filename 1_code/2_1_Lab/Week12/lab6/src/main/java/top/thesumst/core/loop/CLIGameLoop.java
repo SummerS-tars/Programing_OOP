@@ -1,6 +1,5 @@
 package top.thesumst.core.loop;
 
-import top.thesumst.core.command.CommandResult;
 import top.thesumst.core.container.GameList;
 import top.thesumst.io.provider.*;
 import top.thesumst.observer.Observer;
@@ -32,9 +31,10 @@ public class CLIGameLoop extends GameLoop
             event = null;
             cmdProvider.getNextCommand();
             event = cmdProvider.getEvent();
-            processEvent(event);
+            if(event.getType() == EventType.GAME_OPERATION) 
+                event.executeEvent(gameList, currentGameOrder);
 
-            if(event.getState() == EventState.EVENT_EXECUTED_SUCCESS || 
+            if(event.getState() == EventState.EVENT_EXECUTED_SUCCESS || // event被执行过
                 event.getState() == EventState.EVENT_EXECUTED_FAIL)
             {
                 notifyObservers(event, gameList, currentGameOrder);
@@ -50,17 +50,6 @@ public class CLIGameLoop extends GameLoop
     {
         isLooping = false;
         cmdProvider.close();
-    }
-
-    private void processEvent(Event event)
-    {
-        if(event.getType() == EventType.GAME_OPERATION)
-        {
-            CommandResult result = event.getCommand().execute(getCurrentGame(), gameList);
-            if(result.isSuccess()) event.setState(EventState.EVENT_EXECUTED_SUCCESS);
-            else event.setState(EventState.EVENT_EXECUTED_FAIL);
-            event.setMessage(result.getMessage());
-        }
     }
 }
 
