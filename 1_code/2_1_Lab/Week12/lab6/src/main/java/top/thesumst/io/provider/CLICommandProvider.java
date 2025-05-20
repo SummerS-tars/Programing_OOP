@@ -2,6 +2,7 @@ package top.thesumst.io.provider;
 
 import java.util.Scanner;
 
+import top.thesumst.tools.ScannerTools;
 import top.thesumst.type.Event;
 
 public class CLICommandProvider extends BaseCommandProvider
@@ -41,7 +42,7 @@ public class CLICommandProvider extends BaseCommandProvider
     {
         if(scanner == null || !isOpen) {
             try {
-                scanner = new Scanner(System.in);
+                scanner = ScannerTools.getScanner();
                 isOpen = true;
             } catch (Exception e) {
                 System.err.println("打开扫描器时出错: " + e.getMessage());
@@ -55,7 +56,7 @@ public class CLICommandProvider extends BaseCommandProvider
     {
         try {
             if(scanner != null && isOpen) {
-                scanner.close();
+                scanner = null;
                 isOpen = false;
             }
         } catch (Exception e) {

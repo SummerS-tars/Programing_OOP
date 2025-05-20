@@ -9,6 +9,7 @@ import top.thesumst.core.mode.*;
 import top.thesumst.exception.*;
 import top.thesumst.tools.PauseTools;
 import top.thesumst.tools.PrintTools;
+import top.thesumst.tools.ScannerTools;
 import top.thesumst.type.ChessStatement;
 
 public class GameList
@@ -106,8 +107,8 @@ public class GameList
      */
     private static void setInitializeInfo()
     {
-        try(Scanner sc = new Scanner(System.in)){
-
+        try{
+            Scanner sc = ScannerTools.getScanner() ;
             PrintTools.clearConsole();
             System.out.println("请输入1号玩家的名称：");
             player1Name = sc.nextLine() ;
@@ -141,6 +142,11 @@ public class GameList
             PrintTools.clearConsole();
             System.out.println("请输入2号玩家的名称：");
             player2Name = sc.nextLine() ;
+        } catch(Exception e)
+        {
+            System.out.println("输入错误！请重新输入");
+            ScannerTools.closeScanner();
+            setInitializeInfo() ;
         }
 
         player2Color = (player1Color == ChessStatement.BLACK) ? ChessStatement.WHITE : ChessStatement.BLACK ;
