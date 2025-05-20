@@ -20,7 +20,7 @@ public class GameContainer extends BaseSubject
         GameContainer.gameList = gameList;
         GameContainer.gameLoop = gameLoop;
         registerObserver(observer);
-        currentGameOrder = 1;
+        switchGameOrder(1);
         isRunning = true;
         notifyInit(gameList, currentGameOrder);
     }
