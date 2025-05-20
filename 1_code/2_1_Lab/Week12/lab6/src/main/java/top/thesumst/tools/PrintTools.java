@@ -1,16 +1,13 @@
 package top.thesumst.tools;
 
+import java.awt.Point;
+
 import top.thesumst.core.container.*;
 import top.thesumst.core.mode.*;
 import top.thesumst.core.mode.component.*;
 
-import java.util.Scanner;
-import java.awt.Point;
-
 public class PrintTools 
 {
-    public Scanner sc = new Scanner(System.in) ;
-
     public static void initializePositionsSet(GameMode currentGame)
     {
         TerminalOutputPositionSets.setPositions(currentGame);

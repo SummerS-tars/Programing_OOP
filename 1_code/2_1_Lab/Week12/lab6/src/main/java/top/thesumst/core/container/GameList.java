@@ -1,13 +1,15 @@
 package top.thesumst.core.container;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.InputMismatchException;
+
 import top.thesumst.core.mode.*;
 import top.thesumst.exception.*;
 import top.thesumst.tools.PauseTools;
 import top.thesumst.tools.PrintTools;
 import top.thesumst.type.ChessStatement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.InputMismatchException;
 
 public class GameList
 {
@@ -104,41 +106,42 @@ public class GameList
      */
     private static void setInitializeInfo()
     {
-        PrintTools printTools = new PrintTools(); // TODO: printTools或许需要成单例模式
-        PrintTools.clearConsole(); 
-        System.out.println("请输入1号玩家的名称：");
-        player1Name = printTools.sc.nextLine() ;
-        
-        boolean optionAvailable = false ;
-        while(!optionAvailable)
-        {
-            PrintTools.clearConsole();
-            System.out.println("请选择1号玩家的棋子颜色：(1.Black ○ | 2.White ● )");
-            try {
-                int op = printTools.sc.nextInt();
-                printTools.sc.nextLine(); // 读取缓冲区中多余的换行符
-                switch (op) {
-                    case 1:
-                        player1Color = ChessStatement.BLACK;
-                        optionAvailable = true;
-                        break;
-                    case 2:
-                        player1Color = ChessStatement.WHITE;
-                        optionAvailable = true;
-                        break;
-                    default:
-                        PauseTools.pause("输入无效！请输入数字1或2，请键入回车键开始重新选择");
-                        break;
-                }
-            } catch (InputMismatchException e) {
-                printTools.sc.nextLine(); // 清空缓冲区
-                PauseTools.pause("输入无效！请输入数字1或2，请键入回车键开始重新选择");
-            }
-        }
+        try(Scanner sc = new Scanner(System.in)){
 
-        PrintTools.clearConsole();
-        System.out.println("请输入2号玩家的名称：");
-        player2Name = printTools.sc.nextLine() ;
+            PrintTools.clearConsole();
+            System.out.println("请输入1号玩家的名称：");
+            player1Name = sc.nextLine() ;
+            
+            boolean optionAvailable = false ;
+            while(!optionAvailable)
+            {
+                PrintTools.clearConsole();
+                System.out.println("请选择1号玩家的棋子颜色：(1.Black ○ | 2.White ● )");
+                try {
+                    int op = sc.nextInt();
+                    sc.nextLine(); // 读取缓冲区中多余的换行符
+                    switch (op) {
+                        case 1:
+                            player1Color = ChessStatement.BLACK;
+                            optionAvailable = true;
+                            break;
+                        case 2:
+                            player1Color = ChessStatement.WHITE;
+                            optionAvailable = true;
+                            break;
+                        default:
+                            PauseTools.pause("输入无效！请输入数字1或2，请键入回车键开始重新选择");
+                            break;
+                    }
+                } catch (InputMismatchException e) {
+                    sc.nextLine(); // 清空缓冲区
+                    PauseTools.pause("输入无效！请输入数字1或2，请键入回车键开始重新选择");
+                }
+            }
+            PrintTools.clearConsole();
+            System.out.println("请输入2号玩家的名称：");
+            player2Name = sc.nextLine() ;
+        }
 
         player2Color = (player1Color == ChessStatement.BLACK) ? ChessStatement.WHITE : ChessStatement.BLACK ;
     }
