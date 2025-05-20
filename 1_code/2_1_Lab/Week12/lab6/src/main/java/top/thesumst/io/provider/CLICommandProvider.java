@@ -7,20 +7,26 @@ import top.thesumst.type.Event;
 public class CLICommandProvider extends BaseCommandProvider
 {
     private Scanner scanner;
+    private boolean isOpen;
 
     public CLICommandProvider()
     {
         super(CommandProviderMode.CLI);
-        this.scanner = new Scanner(System.in);
+        this.isOpen = false;
     }
 
     @Override
     public void getNextCommand()
     {
-        if(inputBuffer == null) {
-            if(scanner.hasNextLine()) {
+        try {
+            if(!isOpen || scanner == null)
+                throw new IllegalStateException("命令提供器未打开");
+            if(inputBuffer == null)
+            {
                 inputBuffer = scanner.nextLine();
             }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
         }
     }
 
@@ -33,10 +39,14 @@ public class CLICommandProvider extends BaseCommandProvider
     @Override
     public void open()
     {
-        try {
-            scanner = new Scanner(System.in);
-        } catch (Exception e) {
-            System.err.println("打开扫描器时出错: " + e.getMessage());
+        if(scanner == null || !isOpen) {
+            try {
+                scanner = new Scanner(System.in);
+                isOpen = true;
+            } catch (Exception e) {
+                System.err.println("打开扫描器时出错: " + e.getMessage());
+                isOpen = false;
+            }
         }
     }
 
@@ -44,7 +54,10 @@ public class CLICommandProvider extends BaseCommandProvider
     public void close()
     {
         try {
-            scanner.close();
+            if(scanner != null && isOpen) {
+                scanner.close();
+                isOpen = false;
+            }
         } catch (Exception e) {
             System.err.println("关闭扫描器时出错: " + e.getMessage());
         }
