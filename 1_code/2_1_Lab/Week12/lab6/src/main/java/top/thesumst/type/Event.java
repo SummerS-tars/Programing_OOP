@@ -4,15 +4,16 @@ import top.thesumst.core.command.GameCommand;
 
 /**
  * Event类用于表示游戏中的事件
- * 包含事件类型、事件数据、处理成功与否和消息等信息
+ * 包含：1. 事件类型；2. 原始命令；3. 命令对象；
+ * 4. 事件数据；5. 处理成功与否；6. 消息
  */
 public class Event
 {
-    private EventType type;
+    private EventType type; // 主要表示应该在哪里执行，没有太细粒度
     private String rawCommand;
-    private GameCommand command;
-    private Object data;
-    private Boolean handleSuccess;
+    private GameCommand command; // 用来执行，然后用来获取部分信息，如果为null说明是无效输入
+    private Object data; // 不一定有用
+    private EventState state; // 事件状态
     private String message;
     
     public String getRawCommand() {
@@ -40,16 +41,29 @@ public class Event
     public void setData(Object data) {
         this.data = data;
     }
-    public Boolean getHandleSuccess() {
-        return handleSuccess;
+    public EventState getState() {
+        return state;
     }
-    public void setHandleSuccess(Boolean handleSuccess) {
-        this.handleSuccess = handleSuccess;
+    public void setState(EventState state) {
+        this.state = state;
     }
     public String getMessage() {
         return message;
     }
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Event{" +
+                "type=" + type +
+                ", rawCommand='" + rawCommand + '\'' +
+                ", command=" + command +
+                ", data=" + data +
+                ", state=" + state +
+                ", message='" + message + '\'' +
+                '}';
     }
 }
