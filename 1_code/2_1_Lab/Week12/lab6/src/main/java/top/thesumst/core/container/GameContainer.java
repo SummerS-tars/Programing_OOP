@@ -63,3 +63,41 @@ public class GameContainer extends BaseSubject
         isRunning = false ;
     }
 }
+
+class GameContainerTestDrive
+{
+    static class ObserverTest implements Observer
+    {
+        @Override
+        public void update(Event event, GameList gameList, int currentGameOrder)
+        {
+            PrintTools.printBoard(GameList.getGame(currentGameOrder));
+            PrintTools.printPlayerInfo(GameList.getGame(currentGameOrder));
+            PrintTools.printGameList(gameList);
+            PrintTools.printInputPanel(gameList);
+            System.out.println("Observer notified: " + event);
+        }
+
+        @Override
+        public void init(GameList gameList, int currentGameOrder)
+        {
+            PrintTools.initializePositionsSet(GameList.getGame(currentGameOrder));
+            PrintTools.clearConsole();
+            PrintTools.printBoard(GameList.getGame(currentGameOrder));
+            PrintTools.printPlayerInfo(GameList.getGame(currentGameOrder));
+            PrintTools.printGameList(gameList);
+            PrintTools.printInputPanel(gameList);
+            System.out.println("Observer initialized with game list: " + gameList + " and current game order: " + currentGameOrder);
+        }
+    }
+
+    public static void main(String[] args) 
+    {
+        GameList gameList = new GameList();
+        BaseCommandProvider cmdProvider = new CLICommandProvider();
+        Observer observer = new ObserverTest();
+        GameLoop gameLoop = new CLIGameLoop(gameList, cmdProvider, observer);
+        GameContainer gameContainer = new GameContainer(gameList, gameLoop, cmdProvider, observer);
+        gameContainer.runGame();
+    }
+}
