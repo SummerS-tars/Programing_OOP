@@ -172,9 +172,9 @@ public class ReversiMode extends GameMode
         clearValidPointsHint();
         validPointsCache.clear();
         
-        for(int i = 0; i < maxSize; i++)
+        for(int i = 0; i < size; i++)
         {
-            for(int j = 0; j < maxSize; j++)
+            for(int j = 0; j < size; j++)
             {
                 Point point = new Point(i, j) ;
                 byte legalDirection = checkPoint(point) ;
@@ -254,8 +254,8 @@ public class ReversiMode extends GameMode
         int dy = Direction.getDirectionDelta(direction).y ;
 
 
-        if( focus.x + dx >= 0 && focus.x + dx < maxSize &&
-            focus.y + dy >= 0 && focus.y + dy < maxSize)
+        if( focus.x + dx >= 0 && focus.x + dx < size &&
+            focus.y + dy >= 0 && focus.y + dy < size)
         {
             focus.x += dx ;
             focus.y += dy ;

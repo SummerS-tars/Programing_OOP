@@ -9,9 +9,9 @@ import java.util.Stack;
 
 public abstract class GameMode 
 {
-    final int gameOrder ;
-    final String gameMode ;
-    final int maxSize ;
+    public final int gameOrder ;
+    public final String gameMode ;
+    public final int size ;
     private ChessBoard board;
     protected Player player1, player2;
     protected boolean isBlackTurn, isOver;
@@ -22,8 +22,8 @@ public abstract class GameMode
     {
         gameOrder = order;
         gameMode = mode;
-        maxSize = size;
-        board = new ChessBoard(maxSize);
+        this.size = size;
+        board = new ChessBoard(size);
         player1 = new Player(name1, color1);
         player2 = new Player(name2, color2);
         stepStack = new Stack<>();
@@ -64,7 +64,7 @@ public abstract class GameMode
      */
     public int getSize()
     {
-        return maxSize;
+        return size;
     }
     public String getGameMode()
     {
@@ -96,7 +96,7 @@ public abstract class GameMode
     }
     public int getTurnNumber()
     {
-        return stepStack.size();
+        return stepStack.size()+1;
     }
     protected ChessStatement getChessStatement(Point point)
     {

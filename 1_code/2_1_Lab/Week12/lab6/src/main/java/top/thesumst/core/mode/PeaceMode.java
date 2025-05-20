@@ -87,7 +87,7 @@ public class PeaceMode extends GameMode
     {
         int blackChess = getChessNumber(ChessStatement.BLACK) ;
         int whiteChess = getChessNumber(ChessStatement.WHITE) ;
-        if(blackChess + whiteChess == maxSize * maxSize) return true ;
+        if(blackChess + whiteChess == size * size) return true ;
         return false ;
     }
 }

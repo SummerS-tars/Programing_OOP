@@ -150,8 +150,8 @@ public class GomokuMode extends GameMode
      */
     private boolean checkFull()
     {
-        for(int i = 0 ; i < maxSize ; i ++)
-            for(int j = 0 ; j < maxSize ; j ++)
+        for(int i = 0 ; i < size ; i ++)
+            for(int j = 0 ; j < size ; j ++)
                 if(getChessStatement(new Point(i, j)) == ChessStatement.BLANK)  // * 有空位，说明未满
                     return false;
         return true;
@@ -171,8 +171,8 @@ public class GomokuMode extends GameMode
         int dy = Direction.getDirectionDelta(direction).y ;
 
 
-        if( focus.x + dx >= 0 && focus.x + dx < maxSize &&
-            focus.y + dy >= 0 && focus.y + dy < maxSize)
+        if( focus.x + dx >= 0 && focus.x + dx < size &&
+            focus.y + dy >= 0 && focus.y + dy < size)
         {
             focus.x += dx ;
             focus.y += dy ;
@@ -198,8 +198,8 @@ public class GomokuMode extends GameMode
 
         while(barrierSet.size() < barrierNumber)
         {
-            int x = random.nextInt(maxSize) ;
-            int y = random.nextInt(maxSize) ;
+            int x = random.nextInt(size) ;
+            int y = random.nextInt(size) ;
             Point point = new Point(x, y) ;
             barrierSet.add(point) ;
         }
