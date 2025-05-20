@@ -19,9 +19,6 @@ public class PassCommand implements GameCommand {
             return CommandResult.success("跳过回合成功");
         } catch (IllegalCommandException e) {
             return CommandResult.failure("跳过回合失败: " + e.getMessage());
-        } finally {
-            PrintTools.printBoard(game);
-            PrintTools.printPlayerInfo(game);
         }
     }
 }

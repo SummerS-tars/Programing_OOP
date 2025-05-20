@@ -25,12 +25,7 @@ public class SwitchBoardCommand implements GameCommand
 
         // 切换到指定棋盘
         GameContainer.switchGameOrder(boardNumber);
-        PrintTools.clearConsole();
         game = GameList.getGame(boardNumber);
-        PrintTools.initializePositionsSet(game);
-        PrintTools.printBoard(game);
-        PrintTools.printPlayerInfo(game);
-        PrintTools.printGameList(gameList);
 
         return CommandResult.success("切换到棋盘 #" + boardNumber);
     }

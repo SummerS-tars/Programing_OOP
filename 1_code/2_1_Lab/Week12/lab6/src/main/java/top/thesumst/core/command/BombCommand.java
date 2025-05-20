@@ -26,9 +26,6 @@ public class BombCommand implements GameCommand
             return CommandResult.success(result);
         } catch (IllegalCommandException e) {
             return CommandResult.failure("炸弹失败: " + e.getMessage());
-        } finally {
-            PrintTools.printBoard(game);
-            PrintTools.printPlayerInfo(game);
         }
     }
 }

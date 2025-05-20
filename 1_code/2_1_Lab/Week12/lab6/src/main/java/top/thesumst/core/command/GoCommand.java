@@ -31,9 +31,6 @@ public class GoCommand implements GameCommand
             return CommandResult.success(result);
         } catch (IllegalMoveException e) {
             return CommandResult.failure("下棋失败: " + e.getMessage());
-        } finally {
-            PrintTools.printBoard(game);
-            PrintTools.printPlayerInfo(game);
         }
     }
 }
