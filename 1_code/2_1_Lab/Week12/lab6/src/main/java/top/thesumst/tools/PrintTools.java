@@ -86,9 +86,9 @@ public class PrintTools
         String inputTips = getTips(gameList) ;
         goToPoint(getInputPosition());
         clearConsoleAfterCursor();
-        goToPoint(getInputPosition(), 5);
-        System.out.printf("%s", inputTips);
         goToPoint(getInputPosition());
+        System.out.printf("%s", inputTips);
+        goToPoint(getInputPosition(), 7);
         System.out.printf("%s", turnInfo);
     }
 
