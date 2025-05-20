@@ -10,3 +10,18 @@
 .DS_Store
 1_code/4_PresentationCode/thinking-In-Java
 1_code/2_1_Lab/Week12/reference/
+
+# Maven 相关
+**/target/
+**/build/
+**/.mvn/
+**/mvnw
+**/mvnw.cmd
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
