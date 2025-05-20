@@ -71,10 +71,13 @@ class GameContainerTestDrive
         @Override
         public void update(Event event, GameList gameList, int currentGameOrder)
         {
+            PrintTools.initializePositionsSet(GameList.getGame(currentGameOrder));
+            PrintTools.clearConsole();
             PrintTools.printBoard(GameList.getGame(currentGameOrder));
             PrintTools.printPlayerInfo(GameList.getGame(currentGameOrder));
             PrintTools.printGameList(gameList);
-            PrintTools.printInputPanel(gameList);
+            PrintTools.printTipPanel(gameList);
+            PrintTools.printInputPanel(gameList, event);
             System.out.println("Observer notified: " + event);
         }
 
@@ -86,7 +89,8 @@ class GameContainerTestDrive
             PrintTools.printBoard(GameList.getGame(currentGameOrder));
             PrintTools.printPlayerInfo(GameList.getGame(currentGameOrder));
             PrintTools.printGameList(gameList);
-            PrintTools.printInputPanel(gameList);
+            PrintTools.printTipPanel(gameList);
+            PrintTools.printInputPanel(gameList, null);
             System.out.println("Observer initialized with game list: " + gameList + " and current game order: " + currentGameOrder);
         }
     }
