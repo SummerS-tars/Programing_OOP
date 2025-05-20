@@ -57,7 +57,7 @@ class CLICommandProviderTestDrive
         CLICommandProvider provider = new CLICommandProvider();
         provider.getNextCommand();
         if(provider.hasCommand()) {
-            Event event = provider.getEvent(provider.inputBuffer);
+            Event event = provider.getEvent();
             System.out.println(eventToString(event));
         }
     }
@@ -69,7 +69,7 @@ class CLICommandProviderTestDrive
             event.getRawCommand(),
             event.getCommand() == null ? "null" : event.getCommand().getClass().getSimpleName(),
             event.getData() == null ? "null" : event.getData().toString(),
-            event.getHandleSuccess() == null ? "null" : event.getHandleSuccess().toString(),
+            event.getState() == null ? "null" : event.getState().toString(),
             event.getMessage() == null ? "null" : event.getMessage());
         return string;
     }

@@ -36,11 +36,18 @@ public abstract class BaseCommandProvider
         return mode;
     }
 
-    protected Event getEvent(String rawCommand)
+    /**
+     * 将输入的原始命令解析为事件
+     * @param rawCommand
+     * @return
+     */
+    public Event getEvent()
     {
+        String rawCommand = inputBuffer;
         Event event = new Event();
         event.setRawCommand(rawCommand);
-        
+        event.setState(EventState.EVENT_GET);
+
         InputResult inputResult = InputParser.parse(rawCommand);
         event.setCommand(CommandFactory.createCommand(inputResult));
         switch(inputResult.getType())
@@ -79,7 +86,9 @@ public abstract class BaseCommandProvider
                 event.setData(null);
                 break;
         }
+        event.setState(EventState.EVENT_PARSED);
 
+        inputBuffer = null; // 清空输入缓冲区
         return event;
     }
 }
