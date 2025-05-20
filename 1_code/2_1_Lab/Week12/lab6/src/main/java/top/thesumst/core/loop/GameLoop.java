@@ -16,11 +16,10 @@ public abstract class GameLoop extends BaseSubject
 
     public GameLoop(GameList gameList, BaseCommandProvider cmdProvider, Observer observer)
     {
+        this.registerObserver(observer);
         this.gameList = gameList;
         this.cmdProvider = cmdProvider;
         this.isLooping = false;
-        this.currentGameOrder = 1;
-        this.registerObserver(observer);
     }
 
     /**
@@ -41,5 +40,10 @@ public abstract class GameLoop extends BaseSubject
     protected GameMode getCurrentGame()
     {
         return GameList.getGame(currentGameOrder);
+    }
+
+    public void setCurrentGameOrder(int currentGameOrder)
+    {
+        this.currentGameOrder = currentGameOrder;
     }
 }

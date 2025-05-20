@@ -1,28 +1,27 @@
 package top.thesumst.core.container;
 
-import top.thesumst.tools.*;
-import top.thesumst.core.command.*;
-import top.thesumst.core.mode.*;
-import top.thesumst.io.ReceiveTools;
+import top.thesumst.core.loop.*;
+import top.thesumst.io.provider.*;
+import top.thesumst.observer.*;
+import top.thesumst.tools.PrintTools;
+import top.thesumst.type.Event;
 
-public class GameContainer 
+public class GameContainer extends BaseSubject
 {
     // * 此处默认以及一个程序只会有一个容器运行，且只有一个游戏列表
     private static GameList gameList ;
+    private static GameLoop gameLoop ;
     private static int currentGameOrder ;
-    private boolean isRunning ;
+    private static boolean isRunning ;
 
-    public GameContainer()
+    public GameContainer(GameList gameList, GameLoop gameLoop, BaseCommandProvider commandProvider, Observer observer)
     {
-        gameList = new GameList() ;
-        currentGameOrder = 1 ;
-        isRunning = true ;
-        PrintTools.clearConsole();
-        GameMode game = GameList.getGame(currentGameOrder) ;
-        PrintTools.initializePositionsSet(game);
-        PrintTools.printBoard(game);
-        PrintTools.printPlayerInfo(game);
-        PrintTools.printGameList(gameList);
+        GameContainer.gameList = gameList;
+        GameContainer.gameLoop = gameLoop;
+        registerObserver(observer);
+        currentGameOrder = 1;
+        isRunning = true;
+        notifyInit(gameList, currentGameOrder);
     }
 
     /**
@@ -30,18 +29,14 @@ public class GameContainer
      */
     public void runGame()
     {
-        ReceiveTools receiver = new ReceiveTools() ;
-
+        Event event = null;
         while(isRunning)
         {
-            // 获取当前游戏
-            GameMode currentGame = GameList.getGame(currentGameOrder) ;
-
-            // 接收输入并执行命令
-            CommandResult result = receiver.receiveAndExecuteCommand(currentGame, gameList) ;
-
-            // 处理命令结果
-            handleCommandResult(result) ;
+            event = null;
+            gameLoop.setCurrentGameOrder(currentGameOrder);
+            event = gameLoop.startLoop();
+            event.executeEvent(gameList, currentGameOrder);
+            notifyObservers(event, gameList, currentGameOrder);
         }
     }
 
@@ -51,7 +46,7 @@ public class GameContainer
      */
     public static void switchGameOrder(int order)
     {
-        currentGameOrder = order ;
+        currentGameOrder = order;
     }
 
     /**
@@ -60,36 +55,11 @@ public class GameContainer
      */
     public static int getCurrentGameOrder()
     {
-        return currentGameOrder ;
+        return currentGameOrder;
     }
 
-    public GameList getGameList()
+    public static void stopGame()
     {
-        return gameList ;
-    }
-
-    /**
-     * 处理命令执行结果
-     */
-    private void handleCommandResult(CommandResult result) 
-    {
-        PrintTools.goToResultPosition();
-
-        // 处理失败情况
-        if (!result.isSuccess()) 
-        {
-            PauseTools.pause(result.getMessage() + "，请按回车键以重新输入...");
-            return;
-        }
-
-        // 显示成功消息
-        PauseTools.pause(result.getMessage() + " 请按回车键以继续");
-
-        // 处理退出命令
-        if (result.shouldQuit()) 
-        {
-            isRunning = false;
-            return;
-        }
+        isRunning = false ;
     }
 }
