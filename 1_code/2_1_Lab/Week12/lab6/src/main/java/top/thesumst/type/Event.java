@@ -1,6 +1,8 @@
 package top.thesumst.type;
 
+import top.thesumst.core.command.CommandResult;
 import top.thesumst.core.command.GameCommand;
+import top.thesumst.core.container.GameList;
 
 /**
  * Event类用于表示游戏中的事件
@@ -15,7 +17,22 @@ public class Event
     private Object data; // 不一定有用
     private EventState state; // 事件状态
     private String message;
-    
+
+    public void executeEvent(GameList gameList, int currentGameOrder)
+    {
+        if(command == null)
+        {
+            setState(EventState.EVENT_EXECUTED_FAIL);
+            setMessage("无效命令");
+            return;
+        }
+
+        CommandResult result = getCommand().execute(GameList.getGame(currentGameOrder), gameList);
+        if(result.isSuccess()) setState(EventState.EVENT_EXECUTED_SUCCESS);
+        else setState(EventState.EVENT_EXECUTED_FAIL);
+        setMessage(result.getMessage());
+    }
+
     public String getRawCommand() {
         return rawCommand;
     }
