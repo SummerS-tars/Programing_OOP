@@ -1,6 +1,7 @@
 package top.thesumst.core.container;
 
 import top.thesumst.core.loop.*;
+import top.thesumst.io.input.InputParser;
 import top.thesumst.io.provider.*;
 import top.thesumst.observer.*;
 import top.thesumst.tools.PrintTools;
@@ -33,7 +34,6 @@ public class GameContainer extends BaseSubject
         while(isRunning)
         {
             event = null;
-            gameLoop.setCurrentGameOrder(currentGameOrder);
             event = gameLoop.startLoop();
             event.executeEvent(gameList, currentGameOrder);
             notifyObservers(event, gameList, currentGameOrder);
@@ -47,6 +47,8 @@ public class GameContainer extends BaseSubject
     public static void switchGameOrder(int order)
     {
         currentGameOrder = order;
+        gameLoop.setCurrentGameOrder(currentGameOrder);
+        InputParser.setBoardSize(GameList.getGame(currentGameOrder).size);
     }
 
     /**
