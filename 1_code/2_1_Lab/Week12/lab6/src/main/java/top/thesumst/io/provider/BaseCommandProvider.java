@@ -27,6 +27,8 @@ public abstract class BaseCommandProvider
 
     abstract public boolean hasCommand(); // 是否有命令
 
+    abstract public void open(); // 打开命令提供者
+
     abstract public void close(); // 关闭命令提供者
 
     public CommandProviderMode getMode() // 获取命令提供者模式

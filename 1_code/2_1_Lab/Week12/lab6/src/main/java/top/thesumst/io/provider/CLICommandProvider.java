@@ -31,6 +31,16 @@ public class CLICommandProvider extends BaseCommandProvider
     }
 
     @Override
+    public void open()
+    {
+        try {
+            scanner = new Scanner(System.in);
+        } catch (Exception e) {
+            System.err.println("打开扫描器时出错: " + e.getMessage());
+        }
+    }
+
+    @Override
     public void close()
     {
         try {

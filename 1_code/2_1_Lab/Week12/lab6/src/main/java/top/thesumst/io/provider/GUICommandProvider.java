@@ -1,7 +1,5 @@
 package top.thesumst.io.provider;
 
-import top.thesumst.type.Event;
-
 public class GUICommandProvider extends BaseCommandProvider
 {
     // 添加构造函数调用父类构造器
@@ -22,7 +20,8 @@ public class GUICommandProvider extends BaseCommandProvider
     }
 
     @Override
-    public void close()
-    {
-    }
+    public void open() {}
+
+    @Override
+    public void close() {}
 }
