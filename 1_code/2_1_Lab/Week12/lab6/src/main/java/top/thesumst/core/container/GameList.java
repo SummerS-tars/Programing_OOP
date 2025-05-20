@@ -30,6 +30,23 @@ public class GameList
         }
     }
 
+    public GameList(String player1Name, String player2Name)
+    {
+        gameNumber = 0 ;
+        games = new ArrayList<GameMode>() ;
+        GameList.player1Name = player1Name ;
+        GameList.player2Name = player2Name ;
+        player1Color = ChessStatement.BLACK ;
+        player2Color = ChessStatement.WHITE ;
+        try {
+            addGame("peace") ;
+            addGame("reversi") ;
+            addGame("gomoku") ;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     /**
      * * addGame方法用于添加游戏
      * @param gameMode 游戏模式:
