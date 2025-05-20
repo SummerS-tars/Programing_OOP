@@ -34,4 +34,12 @@ public abstract class BaseSubject implements Subject
             observer.update(event, gameList, currentGameOrder);
         }
     }
+
+    public void notifyInit(GameList gameList, int currentGameOrder)
+    {
+        for (Observer observer : observers)
+        {
+            observer.init(gameList, currentGameOrder);
+        }
+    }
 }

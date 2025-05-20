@@ -12,4 +12,11 @@ public interface Observer
      * @param currentGameOrder
      */
     void update(Event event, GameList gameList, int currentGameOrder);
+
+    /**
+     * 初始化方法，用于设置观察者的初始状态
+     * @param gameList
+     * @param currentGameOrder
+     */
+    void init(GameList gameList, int currentGameOrder);
 }

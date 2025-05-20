@@ -73,6 +73,12 @@ class CLIGameLoopTestDrive
         {
             System.out.println("Observer notified: " + event);
         }
+
+        @Override
+        public void init(GameList gameList, int currentGameOrder)
+        {
+            System.out.println("Observer initialized with game list: " + gameList + " and current game order: " + currentGameOrder);
+        }
     }
 
     public static void main(String[] args)
