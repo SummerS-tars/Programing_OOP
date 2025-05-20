@@ -5,6 +5,7 @@ import java.awt.Point;
 import top.thesumst.core.container.*;
 import top.thesumst.core.mode.*;
 import top.thesumst.core.mode.component.*;
+import top.thesumst.type.Event;
 
 public class PrintTools 
 {
@@ -79,16 +80,26 @@ public class PrintTools
         System.out.printf("%s\n", blankSide);
     }
 
-    public static void printInputPanel(GameList gameList)
+    public static void printTipPanel(GameList gameList)
+    {
+        String inputTips = getTips(gameList) ;
+        goToPoint(getTipPosition());
+        clearConsoleAfterCursor();
+        goToPoint(getTipPosition());
+        System.out.printf("%s", inputTips);
+    }
+
+    public static void printInputPanel(GameList gameList, Event event)
     {
         GameMode currentGame = GameList.getGame(GameContainer.getCurrentGameOrder()) ;
         String turnInfo = getTurnInfo(currentGame) ;
-        String inputTips = getTips(gameList) ;
-        goToPoint(getInputPosition());
-        clearConsoleAfterCursor();
-        goToPoint(getInputPosition());
-        System.out.printf("%s", inputTips);
-        goToPoint(getInputPosition(), 7);
+        goToPoint(getTipPosition());
+        if(event != null && event.getMessage() != null)
+        {
+            goToPoint(getInputPanelPosition(), -1);
+            System.out.printf("%s", event.getMessage());
+        }
+        goToPoint(getInputPanelPosition());
         System.out.printf("%s", turnInfo);
     }
 
@@ -134,11 +145,6 @@ public class PrintTools
     {
         System.out.print("\033[J") ;
         System.out.flush();
-    }
-
-    public static void goToResultPosition()
-    {
-        goToPoint(getInputPosition(), 1);
     }
 
     private static void goToPoint(Point p)
@@ -238,7 +244,11 @@ public class PrintTools
     {
         return TerminalOutputPositionSets.gameListPosition ;
     }
-    private static Point getInputPosition()
+    private static Point getTipPosition()
+    {
+        return TerminalOutputPositionSets.tipPosition ;
+    }
+    private static Point getInputPanelPosition()
     {
         return TerminalOutputPositionSets.inputPosition ;
     }
@@ -249,6 +259,7 @@ class TerminalOutputPositionSets
     static Point boardPosition ;
     static Point playerInfoPosition ;
     static Point gameListPosition ;
+    static Point tipPosition ;
     static Point inputPosition ;
 
     static
@@ -263,11 +274,14 @@ class TerminalOutputPositionSets
         int playerInfoStartCol = 3 + 2 * size + 4 ;
         int gameListStartRow = playerInfoStartRow - 2 ;
         int gameListStartCol = playerInfoStartCol + 40 ;
-        int inputRow = 1 + size + 2 ;
+        int tipRow = 1 + size + 2 ;
+        int tipCol = 1 ;
+        int inputRow = tipRow + 8 ;
         int inputCol = 1 ;
 
         playerInfoPosition = new Point(playerInfoStartRow, playerInfoStartCol) ;
         gameListPosition = new Point(gameListStartRow, gameListStartCol) ;
+        tipPosition = new Point(tipRow, tipCol) ;
         inputPosition = new Point(inputRow, inputCol) ;
     }
 }
