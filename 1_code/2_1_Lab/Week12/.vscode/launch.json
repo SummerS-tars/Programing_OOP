@@ -1,0 +1,113 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "SimpleJavaFXApp",
+            "request": "launch",
+            "mainClass": "top.thesumst/top.thesumst.SimpleJavaFXApp",
+            "projectName": "demo"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "top.thesumst.Main",
+            "projectName": "lab6",
+            "args": "cli"
+        },
+        {
+            "type": "java",
+            "name": "GameContainerTestDrive",
+            "request": "launch",
+            "mainClass": "top.thesumst.core.container.GameContainerTestDrive",
+            "projectName": "lab6"
+        },
+        {
+            "type": "java",
+            "name": "CLIGameLoopTestDrive",
+            "request": "launch",
+            "mainClass": "top.thesumst.core.loop.CLIGameLoopTestDrive",
+            "projectName": "lab6"
+        },
+        {
+            "type": "java",
+            "name": "InputParserTestDrive",
+            "request": "launch",
+            "mainClass": "top.thesumst.io.input.InputParserTestDrive",
+            "projectName": "lab6"
+        },
+        {
+            "type": "java",
+            "name": "CLICommandProviderTestDrive",
+            "request": "launch",
+            "mainClass": "top.thesumst.io.provider.CLICommandProviderTestDrive",
+            "projectName": "lab6"
+        },
+        {
+            "type": "java",
+            "name": "PauseTools",
+            "request": "launch",
+            "mainClass": "top.thesumst.tools.PauseTools",
+            "projectName": "lab6"
+        },
+        {
+            "type": "java",
+            "name": "DirectionTestDrive",
+            "request": "launch",
+            "mainClass": "top.thesumst.type.DirectionTestDrive",
+            "projectName": "lab6"
+        },
+        {
+            "type": "java",
+            "name": "TestEnum",
+            "request": "launch",
+            "mainClass": "top.thesumst.type.TestEnum",
+            "projectName": "lab6"
+        },
+        {
+            "type": "java",
+            "name": "Main(1)",
+            "request": "launch",
+            "mainClass": "top.thesumst.Main",
+            "projectName": "reference"
+        },
+        {
+            "type": "java",
+            "name": "InputParserTestDrive(1)",
+            "request": "launch",
+            "mainClass": "top.thesumst.io.input.InputParserTestDrive",
+            "projectName": "reference"
+        },
+        {
+            "type": "java",
+            "name": "PauseTools(1)",
+            "request": "launch",
+            "mainClass": "top.thesumst.tools.PauseTools",
+            "projectName": "reference"
+        },
+        {
+            "type": "java",
+            "name": "DirectionTestDrive(1)",
+            "request": "launch",
+            "mainClass": "top.thesumst.type.DirectionTestDrive",
+            "projectName": "reference"
+        },
+        {
+            "type": "java",
+            "name": "TestEnum(1)",
+            "request": "launch",
+            "mainClass": "top.thesumst.type.TestEnum",
+            "projectName": "reference"
+        }
+    ]
+}
