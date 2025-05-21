@@ -2,7 +2,7 @@ package top.thesumst.io.input;
 
 import top.thesumst.core.container.GameList;
 import top.thesumst.tools.PauseTools;
-import top.thesumst.tools.PrintTools;
+import top.thesumst.view.console.CLIPrintTools;
 
 import java.awt.Point;
 import java.util.regex.Matcher;
@@ -169,27 +169,27 @@ class InputParserTestDrive
 
         System.out.println("Game number: " + GameList.getGameNumber());
         PauseTools.pause();
-        PrintTools.clearConsole();
+        CLIPrintTools.clearConsole();
 
         // 测试默认8x8棋盘
         System.out.println("=== 8x8棋盘测试 ===");
         testInput();
         PauseTools.pause();
-        PrintTools.clearConsole();
+        CLIPrintTools.clearConsole();
         
         // 测试10x10棋盘
         System.out.println("\n=== 10x10棋盘测试 ===");
         InputParser.setBoardSize(10);
         testInput();
         PauseTools.pause();
-        PrintTools.clearConsole();
+        CLIPrintTools.clearConsole();
         
         // 测试15x15棋盘
         System.out.println("\n=== 15x15棋盘测试 ===");
         InputParser.setBoardSize(15);
         testMoreInputs();
         PauseTools.pause();
-        PrintTools.clearConsole();
+        CLIPrintTools.clearConsole();
     }
 
     private static void testInput() 

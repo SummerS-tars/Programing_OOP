@@ -4,8 +4,8 @@ import top.thesumst.core.loop.*;
 import top.thesumst.io.input.InputParser;
 import top.thesumst.io.provider.*;
 import top.thesumst.observer.*;
-import top.thesumst.tools.PrintTools;
 import top.thesumst.type.Event;
+import top.thesumst.view.console.CLIPrintTools;
 
 public class GameContainer extends BaseSubject
 {
@@ -73,26 +73,26 @@ class GameContainerTestDrive
         @Override
         public void update(Event event, GameList gameList, int currentGameOrder)
         {
-            PrintTools.initializePositionsSet(GameList.getGame(currentGameOrder));
-            PrintTools.clearConsole();
-            PrintTools.printBoard(GameList.getGame(currentGameOrder));
-            PrintTools.printPlayerInfo(GameList.getGame(currentGameOrder));
-            PrintTools.printGameList(gameList);
-            PrintTools.printTipPanel(gameList);
-            PrintTools.printInputPanel(gameList, event);
+            CLIPrintTools.initializePositionsSet(GameList.getGame(currentGameOrder));
+            CLIPrintTools.clearConsole();
+            CLIPrintTools.printBoard(GameList.getGame(currentGameOrder));
+            CLIPrintTools.printPlayerInfo(GameList.getGame(currentGameOrder));
+            CLIPrintTools.printGameList(gameList);
+            CLIPrintTools.printTipPanel(gameList);
+            CLIPrintTools.printInputPanel(gameList, event);
             System.out.println("Observer notified: " + event);
         }
 
         @Override
         public void init(GameList gameList, int currentGameOrder)
         {
-            PrintTools.initializePositionsSet(GameList.getGame(currentGameOrder));
-            PrintTools.clearConsole();
-            PrintTools.printBoard(GameList.getGame(currentGameOrder));
-            PrintTools.printPlayerInfo(GameList.getGame(currentGameOrder));
-            PrintTools.printGameList(gameList);
-            PrintTools.printTipPanel(gameList);
-            PrintTools.printInputPanel(gameList, null);
+            CLIPrintTools.initializePositionsSet(GameList.getGame(currentGameOrder));
+            CLIPrintTools.clearConsole();
+            CLIPrintTools.printBoard(GameList.getGame(currentGameOrder));
+            CLIPrintTools.printPlayerInfo(GameList.getGame(currentGameOrder));
+            CLIPrintTools.printGameList(gameList);
+            CLIPrintTools.printTipPanel(gameList);
+            CLIPrintTools.printInputPanel(gameList, null);
             System.out.println("Observer initialized with game list: " + gameList + " and current game order: " + currentGameOrder);
         }
     }

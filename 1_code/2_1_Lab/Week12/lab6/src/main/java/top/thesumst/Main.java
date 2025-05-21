@@ -9,6 +9,7 @@ import top.thesumst.io.provider.CommandProviderFactory;
 import top.thesumst.observer.Observer;
 import top.thesumst.tools.*;
 import top.thesumst.view.ViewFactory;
+import top.thesumst.view.console.CLIPrintTools;
 
 public class Main 
 {
@@ -44,9 +45,9 @@ public class Main
 
     private static void gameMotd()
     {
-        PrintTools.clearConsole();
+        CLIPrintTools.clearConsole();
         System.out.println("欢迎来到各种棋类游戏！");
         PauseTools.pause("请按回车键以继续");
-        PrintTools.clearConsole();
+        CLIPrintTools.clearConsole();
     }
 }

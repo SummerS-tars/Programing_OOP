@@ -8,9 +8,9 @@ import java.util.InputMismatchException;
 import top.thesumst.core.mode.*;
 import top.thesumst.exception.*;
 import top.thesumst.tools.PauseTools;
-import top.thesumst.tools.PrintTools;
 import top.thesumst.tools.ScannerTools;
 import top.thesumst.type.ChessStatement;
+import top.thesumst.view.console.CLIPrintTools;
 
 public class GameList
 {
@@ -109,14 +109,14 @@ public class GameList
     {
         try{
             Scanner sc = ScannerTools.getScanner() ;
-            PrintTools.clearConsole();
+            CLIPrintTools.clearConsole();
             System.out.println("请输入1号玩家的名称：");
             player1Name = sc.nextLine() ;
             
             boolean optionAvailable = false ;
             while(!optionAvailable)
             {
-                PrintTools.clearConsole();
+                CLIPrintTools.clearConsole();
                 System.out.println("请选择1号玩家的棋子颜色：(1.Black ○ | 2.White ● )");
                 try {
                     int op = sc.nextInt();
@@ -139,7 +139,7 @@ public class GameList
                     PauseTools.pause("输入无效！请输入数字1或2，请键入回车键开始重新选择");
                 }
             }
-            PrintTools.clearConsole();
+            CLIPrintTools.clearConsole();
             System.out.println("请输入2号玩家的名称：");
             player2Name = sc.nextLine() ;
         } catch(Exception e)

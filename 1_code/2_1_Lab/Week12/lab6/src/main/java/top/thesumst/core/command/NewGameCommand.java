@@ -3,7 +3,7 @@ package top.thesumst.core.command;
 import top.thesumst.core.container.GameList;
 import top.thesumst.core.mode.GameMode;
 import top.thesumst.exception.IllegalCommandException;
-import top.thesumst.tools.PrintTools;
+import top.thesumst.view.console.CLIPrintTools;
 
 /**
  * 创建新游戏命令
@@ -22,7 +22,7 @@ public class NewGameCommand implements GameCommand {
         try {
             if(GameList.addGame(gameType))
             {
-                PrintTools.printGameList(gameList);
+                CLIPrintTools.printGameList(gameList);
                 return CommandResult.success("已创建新的" + gameType + "游戏");
             }
             else throw new IllegalCommandException("创建新游戏失败");
