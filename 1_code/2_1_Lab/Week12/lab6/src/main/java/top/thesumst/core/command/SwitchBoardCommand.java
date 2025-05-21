@@ -3,7 +3,6 @@ package top.thesumst.core.command;
 import top.thesumst.core.container.GameContainer;
 import top.thesumst.core.container.GameList;
 import top.thesumst.core.mode.GameMode;
-import top.thesumst.tools.PrintTools;
 
 public class SwitchBoardCommand implements GameCommand
 {

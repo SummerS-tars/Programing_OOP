@@ -4,7 +4,6 @@ import top.thesumst.core.container.GameList;
 import top.thesumst.core.mode.*;
 import top.thesumst.exception.*;
 import top.thesumst.type.*;
-import top.thesumst.tools.PrintTools;
 import java.awt.Point;
 
 public class BombCommand implements GameCommand

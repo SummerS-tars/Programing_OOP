@@ -3,7 +3,6 @@ package top.thesumst.core.command;
 import top.thesumst.core.container.GameList;
 import top.thesumst.core.mode.GameMode;
 import top.thesumst.exception.IllegalMoveException;
-import top.thesumst.tools.PrintTools;
 import top.thesumst.type.*;
 
 import java.awt.Point;

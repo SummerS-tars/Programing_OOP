@@ -1,6 +1,5 @@
 package top.thesumst.core.command;
 
-import top.thesumst.tools.PrintTools;
 import top.thesumst.core.container.GameList;
 import top.thesumst.core.mode.GameMode;
 import top.thesumst.exception.IllegalCommandException;
