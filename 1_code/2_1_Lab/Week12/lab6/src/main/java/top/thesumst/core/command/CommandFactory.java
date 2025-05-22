@@ -36,6 +36,9 @@ public class CommandFactory {
             case USE_BOMB:
                 return new BombCommand(result.getDataAs(Point.class));
 
+            case PLAYBACK:
+                return new PlaybackCommand(result.getDataAs(String.class));
+
             case INVALID:
             default:
                 return null;
