@@ -50,7 +50,8 @@ public class ReversiMode extends GameMode
                 Point point = (Point) operation.getData();
                 return go(point);
             case PASS:
-                if(!shouldPass) throw new IllegalCommandException("当前玩家有有效下棋位置，无法跳过");
+                if(isOver) throw new IllegalCommandException("游戏未结束，无法pass");
+                if(!shouldPass) throw new IllegalCommandException("当前玩家有有效下棋位置，无法pass");
                 updateGameState();
                 return true ;
             case BOMB:
@@ -317,7 +318,7 @@ public class ReversiMode extends GameMode
              * * 那么游戏结束
              * * 准备设置赢家以表示游戏结束
              */
-            if(shouldPass) // * 当前玩家pass后另一方没有合法位置
+            if(shouldPass || isFull()) // * 当前玩家pass后另一方没有合法位置 或 棋盘已满
             {
                 isOver = true ;
                 setWinner() ;
@@ -336,5 +337,14 @@ public class ReversiMode extends GameMode
             // * 说明当前玩家有合法下棋位置，取消pass
             shouldPass = false ;
         }
+    }
+
+    /**
+     * 检查棋盘是否已满
+     * @return true 棋盘已满 false 棋盘未满
+     */
+    private boolean isFull()
+    {
+        return getChessNumber(ChessStatement.BLACK) + getChessNumber(ChessStatement.WHITE) == size * size;
     }
 }
