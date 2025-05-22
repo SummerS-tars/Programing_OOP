@@ -3,6 +3,7 @@ package top.thesumst.core.container;
 import top.thesumst.core.loop.*;
 import top.thesumst.io.input.InputParser;
 import top.thesumst.io.provider.*;
+import top.thesumst.io.provider.BaseCommandProvider.CommandProviderMode;
 import top.thesumst.observer.*;
 import top.thesumst.type.Event;
 import top.thesumst.view.console.CLIPrintTools;
@@ -100,7 +101,7 @@ class GameContainerTestDrive
     public static void main(String[] args) 
     {
         GameList gameList = new GameList();
-        BaseCommandProvider cmdProvider = new CLICommandProvider();
+        BaseCommandProvider cmdProvider = new CLICommandProvider(CommandProviderMode.CLI);
         Observer observer = new ObserverTest();
         GameLoop gameLoop = new CLIGameLoop(gameList, cmdProvider, observer);
         GameContainer gameContainer = new GameContainer(gameList, gameLoop, cmdProvider, observer);

@@ -2,6 +2,7 @@ package top.thesumst.io.provider;
 
 import java.util.Scanner;
 
+import top.thesumst.io.provider.BaseCommandProvider.CommandProviderMode;
 import top.thesumst.tools.ScannerTools;
 import top.thesumst.type.Event;
 
@@ -10,9 +11,9 @@ public class CLICommandProvider extends BaseCommandProvider
     private Scanner scanner;
     private boolean isOpen;
 
-    public CLICommandProvider()
+    public CLICommandProvider(CommandProviderMode mode)
     {
-        super(CommandProviderMode.CLI);
+        super(mode);
         this.isOpen = false;
     }
 
@@ -68,7 +69,7 @@ public class CLICommandProvider extends BaseCommandProvider
 class CLICommandProviderTestDrive
 {
     public static void main(String[] args) {
-        CLICommandProvider provider = new CLICommandProvider();
+        CLICommandProvider provider = new CLICommandProvider(CommandProviderMode.CLI);
         provider.getNextCommand();
         if(provider.hasCommand()) {
             Event event = provider.getEvent();

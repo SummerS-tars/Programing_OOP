@@ -2,6 +2,7 @@ package top.thesumst.core.loop;
 
 import top.thesumst.core.container.GameList;
 import top.thesumst.io.provider.*;
+import top.thesumst.io.provider.BaseCommandProvider.CommandProviderMode;
 import top.thesumst.observer.Observer;
 import top.thesumst.type.Event;
 import top.thesumst.type.EventState;
@@ -73,7 +74,7 @@ class CLIGameLoopTestDrive
     public static void main(String[] args)
     {
         // 创建一个CLICommandProvider实例
-        BaseCommandProvider commandProvider = new CLICommandProvider();
+        BaseCommandProvider commandProvider = new CLICommandProvider(CommandProviderMode.CLI);
         // 创建一个GameList实例
         GameList gameList = new GameList("test1", "test2");
         // 创建一个Observer实例

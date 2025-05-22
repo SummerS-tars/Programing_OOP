@@ -2,6 +2,9 @@ package top.thesumst.io.provider;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import top.thesumst.io.provider.BaseCommandProvider.CommandProviderMode;
+
 import org.junit.After;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -21,7 +24,7 @@ public class CLICommandProviderTest {
 
     @Before
     public void setUp() {
-        provider = new CLICommandProvider();
+        provider = new CLICommandProvider(CommandProviderMode.CLI);
         System.setErr(new PrintStream(errContent));
     }
 
@@ -61,7 +64,7 @@ public class CLICommandProviderTest {
         System.setIn(exceptionInputStream);
         
         // Create a new provider that will use our problematic input stream
-        provider = new CLICommandProvider();
+        provider = new CLICommandProvider(CommandProviderMode.CLI);
 
         // Call the close method
         provider.close();
@@ -77,7 +80,7 @@ public class CLICommandProviderTest {
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         
         // Create new provider with the redirected input
-        CLICommandProvider testProvider = new CLICommandProvider();
+        CLICommandProvider testProvider = new CLICommandProvider(CommandProviderMode.CLI);
         
         // Call getNextCommand
         testProvider.getNextCommand();
@@ -117,7 +120,7 @@ public class CLICommandProviderTest {
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         
         // Create new provider with the redirected input
-        CLICommandProvider testProvider = new CLICommandProvider();
+        CLICommandProvider testProvider = new CLICommandProvider(CommandProviderMode.CLI);
         
         // Verify hasCommand returns true
         assertTrue(testProvider.hasCommand());
@@ -143,7 +146,7 @@ public class CLICommandProviderTest {
         System.setIn(new ByteArrayInputStream(new byte[0]));
         
         // Create new provider with the empty input
-        CLICommandProvider testProvider = new CLICommandProvider();
+        CLICommandProvider testProvider = new CLICommandProvider(CommandProviderMode.CLI);
         
         // For an empty input, hasCommand would typically return false,
         // but this depends on the exact behavior of Scanner with an empty stream

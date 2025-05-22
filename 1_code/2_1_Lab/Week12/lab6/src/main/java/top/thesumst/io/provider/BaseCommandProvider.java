@@ -13,6 +13,7 @@ public abstract class BaseCommandProvider
     {
         CLI, // 命令行模式
         GUI, // 图形界面模式
+        PLAYBACK // 回放模式
     }
 
     protected final CommandProviderMode mode;
