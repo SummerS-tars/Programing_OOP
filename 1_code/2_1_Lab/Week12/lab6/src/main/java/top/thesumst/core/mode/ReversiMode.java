@@ -50,7 +50,9 @@ public class ReversiMode extends GameMode
                 Point point = (Point) operation.getData();
                 return go(point);
             case PASS:
-                throw new IllegalCommandException("gomoku模式不支持pass操作") ;
+                if(!shouldPass) throw new IllegalCommandException("当前玩家有有效下棋位置，无法跳过");
+                updateGameState();
+                return true ;
             case BOMB:
                 throw new IllegalCommandException("reversi模式不支持炸弹操作") ;
             default:
