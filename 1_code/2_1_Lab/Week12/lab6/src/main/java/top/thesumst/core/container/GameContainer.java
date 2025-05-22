@@ -1,5 +1,9 @@
 package top.thesumst.core.container;
 
+import java.io.IOException;
+import java.util.List;
+
+import top.thesumst.core.command.PlaybackCommand;
 import top.thesumst.core.loop.*;
 import top.thesumst.io.input.InputParser;
 import top.thesumst.io.provider.*;
@@ -38,6 +42,9 @@ public class GameContainer extends BaseSubject
             event = gameLoop.startLoop();
             event.executeEvent(gameList, currentGameOrder);
             notifyObservers(event, gameList, currentGameOrder);
+
+            if(event.getCommand() instanceof PlaybackCommand)
+                playback(event);
         }
     }
 
@@ -50,6 +57,18 @@ public class GameContainer extends BaseSubject
         currentGameOrder = order;
         gameLoop.setCurrentGameOrder(currentGameOrder);
         InputParser.setBoardSize(GameList.getGame(currentGameOrder).size);
+    }
+
+    private void playback(Event playbackEvent)
+    {
+        List<Event> events = null ;
+        try {
+            PlaybackCommandProvider playbackCommandProvider = new PlaybackCommandProvider(playbackEvent.getData());
+            events = playbackCommandProvider.getEvents();
+            gameLoop.playback(events);
+        } catch(IOException e) {
+            notifyObservers(Event.getErrorEvent(e), gameList, currentGameOrder);
+        }
     }
 
     /**

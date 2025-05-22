@@ -1,5 +1,7 @@
 package top.thesumst.core.loop;
 
+import java.util.List;
+
 import top.thesumst.core.container.GameList;
 import top.thesumst.core.mode.GameMode;
 import top.thesumst.io.provider.BaseCommandProvider;
@@ -45,5 +47,19 @@ public abstract class GameLoop extends BaseSubject
     public void setCurrentGameOrder(int currentGameOrder)
     {
         this.currentGameOrder = currentGameOrder;
+    }
+
+    public void playback(List<Event> events)
+    {
+        for(Event event : events)
+        {
+            event.executeEvent(gameList, currentGameOrder);
+            notifyObservers(event, gameList, currentGameOrder);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
