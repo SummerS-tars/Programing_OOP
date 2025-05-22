@@ -1,8 +1,8 @@
 package top.thesumst.core.mode;
 
 import top.thesumst.type.ChessStatement;
-import top.thesumst.core.mode.component.*;
-import top.thesumst.exception.*;
+import top.thesumst.type.component.*;
+import top.thesumst.type.exception.*;
 import top.thesumst.type.*;
 import java.awt.Point;
 import java.util.Stack;

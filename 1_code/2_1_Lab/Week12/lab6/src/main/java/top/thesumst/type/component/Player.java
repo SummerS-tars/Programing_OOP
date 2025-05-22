@@ -1,4 +1,4 @@
-package top.thesumst.core.mode.component;
+package top.thesumst.type.component;
 
 import top.thesumst.type.ChessStatement;
 

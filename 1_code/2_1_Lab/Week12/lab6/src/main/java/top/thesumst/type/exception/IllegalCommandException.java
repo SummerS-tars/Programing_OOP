@@ -1,4 +1,4 @@
-package top.thesumst.exception;
+package top.thesumst.type.exception;
 
 public class IllegalCommandException extends RuntimeException
 {

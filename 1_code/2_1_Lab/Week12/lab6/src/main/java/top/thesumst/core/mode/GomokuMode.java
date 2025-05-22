@@ -1,8 +1,9 @@
 package top.thesumst.core.mode;
 
 import top.thesumst.type.*;
-import top.thesumst.core.mode.component.*;
-import top.thesumst.exception.*;
+import top.thesumst.type.component.*;
+import top.thesumst.type.exception.*;
+
 import java.awt.Point;
 import java.util.*;
 

@@ -6,10 +6,10 @@ import java.util.Scanner;
 import java.util.InputMismatchException;
 
 import top.thesumst.core.mode.*;
-import top.thesumst.exception.*;
 import top.thesumst.tools.PauseTools;
 import top.thesumst.tools.ScannerTools;
 import top.thesumst.type.ChessStatement;
+import top.thesumst.type.exception.*;
 import top.thesumst.view.console.CLIPrintTools;
 
 public class GameList

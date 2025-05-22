@@ -1,9 +1,10 @@
 package top.thesumst.core.mode;
 
 import top.thesumst.type.ChessStatement;
+import top.thesumst.type.component.Step;
+import top.thesumst.type.exception.*;
 import top.thesumst.type.*;
-import top.thesumst.core.mode.component.Step;
-import top.thesumst.exception.*;
+
 import java.awt.Point;
 
 public class PeaceMode extends GameMode

@@ -1,9 +1,10 @@
 package top.thesumst.core.mode;
 
 import top.thesumst.type.*;
-import top.thesumst.core.mode.component.Player;
-import top.thesumst.core.mode.component.Step;
-import top.thesumst.exception.*;
+import top.thesumst.type.component.Player;
+import top.thesumst.type.component.Step;
+import top.thesumst.type.exception.*;
+
 import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;

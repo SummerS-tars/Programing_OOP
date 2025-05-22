@@ -4,8 +4,8 @@ import java.awt.Point;
 
 import top.thesumst.core.container.*;
 import top.thesumst.core.mode.*;
-import top.thesumst.core.mode.component.*;
 import top.thesumst.type.Event;
+import top.thesumst.type.component.*;
 
 public class CLIPrintTools 
 {
