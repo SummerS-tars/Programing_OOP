@@ -18,7 +18,7 @@ public class CLIPrintTools
     {
         int size = currentGame.getSize() ;
         ChessBoard board = currentGame.getBoard() ;
-        System.out.printf("%3s", "");
+        System.out.printf("%2s", "");
         for(int i = 0 ; i < size ; i ++ )
             System.out.printf("%c ", 'A' + i) ;
         for(int i = 0 ; i < size ; i ++ )
