@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "PlaybackCommandProviderTestDrive",
+            "request": "launch",
+            "mainClass": "top.thesumst.io.provider.PlaybackCommandProviderTestDrive",
+            "projectName": "lab6"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"
