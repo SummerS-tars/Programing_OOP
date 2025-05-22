@@ -23,7 +23,7 @@ public class Event
         if(command == null)
         {
             setState(EventState.EVENT_EXECUTED_FAIL);
-            setMessage("无效命令");
+            setMessage("无效命令: " + rawCommand);
             return;
         }
 
@@ -77,10 +77,17 @@ public class Event
         return "Event{" +
                 "type=" + type +
                 ", rawCommand='" + rawCommand + '\'' +
-                ", command=" + command +
+                ", command=" + (command == null ? "null" : command.getClass().getSimpleName()) +
                 ", data=" + data +
                 ", state=" + state +
                 ", message='" + message + '\'' +
                 '}';
+    }
+
+    public static Event getErrorEvent(Exception e)
+    {
+        Event event = new Event();
+        event.setMessage("发生错误: " + e.getMessage());
+        return event;
     }
 }
