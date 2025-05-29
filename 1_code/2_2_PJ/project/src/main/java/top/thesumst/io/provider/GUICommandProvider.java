@@ -7,6 +7,11 @@ public class GUICommandProvider extends BaseCommandProvider
         super(CommandProviderMode.GUI);
     }
 
+    // 为GUI提供设置命令的方法
+    public void setInputBuffer(String command) {
+        this.inputBuffer = command;
+    }
+
     // TODO: 具体GUI功能待实现
     @Override
     public void getNextCommand()
@@ -16,7 +21,7 @@ public class GUICommandProvider extends BaseCommandProvider
     @Override
     public boolean hasCommand()
     {
-        return false;
+        return inputBuffer != null && !inputBuffer.trim().isEmpty();
     }
 
     @Override
