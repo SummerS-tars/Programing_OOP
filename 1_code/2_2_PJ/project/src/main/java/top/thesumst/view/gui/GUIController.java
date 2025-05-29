@@ -1,19 +1,22 @@
 package top.thesumst.view.gui;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-// GameContainer import removed - not used
 import top.thesumst.core.container.GameContainer;
 import top.thesumst.core.container.GameList;
 import top.thesumst.core.mode.GameMode;
+import top.thesumst.core.mode.GomokuMode;
 import top.thesumst.io.input.InputParser;
 import top.thesumst.io.input.InputResult;
 import top.thesumst.io.input.InputType;
@@ -28,13 +31,67 @@ import java.util.ResourceBundle;
 /**
  * GUI控制器类，负责处理MainGameView.fxml的UI控件
  */
-public class GUIController implements Initializable {
-
+public class GUIController implements Initializable {    
     @FXML
     private StackPane chessboardContainer;
 
     @FXML
     private GridPane rightInfoPane;
+    
+    // 第一列：游戏信息和玩家控制的FXML绑定
+    @FXML
+    private Label currentGameNumberLabel;
+    
+    @FXML
+    private Label blackPlayerLabel;
+    
+    @FXML
+    private Label blackPlayerScoreLabel;
+    
+    @FXML
+    private Label whitePlayerLabel;
+    
+    @FXML
+    private Label whitePlayerScoreLabel;
+    
+    @FXML
+    private Label currentRoundLabel;
+    
+    @FXML
+    private Label blackBombsLabel;
+    
+    @FXML
+    private Label whiteBombsLabel;
+    
+    @FXML
+    private Button passButton;
+    
+    @FXML
+    private Button useBombButton;
+    
+    // 第二列：游戏列表的FXML绑定
+    @FXML
+    private ListView<String> gameListView;
+    
+    // 第三列：新游戏和系统控制的FXML绑定
+    @FXML
+    private Button addPeaceButton;
+    
+    @FXML
+    private Button addReversiButton;
+    
+    @FXML
+    private Button addGomokuButton;
+    
+    @FXML
+    private Button playbackButton;
+    
+    @FXML
+    private Button quitButton;
+    
+    // 反馈消息标签
+    @FXML
+    private Label feedbackMessageLabel;
 
     // 棋盘相关的实例变量
     private GridPane chessboardGrid;
@@ -56,6 +113,15 @@ public class GUIController implements Initializable {
         
         // 创建一个默认的8x8棋盘用于演示
         updateChessboardDisplay(8);
+        
+        // 初始化事件处理器
+        initializeEventHandlers();
+        
+        // 初始化游戏列表
+        initializeGameListView();
+        
+        // 初始化UI状态
+        updateUIForGameMode(null);
     }
 
     /**
@@ -272,9 +338,7 @@ public class GUIController implements Initializable {
      */
     public void setBombModeActive(boolean active) {
         this.isBombModeActive = active;
-    }
-
-    /**
+    }    /**
      * 设置游戏列表引用（后续阶段使用）
      */
     public void setGameList(GameList gameList) {
@@ -286,5 +350,254 @@ public class GUIController implements Initializable {
      */
     public void setCommandProvider(GUICommandProvider commandProvider) {
         this.commandProvider = commandProvider;
+    }
+
+    /**
+     * 初始化所有事件处理器
+     */
+    private void initializeEventHandlers() {
+        // 第一列：玩家控制按钮事件
+        passButton.setOnAction(e -> handlePassAction());
+        useBombButton.setOnAction(e -> handleUseBombAction());
+        
+        // 第二列：游戏列表选择事件
+        gameListView.getSelectionModel().selectedItemProperty().addListener(
+            (observable, oldValue, newValue) -> handleGameListSelection(newValue)
+        );
+        
+        // 第三列：新游戏和系统控制按钮事件
+        addPeaceButton.setOnAction(e -> handleAddGameAction("peace"));
+        addReversiButton.setOnAction(e -> handleAddGameAction("reversi"));
+        addGomokuButton.setOnAction(e -> handleAddGameAction("gomoku"));
+        playbackButton.setOnAction(e -> handlePlaybackAction());
+        quitButton.setOnAction(e -> handleQuitAction());
+    }
+
+    /**
+     * 初始化游戏列表视图
+     */
+    private void initializeGameListView() {
+        // 创建观察列表用于游戏列表
+        ObservableList<String> gameItems = FXCollections.observableArrayList();
+        gameListView.setItems(gameItems);
+    }
+
+    /**
+     * 处理跳过回合动作
+     */
+    private void handlePassAction() {
+        sendCommand("pass");
+        showFeedbackMessage("已跳过本回合", false);
+    }
+
+    /**
+     * 处理使用炸弹动作
+     */
+    private void handleUseBombAction() {
+        setBombModeActive(true);
+        showFeedbackMessage("炸弹模式已激活，请点击要炸毁的位置", false);
+    }
+
+    /**
+     * 处理游戏列表选择
+     */
+    private void handleGameListSelection(String selectedGame) {
+        if (selectedGame != null && !selectedGame.trim().isEmpty()) {
+            try {
+                // 解析游戏编号（格式："游戏X [游戏类型]"）
+                String gameNumberStr = selectedGame.substring(2, selectedGame.indexOf(' ', 2));
+                int gameNumber = Integer.parseInt(gameNumberStr);
+                
+                sendCommand(String.valueOf(gameNumber));
+                showFeedbackMessage("已切换到" + selectedGame, false);
+            } catch (Exception e) {
+                showFeedbackMessage("游戏选择失败：" + e.getMessage(), true);
+            }
+        }
+    }
+
+    /**
+     * 处理添加新游戏动作
+     */
+    private void handleAddGameAction(String gameMode) {
+        sendCommand(gameMode);
+        showFeedbackMessage("正在添加" + gameMode + "游戏...", false);
+    }
+
+    /**
+     * 处理演示模式动作
+     */
+    private void handlePlaybackAction() {
+        // 暂时使用默认的示例脚本
+        sendCommand("playback gomoku.cmd");
+        showFeedbackMessage("开始演示模式...", false);
+    }
+
+    /**
+     * 处理退出游戏动作
+     */
+    private void handleQuitAction() {
+        sendCommand("quit");
+        showFeedbackMessage("正在退出游戏...", false);
+    }
+
+    /**
+     * 发送命令到GUICommandProvider
+     */
+    private void sendCommand(String command) {
+        if (commandProvider != null) {
+            commandProvider.offerCommand(command);
+            System.out.println("GUI Action - 命令已发送: " + command);
+        } else {
+            System.out.println("GUI Action - CommandProvider未设置，无法发送命令: " + command);
+        }
+    }
+
+    /**
+     * 显示反馈消息
+     */
+    private void showFeedbackMessage(String message, boolean isError) {
+        Platform.runLater(() -> {
+            feedbackMessageLabel.setText(message);
+            if (isError) {
+                feedbackMessageLabel.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+            } else {
+                feedbackMessageLabel.setStyle("-fx-text-fill: blue; -fx-font-weight: bold;");
+            }
+        });
+    }
+
+    /**
+     * 更新游戏列表显示
+     */
+    public void updateGameListDisplay() {
+        Platform.runLater(() -> {
+            if (gameList == null) {
+                return;
+            }
+            
+            ObservableList<String> gameItems = gameListView.getItems();
+            gameItems.clear();
+            
+            int currentGameOrder = GameContainer.getCurrentGameOrder();
+            
+            for (int i = 1; i <= GameList.getGameNumber(); i++) {
+                GameMode game = GameList.getGame(i);
+                String prefix = (i == currentGameOrder) ? "> " : "  ";
+                String gameInfo = String.format("%s游戏%d [%s]", prefix, i, game.getGameMode());
+                gameItems.add(gameInfo);
+            }
+            
+            // 选中当前游戏
+            if (currentGameOrder > 0 && currentGameOrder <= gameItems.size()) {
+                gameListView.getSelectionModel().select(currentGameOrder - 1);
+            }
+        });
+    }
+
+    /**
+     * 更新游戏信息显示
+     */
+    public void updateGameInfoDisplay(GameMode currentGame) {
+        Platform.runLater(() -> {
+            if (currentGame == null) {
+                return;
+            }
+            
+            int currentGameOrder = GameContainer.getCurrentGameOrder();
+            currentGameNumberLabel.setText("游戏" + currentGameOrder);
+            
+            // 获取玩家信息
+            blackPlayerLabel.setText("黑棋 [" + currentGame.getPlayer1().getName() + "]");
+            whitePlayerLabel.setText("白棋 [" + currentGame.getPlayer2().getName() + "]");
+            
+            // 更新UI元素可见性基于游戏模式
+            updateUIForGameMode(currentGame);
+            
+            // 根据游戏类型显示分数或炸弹信息
+            String gameMode = currentGame.getGameMode();
+            switch (gameMode) {
+                case "reversi":
+                    // Reversi模式：使用getChessNumber()作为分数
+                    blackPlayerScoreLabel.setText("分数: " + currentGame.getPlayer1().getChessNumber());
+                    whitePlayerScoreLabel.setText("分数: " + currentGame.getPlayer2().getChessNumber());
+                    blackPlayerScoreLabel.setVisible(true);
+                    whitePlayerScoreLabel.setVisible(true);
+                    blackBombsLabel.setVisible(false);
+                    whiteBombsLabel.setVisible(false);
+                    break;
+                case "gomoku":
+                    // Gomoku模式：使用GomokuMode的getBombNumber()方法
+                    if (currentGame instanceof GomokuMode) {
+                        GomokuMode gomokuGame = (GomokuMode) currentGame;
+                        blackBombsLabel.setText("黑方炸弹: " + gomokuGame.getBombNumber(currentGame.getPlayer1()));
+                        whiteBombsLabel.setText("白方炸弹: " + gomokuGame.getBombNumber(currentGame.getPlayer2()));
+                    } else {
+                        blackBombsLabel.setText("黑方炸弹: 0");
+                        whiteBombsLabel.setText("白方炸弹: 0");
+                    }
+                    blackBombsLabel.setVisible(true);
+                    whiteBombsLabel.setVisible(true);
+                    blackPlayerScoreLabel.setVisible(false);
+                    whitePlayerScoreLabel.setVisible(false);
+                    break;
+                case "peace":
+                default:
+                    blackPlayerScoreLabel.setVisible(false);
+                    whitePlayerScoreLabel.setVisible(false);
+                    blackBombsLabel.setVisible(false);
+                    whiteBombsLabel.setVisible(false);
+                    break;
+            }
+            
+            // 显示回合信息
+            if (!currentGame.isOver()) {
+                String currentPlayerName = currentGame.getCurrentPlayer().getName();
+                String currentColor = currentGame.getCurrentPlayer().getColor() == ChessStatement.BLACK ? "黑棋" : "白棋";
+                currentRoundLabel.setText("当前回合: " + currentColor + " (" + currentPlayerName + ")");
+                currentRoundLabel.setVisible(true);
+            } else {
+                currentRoundLabel.setText("游戏已结束");
+                currentRoundLabel.setVisible(true);
+            }
+        });
+    }
+
+    /**
+     * 根据游戏模式更新UI元素的可见性
+     */
+    private void updateUIForGameMode(GameMode currentGame) {
+        Platform.runLater(() -> {
+            if (currentGame == null) {
+                // 如果没有当前游戏，隐藏所有游戏相关的控件
+                passButton.setVisible(false);
+                useBombButton.setVisible(false);
+                currentRoundLabel.setVisible(false);
+                blackPlayerScoreLabel.setVisible(false);
+                whitePlayerScoreLabel.setVisible(false);
+                blackBombsLabel.setVisible(false);
+                whiteBombsLabel.setVisible(false);
+                return;
+            }
+            
+            String gameMode = currentGame.getGameMode();
+            boolean gameIsActive = !currentGame.isOver();
+            
+            switch (gameMode) {
+                case "reversi":
+                    passButton.setVisible(gameIsActive);
+                    useBombButton.setVisible(false);
+                    break;
+                case "gomoku":
+                    passButton.setVisible(false);
+                    useBombButton.setVisible(gameIsActive);
+                    break;
+                case "peace":
+                default:
+                    passButton.setVisible(false);
+                    useBombButton.setVisible(false);
+                    break;
+            }
+        });
     }
 }
