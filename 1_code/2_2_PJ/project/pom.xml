@@ -74,7 +74,7 @@
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.22.1</version>
-        </plugin>
+        </plugin>        
         <plugin>
           <groupId>org.openjfx</groupId>
           <artifactId>javafx-maven-plugin</artifactId>
@@ -83,9 +83,7 @@
             <execution>
               <!-- Default configuration for running -->
               <!-- Usage: mvn clean javafx:run -->
-              <id>default-cli</id>
-              <configuration>
-                <!-- TODO: the entrance maybe need to be changed here -->
+              <id>default-cli</id>              <configuration>
                 <mainClass>top.thesumst.Main</mainClass>
               </configuration>
             </execution>
