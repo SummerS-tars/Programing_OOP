@@ -46,6 +46,10 @@ public class Main extends Application
         // 创建Scene并设置到Stage
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
+
+        // 设置最小窗口大小
+        primaryStage.setMinWidth(1200); // 例如，最小宽度800
+        primaryStage.setMinHeight(650); // 例如，最小高度650
         
         // 显示窗口
         primaryStage.show();

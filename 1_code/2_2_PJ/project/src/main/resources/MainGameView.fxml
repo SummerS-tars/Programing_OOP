@@ -8,52 +8,37 @@
     <!-- top区域不再用于显示MOTD -->
 
     <left>
-        <StackPane fx:id="chessboardContainer" prefWidth="400" prefHeight="400" minWidth="400" minHeight="400" maxWidth="400" maxHeight="400" style="-fx-background-color: lightblue;" HBox.hgrow="NEVER">
-            <Label text="棋盘区域占位符" style="-fx-font-size: 20px; -fx-text-fill: darkblue;"/>
+        <StackPane fx:id="chessboardContainer" prefWidth="600" prefHeight="600" style="-fx-background-color: lightblue;">
+            <!-- 移除了占位符Label -->
         </StackPane>
     </left>
 
     <right>
-        <HBox spacing="10" HBox.hgrow="ALWAYS" alignment="TOP_LEFT"> <!-- 修改: alignment="TOP_LEFT" -->
+        <GridPane fx:id="rightInfoPane" hgap="10" vgap="10">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
+            <columnConstraints>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="33"/>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="33"/>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="33"/>
+            </columnConstraints>
 
-            <!-- 第一列容器 (包含原第一列内容和反馈信息) -->
-            <VBox HBox.hgrow="ALWAYS" alignment="TOP_CENTER" spacing="5"> <!-- 修改: alignment="TOP_CENTER" -->
-                <!-- 实际内容VBox，用于确保按钮等元素在VBox内部也是居中的 -->
-                <VBox alignment="TOP_CENTER" spacing="5"> <!-- 修改: alignment="TOP_CENTER" -->
-                    <Label text="当前游戏" style="-fx-font-weight: bold;"/>
-                    <Label fx:id="currentGameNumberLabel" text="游戏1"/>
-                    <Label fx:id="blackPlayerLabel" text="黑棋 [Tom]"/>
-                    <Label fx:id="blackPlayerScoreLabel" text="分数: 0" visible="false"/>
-                    <Label fx:id="whitePlayerLabel" text="白棋 [Jerry]"/>
-                    <Label fx:id="whitePlayerScoreLabel" text="分数: 0" visible="false"/>
-                    <Label fx:id="currentRoundLabel" text="当前轮数: 1" visible="false"/>
-                    <Label fx:id="blackBombsLabel" text="黑方炸弹: 2" visible="false"/>
-                    <Label fx:id="whiteBombsLabel" text="白方炸弹: 3" visible="false"/>
-                    <Button fx:id="passButton" text="跳过本轮" prefWidth="110" prefHeight="30" />
-                    <Button fx:id="useBombButton" text="使用炸弹" prefWidth="110" prefHeight="30" />
-                    <Button fx:id="playbackButton" text="演示模式" prefWidth="110" prefHeight="30"/> <!-- 演示模式按钮移到此处 -->
-                </VBox>
-                <Label fx:id="feedbackMessageLabel" text="欢迎来到游戏！" style="-fx-text-fill: blue; -fx-font-weight: bold;" alignment="CENTER" maxWidth="Infinity"/>
-            </VBox>
+            <!-- 右侧三列的内容将在此处定义，当前为空，后续阶段填充 -->
+            <!-- 例如，第一列 -->
+            <!-- <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" spacing="5">
+                <Label text="第一列内容"/>
+            </VBox> -->
 
-            <!-- 第二列 (游戏列表) -->
-            <VBox HBox.hgrow="ALWAYS" alignment="TOP_CENTER" spacing="5"> <!-- 修改: alignment="TOP_CENTER" -->
-                <Label text="游戏列表" style="-fx-font-weight: bold;"/>
-                <ListView fx:id="gameListView" prefHeight="200" maxWidth="180"/> <!-- 设置maxWidth -->
-            </VBox>
+            <!-- 第二列 -->
+            <!-- <VBox GridPane.columnIndex="1" GridPane.rowIndex="0" spacing="5">
+                <Label text="第二列内容"/>
+            </VBox> -->
 
-            <!-- 第三列 (游戏控制) -->
-            <VBox HBox.hgrow="ALWAYS" alignment="TOP_CENTER" spacing="5"> <!-- 修改: alignment="TOP_CENTER" -->
-                <Label text="添加新游戏" style="-fx-font-weight: bold;"/>
-                <Button fx:id="addPeaceButton" text="添加Peace" prefWidth="110" prefHeight="30"/>
-                <Button fx:id="addReversiButton" text="添加Reversi" prefWidth="110" prefHeight="30"/>
-                <Button fx:id="addGomokuButton" text="添加Gomoku" prefWidth="110" prefHeight="30"/>
-                <Separator/>
-                <Button fx:id="quitButton" text="退出游戏" prefWidth="110" prefHeight="30"/>
-            </VBox>
-        </HBox>
+            <!-- 第三列 -->
+            <!-- <VBox GridPane.columnIndex="2" GridPane.rowIndex="0" spacing="5">
+                <Label text="第三列内容"/>
+            </VBox> -->
+        </GridPane>
     </right>
 </BorderPane>
