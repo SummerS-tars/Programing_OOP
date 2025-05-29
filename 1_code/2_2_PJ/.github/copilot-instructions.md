@@ -13,6 +13,7 @@ Copilot Code of Conduct:
 * FXML Usage: We assume that the main interface layout FXML file (`MainGameView.fxml`) has been pre-generated and provided by an external tool (like Scene Builder). Copilot's task is to load this FXML and be responsible for writing its controller (`top.thesumst.view.gui.GUIController`) code, including binding UI elements and implementing dynamic update logic.
 * `Platform.runLater`: Please always remember that all modifications and updates to JavaFX UI elements must be performed on the JavaFX Application Thread. If game logic runs on a background thread, be sure to use `Platform.runLater()` to submit UI update tasks.
 * `.github/reference/MainGameView.fxml`: the reference FXML file for the main game interface is provided in the `.github/reference` directory. Please refer to it when implementing the GUI.
+* thinking in English, but finally what your answers for the user should be in Chinese.
 
 ## Project Overview
 
