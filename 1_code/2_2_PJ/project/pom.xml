@@ -5,16 +5,18 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>top.thesumst</groupId>
-  <artifactId>lab6</artifactId>
+  <artifactId>project</artifactId>
   <version>5.0</version>
 
-  <name>lab6</name>
-  <url>https://github.com/SummerS-tars/Programing_OOP/tree/master/1_code/2_1_Lab/Week5</url>
+  <name>project</name>
+  <url>https://github.com/SummerS-tars/Programing_OOP/tree/master/1_code/2_2_PJ</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>23</maven.compiler.source>
     <maven.compiler.target>23</maven.compiler.target>
+    <javafx.version>21</javafx.version>
+    <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
   </properties>
 
   <dependencies>
@@ -29,6 +31,26 @@
       <artifactId>junit</artifactId>
       <version>4.11</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      <version>${javafx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-fxml</artifactId>
+      <version>${javafx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-base</artifactId>
+      <version>${javafx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-graphics</artifactId>
+      <version>${javafx.version}</version>
     </dependency>
   </dependencies>
 
@@ -52,6 +74,22 @@
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.22.1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.openjfx</groupId>
+          <artifactId>javafx-maven-plugin</artifactId>
+          <version>${javafx.maven.plugin.version}</version>
+          <executions>
+            <execution>
+              <!-- Default configuration for running -->
+              <!-- Usage: mvn clean javafx:run -->
+              <id>default-cli</id>
+              <configuration>
+                <!-- TODO: the entrance maybe need to be changed here -->
+                <mainClass>top.thesumst.Main</mainClass>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
