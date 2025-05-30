@@ -100,6 +100,9 @@ public class GUIController implements Initializable {
     private Button[][] chessboardButtons;
     private int currentBoardSize = 8; // 默认8x8，将根据当前游戏动态调整
     private boolean isBombModeActive = false;
+    
+    // ListView选择监听器相关
+    private boolean isUpdatingGameList = false; // 标志位，防止ListView更新时触发选择事件
 
     // 用于访问游戏状态的引用（后续阶段会通过依赖注入或其他方式设置）
     private GameList gameList;
@@ -470,14 +473,31 @@ public class GUIController implements Initializable {
      * 处理游戏列表选择
      */
     private void handleGameListSelection(String selectedGame) {
+        // 如果正在更新游戏列表，忽略选择事件
+        if (isUpdatingGameList) {
+            return;
+        }
+        
         if (selectedGame != null && !selectedGame.trim().isEmpty()) {
             try {
-                // 解析游戏编号（格式："游戏X [游戏类型]"）
-                String gameNumberStr = selectedGame.substring(2, selectedGame.indexOf(' ', 2));
-                int gameNumber = Integer.parseInt(gameNumberStr);
-                
-                sendCommand(String.valueOf(gameNumber));
-                showFeedbackMessage("已切换到" + selectedGame, false);
+                // 解析游戏编号（格式："  游戏X [游戏类型]" 或 "> 游戏X [游戏类型]"）
+                // 找到"游戏"后面的数字
+                int gameIndex = selectedGame.indexOf("游戏");
+                if (gameIndex != -1) {
+                    String remaining = selectedGame.substring(gameIndex + 2); // "X [游戏类型]"
+                    int spaceIndex = remaining.indexOf(' ');
+                    if (spaceIndex != -1) {
+                        String gameNumberStr = remaining.substring(0, spaceIndex);
+                        
+                        // 直接发送游戏编号字符串，让InputParser处理
+                        sendCommand(gameNumberStr);
+                        showFeedbackMessage("正在切换到" + selectedGame, false);
+                    } else {
+                        showFeedbackMessage("游戏选择失败：格式解析错误", true);
+                    }
+                } else {
+                    showFeedbackMessage("游戏选择失败：未找到游戏编号", true);
+                }
             } catch (Exception e) {
                 showFeedbackMessage("游戏选择失败：" + e.getMessage(), true);
             }
@@ -568,21 +588,29 @@ public class GUIController implements Initializable {
                 return;
             }
             
-            ObservableList<String> gameItems = gameListView.getItems();
-            gameItems.clear();
+            // 设置标志位，防止ListView选择事件触发
+            isUpdatingGameList = true;
             
-            int currentGameOrder = GameContainer.getCurrentGameOrder();
-            
-            for (int i = 1; i <= GameList.getGameNumber(); i++) {
-                GameMode game = GameList.getGame(i);
-                String prefix = (i == currentGameOrder) ? "> " : "  ";
-                String gameInfo = String.format("%s游戏%d [%s]", prefix, i, game.getGameMode());
-                gameItems.add(gameInfo);
-            }
-            
-            // 选中当前游戏
-            if (currentGameOrder > 0 && currentGameOrder <= gameItems.size()) {
-                gameListView.getSelectionModel().select(currentGameOrder - 1);
+            try {
+                ObservableList<String> gameItems = gameListView.getItems();
+                gameItems.clear();
+                
+                int currentGameOrder = GameContainer.getCurrentGameOrder();
+                
+                for (int i = 1; i <= GameList.getGameNumber(); i++) {
+                    GameMode game = GameList.getGame(i);
+                    String prefix = (i == currentGameOrder) ? "> " : "  ";
+                    String gameInfo = String.format("%s游戏%d [%s]", prefix, i, game.getGameMode());
+                    gameItems.add(gameInfo);
+                }
+                
+                // 选中当前游戏
+                if (currentGameOrder > 0 && currentGameOrder <= gameItems.size()) {
+                    gameListView.getSelectionModel().select(currentGameOrder - 1);
+                }
+            } finally {
+                // 重置标志位
+                isUpdatingGameList = false;
             }
         });
     }

@@ -54,13 +54,24 @@ public class Main extends Application
             // 创建Observer - 这里需要将GUIController设置到GUIView中
             observer = ViewFactory.getView("gui");
             
-            // 如果observer是GUIView的实例，设置controller
+            // 创建CommandProvider
+            cmdProvider = CommandProviderFactory.getCommandProvider("gui");
+            
+            // 如果observer是GUIView的实例，设置controller和commandProvider
             if (observer instanceof top.thesumst.view.gui.GUIView) {
                 ((top.thesumst.view.gui.GUIView) observer).setController(guiController);
+                
+                // 将CommandProvider设置到GUIController中
+                if (cmdProvider instanceof top.thesumst.io.provider.GUICommandProvider) {
+                    guiController.setCommandProvider((top.thesumst.io.provider.GUICommandProvider) cmdProvider);
+                }
             }
             
-            cmdProvider = CommandProviderFactory.getCommandProvider("gui");
             gameList = new GameList();
+            
+            // 将GameList设置到GUIController中
+            guiController.setGameList(gameList);
+            
             gameLoop = GameLoopFactory.getGameLoop("gui", gameList, cmdProvider, observer);
             gameContainer = new GameContainer(gameList, gameLoop, cmdProvider, observer);
             
