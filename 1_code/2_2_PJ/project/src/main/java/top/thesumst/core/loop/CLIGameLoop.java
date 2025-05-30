@@ -81,8 +81,9 @@ class CLIGameLoopTestDrive
         Observer observer = new ObserverTest();
         // 创建一个CLIGameLoop实例
         CLIGameLoop cliGameLoop = new CLIGameLoop(gameList, commandProvider, observer);
+        cliGameLoop.setCurrentGameOrder(1);
         // 启动游戏
-        Event event = cliGameLoop.startLoop();
-        System.out.println("Game loop ended with event: " + event);
+        cliGameLoop.startLoop();
+        // ! 此处只支持普通的下棋操作测试，不支持换棋盘
     }
 }

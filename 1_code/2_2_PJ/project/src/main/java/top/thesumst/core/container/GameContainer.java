@@ -86,7 +86,7 @@ public class GameContainer extends BaseSubject
     }
 }
 
-class GameContainerTestDrive
+class GameContainerCLITestDrive
 {
     static class ObserverTest implements Observer
     {

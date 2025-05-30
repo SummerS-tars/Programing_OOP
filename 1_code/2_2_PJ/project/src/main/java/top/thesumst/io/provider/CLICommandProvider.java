@@ -70,6 +70,7 @@ class CLICommandProviderTestDrive
 {
     public static void main(String[] args) {
         CLICommandProvider provider = new CLICommandProvider(CommandProviderMode.CLI);
+        provider.open();
         provider.getNextCommand();
         if(provider.hasCommand()) {
             Event event = provider.getEvent();
