@@ -79,8 +79,7 @@ class CLICommandProviderTestDrive
 
     private static String eventToString(Event event)
     {
-        String string = String.format("Event: %s\nRawCommand: %s\nCommand: %s\nData: %s\nHandleSuccess: %s\nMessage: %s\n",
-            event.getType(),
+        String string = String.format("Event:\nRawCommand: %s\nCommand: %s\nData: %s\nHandleSuccess: %s\nMessage: %s\n",
             event.getRawCommand(),
             event.getCommand() == null ? "null" : event.getCommand().getClass().getSimpleName(),
             event.getData() == null ? "null" : event.getData().toString(),

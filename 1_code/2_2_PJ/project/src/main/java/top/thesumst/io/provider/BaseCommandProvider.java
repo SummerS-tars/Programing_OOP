@@ -51,23 +51,6 @@ public abstract class BaseCommandProvider
 
         InputResult inputResult = InputParser.parse(rawCommand);
         event.setCommand(CommandFactory.createCommand(inputResult));
-        switch(inputResult.getType())
-        {
-            case CHESS_MOVE:
-            case USE_BOMB:
-            case PASS:
-            case INVALID:
-                event.setType(EventType.GAME_OPERATION);
-                break;
-            case PLAYBACK:
-            case SWITCH_BOARD:
-            case NEW_GAME:
-                event.setType(EventType.GAME_CONTAINER);
-                break;
-            case QUIT:
-                event.setType(EventType.GAME_END);
-                break;
-        }
         switch (inputResult.getType()) 
         {
             case CHESS_MOVE:

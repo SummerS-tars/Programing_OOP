@@ -11,7 +11,6 @@ import top.thesumst.core.container.GameList;
  */
 public class Event
 {
-    private EventType type; // 主要表示应该在哪里执行，没有太细粒度
     private String rawCommand;
     private GameCommand command; // 用来执行，然后用来获取部分信息，如果为null说明是无效输入
     private Object data; // 不一定有用
@@ -38,12 +37,6 @@ public class Event
     }
     public void setRawCommand(String rawCommand) {
         this.rawCommand = rawCommand;
-    }
-    public EventType getType() {
-        return type;
-    }
-    public void setType(EventType type) {
-        this.type = type;
     }
     public GameCommand getCommand() {
         return command;
@@ -75,7 +68,6 @@ public class Event
     public String toString()
     {
         return "Event{" +
-                "type=" + type +
                 ", rawCommand='" + rawCommand + '\'' +
                 ", command=" + (command == null ? "null" : command.getClass().getSimpleName()) +
                 ", data=" + data +
