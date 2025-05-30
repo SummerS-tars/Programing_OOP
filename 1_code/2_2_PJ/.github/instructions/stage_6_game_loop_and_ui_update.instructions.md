@@ -10,7 +10,8 @@ We will implement the core logic of `GUIGameLoop` to drive the game and dynamica
 
 1.  Complete `GUIGameLoop`:
     * Implement the `startLoop()` and `gameLoop()` methods in `top.thesumst.core.loop.GUIGameLoop`.
-    * `gameLoop()` should continuously fetch commands from `GUICommandProvider` in a loop, pass them to game logic for processing (e.g., by creating and executing `GameCommand` via `CommandFactory`), and then wait for game state updates.
+    * complete the logic of how this GameLoop and GUIController are initialized with GUICommandProvider(can refer to CLICommandProvider and CLIGameLoop)
+    * `gameLoop()` should continuously fetch events from `GUICommandProvider` in a loop, and then execute them, and then wait for game state updates.
 2.  UI Update Mechanism (`Observer` Pattern):
     * Ensure the `top.thesumst.view.gui.GUIView` class (which already implements the `Observer` interface) is correctly registered as an observer of `top.thesumst.observer.BaseSubject` (e.g., your `GameList` instance).
     * In `GUIView`'s `update(Event event, GameList gameList, int currentGameOrder)` method, dynamically update the GUI based on `event.eventType` and the latest state of `gameList`:
@@ -26,7 +27,10 @@ We will implement the core logic of `GUIGameLoop` to drive the game and dynamica
     * Crucial: Game logic processing (especially time-consuming operations) should run on a background thread outside the JavaFX Application Thread to avoid blocking the UI.
     * `GUIGameLoop` execution should be in a separate thread.
     * Any operation that needs to update the UI (i.e., calls to `GUIView.update()` method) must be executed on the JavaFX Application Thread using `Platform.runLater()`.
-5.  Playback Mode Effect: 'The playback effect is that the GUI displays the state after each step is executed at fixed time intervals.' Please implement this animation effect, ensuring a fixed time interval between each operation (e.g., using `Timeline` or `PauseTransition`), and the UI updates synchronously without stuttering.
+5.  Playback Mode Effect: 
+    * 'The playback effect is that the GUI displays the state after each step is executed at fixed time intervals.' Please implement this animation effect, ensuring a fixed time interval between each operation (e.g., using `Timeline` or `PauseTransition`), and the UI updates synchronously without stuttering.
+    * you can just reuse the playback method in GameLoop to do this
+
 
 ## Testing and Acceptance Criteria
 * The game can proceed normally through GUI operations (clicking the board, buttons, etc.), with the interface responding in real-time without stuttering.
