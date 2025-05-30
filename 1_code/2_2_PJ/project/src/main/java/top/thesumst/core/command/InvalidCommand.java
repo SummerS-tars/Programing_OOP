@@ -13,7 +13,7 @@ public class InvalidCommand implements GameCommand
     }
 
     @Override
-    public CommandResult execute(GameMode game, GameList gameList) 
+    public CommandResult execute() 
     {
         return CommandResult.failure("无效命令: " + input);
     }

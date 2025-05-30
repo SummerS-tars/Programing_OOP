@@ -19,7 +19,7 @@ public class Event
 
     public void executeEvent(GameList gameList, int currentGameOrder)
     {
-        CommandResult result = getCommand().execute(GameList.getGame(currentGameOrder), gameList);
+        CommandResult result = getCommand().execute();
         if(result.isSuccess()) setState(EventState.EVENT_EXECUTED_SUCCESS);
         else setState(EventState.EVENT_EXECUTED_FAIL);
         setMessage(result.getMessage());

@@ -9,7 +9,7 @@ import top.thesumst.core.mode.GameMode;
  */
 public class QuitCommand implements GameCommand {
     @Override
-    public CommandResult execute(GameMode game, GameList gameList) 
+    public CommandResult execute() 
     {
         GameContainer.stopGame();
         return CommandResult.quit();

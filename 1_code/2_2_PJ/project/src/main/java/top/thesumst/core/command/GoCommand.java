@@ -1,5 +1,6 @@
 package top.thesumst.core.command;
 
+import top.thesumst.core.container.GameContainer;
 import top.thesumst.core.container.GameList;
 import top.thesumst.core.mode.GameMode;
 import top.thesumst.type.*;
@@ -20,10 +21,11 @@ public class GoCommand implements GameCommand
     }
 
     @Override
-    public CommandResult execute(GameMode game, GameList gameList) 
+    public CommandResult execute() 
     {
         // 执行下棋操作
         try {
+            GameMode game = GameContainer.getCurrentGame();
             if(!game.receiveOperation(new Operation<Point>(OperationType.MOVE, position)))
                 throw new IllegalMoveException();
             String result = "("+(position.x+1)+","+(char)('A'+position.y)+")"+"着棋成功";

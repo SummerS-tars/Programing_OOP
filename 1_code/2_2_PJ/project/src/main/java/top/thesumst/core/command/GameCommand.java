@@ -14,5 +14,5 @@ public interface GameCommand
      * @param gameList 游戏列表
      * @return 执行结果
      */
-    CommandResult execute(GameMode game, GameList gameList);
+    CommandResult execute();
 }

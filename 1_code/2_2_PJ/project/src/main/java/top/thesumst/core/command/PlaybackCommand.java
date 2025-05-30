@@ -21,7 +21,7 @@ public class PlaybackCommand implements GameCommand
     }
 
     @Override
-    public CommandResult execute(GameMode gameMode, GameList gameList) 
+    public CommandResult execute() 
     {
         try {
             // 检测文件是否存在

@@ -1,5 +1,6 @@
 package top.thesumst.core.command;
 
+import top.thesumst.core.container.GameContainer;
 import top.thesumst.core.container.GameList;
 import top.thesumst.core.mode.GameMode;
 import top.thesumst.type.exception.IllegalCommandException;
@@ -17,9 +18,10 @@ public class NewGameCommand implements GameCommand {
     }
     
     @Override
-    public CommandResult execute(GameMode game, GameList gameList) 
+    public CommandResult execute() 
     {
         try {
+            GameList gameList = GameContainer.getGameList();
             if(GameList.addGame(gameType))
             {
                 CLIPrintTools.printGameList(gameList);

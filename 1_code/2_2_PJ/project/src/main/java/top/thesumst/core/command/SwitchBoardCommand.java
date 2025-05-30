@@ -14,8 +14,9 @@ public class SwitchBoardCommand implements GameCommand
     }
     
     @Override
-    public CommandResult execute(GameMode game, GameList gameList) 
+    public CommandResult execute() 
     {
+        GameMode game = GameContainer.getCurrentGame();
         // 检查棋盘编号是否合法
         if (boardNumber < 1 || boardNumber > GameList.getGameNumber()) 
         {
