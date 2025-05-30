@@ -162,7 +162,7 @@ public class GUIController implements Initializable {
                 Label colLabel = new Label(String.valueOf((char)('A' + col)));
                 colLabel.setPrefSize(cellSize, cellSize);
                 colLabel.setAlignment(javafx.geometry.Pos.CENTER);
-                colLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
+                colLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16px;");
                 chessboardGrid.add(colLabel, col + 1, 0);
             }
             
@@ -172,7 +172,7 @@ public class GUIController implements Initializable {
                 Label rowLabel = new Label(Integer.toHexString(row + 1).toUpperCase());
                 rowLabel.setPrefSize(cellSize, cellSize);
                 rowLabel.setAlignment(javafx.geometry.Pos.CENTER);
-                rowLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
+                rowLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16px;");
                 chessboardGrid.add(rowLabel, 0, row + 1);
                 
                 // 棋盘按钮
@@ -815,26 +815,26 @@ public class GUIController implements Initializable {
         // 根据棋子状态设置显示
         switch (statement) {
             case BLACK:
-                Circle blackPiece = new Circle(8, Color.BLACK);
+                Circle blackPiece = new Circle(12, Color.BLACK);
                 button.setGraphic(blackPiece);
                 break;
             case WHITE:
-                Circle whitePiece = new Circle(8, Color.WHITE);
+                Circle whitePiece = new Circle(12, Color.WHITE);
                 whitePiece.setStroke(Color.BLACK);
-                whitePiece.setStrokeWidth(1);
+                whitePiece.setStrokeWidth(1.5);
                 button.setGraphic(whitePiece);
                 break;
             case VALID:
                 button.setText("+");
-                button.setStyle(button.getStyle() + "; -fx-text-fill: green; -fx-font-weight: bold;");
+                button.setStyle(button.getStyle() + "; -fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 18px;");
                 break;
             case BARRIER:
-                Rectangle barrier = new Rectangle(16, 16, Color.BROWN);
+                Rectangle barrier = new Rectangle(20, 20, Color.BROWN);
                 button.setGraphic(barrier);
                 break;
             case BOMBED:
                 button.setText("@");
-                button.setStyle(button.getStyle() + "; -fx-text-fill: red; -fx-font-weight: bold;");
+                button.setStyle(button.getStyle() + "; -fx-text-fill: red; -fx-font-weight: bold; -fx-font-size: 18px;");
                 break;
             case BLANK:
             default:
