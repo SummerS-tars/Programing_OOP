@@ -23,6 +23,11 @@ public class GUICommandProvider extends BaseCommandProvider
         commandQueue.offer(command);
     }
 
+    // 为测试提供的方法，用于获取当前输入缓冲区内容
+    public String getCurrentInputBuffer() {
+        return inputBuffer;
+    }
+
     @Override
     public void getNextCommand()
     {

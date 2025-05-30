@@ -9,7 +9,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -33,10 +35,13 @@ import java.util.ResourceBundle;
  */
 public class GUIController implements Initializable {    
     @FXML
+    private BorderPane mainBorderPane;
+    
+    @FXML
     private StackPane chessboardContainer;
 
     @FXML
-    private GridPane rightInfoPane;
+    private HBox rightInfoPane;
     
     // 第一列：游戏信息和玩家控制的FXML绑定
     @FXML
@@ -122,6 +127,9 @@ public class GUIController implements Initializable {
         
         // 初始化UI状态
         updateUIForGameMode(null);
+        
+        // 初始化动态列宽调整
+        initializeDynamicColumnWidths();
     }
 
     /**
@@ -130,8 +138,8 @@ public class GUIController implements Initializable {
     private void initializeChessboard() {
         chessboardGrid = new GridPane();
         chessboardGrid.setAlignment(javafx.geometry.Pos.CENTER);
-        chessboardGrid.setHgap(1);
-        chessboardGrid.setVgap(1);
+        chessboardGrid.setHgap(0);  // 移除棋盘格子间的水平间隙
+        chessboardGrid.setVgap(0);  // 移除棋盘格子间的垂直间隙
         chessboardContainer.getChildren().clear();
         chessboardContainer.getChildren().add(chessboardGrid);
     }
@@ -357,20 +365,20 @@ public class GUIController implements Initializable {
      */
     private void initializeEventHandlers() {
         // 第一列：玩家控制按钮事件
-        passButton.setOnAction(e -> handlePassAction());
-        useBombButton.setOnAction(e -> handleUseBombAction());
+        passButton.setOnAction(_ -> handlePassAction());
+        useBombButton.setOnAction(_ -> handleUseBombAction());
         
         // 第二列：游戏列表选择事件
         gameListView.getSelectionModel().selectedItemProperty().addListener(
-            (observable, oldValue, newValue) -> handleGameListSelection(newValue)
+            (_, _, newValue) -> handleGameListSelection(newValue)
         );
         
         // 第三列：新游戏和系统控制按钮事件
-        addPeaceButton.setOnAction(e -> handleAddGameAction("peace"));
-        addReversiButton.setOnAction(e -> handleAddGameAction("reversi"));
-        addGomokuButton.setOnAction(e -> handleAddGameAction("gomoku"));
-        playbackButton.setOnAction(e -> handlePlaybackAction());
-        quitButton.setOnAction(e -> handleQuitAction());
+        addPeaceButton.setOnAction(_ -> handleAddGameAction("peace"));
+        addReversiButton.setOnAction(_ -> handleAddGameAction("reversi"));
+        addGomokuButton.setOnAction(_ -> handleAddGameAction("gomoku"));
+        playbackButton.setOnAction(_ -> handlePlaybackAction());
+        quitButton.setOnAction(_ -> handleQuitAction());
     }
 
     /**
@@ -380,6 +388,101 @@ public class GUIController implements Initializable {
         // 创建观察列表用于游戏列表
         ObservableList<String> gameItems = FXCollections.observableArrayList();
         gameListView.setItems(gameItems);
+    }
+
+    /**
+     * 初始化动态列宽调整（第三种方法：程序化计算）
+     */
+    private void initializeDynamicColumnWidths() {
+        // 延迟到下一个JavaFX周期，确保Scene已经完全初始化
+        Platform.runLater(() -> {
+            // 等待Scene完全初始化
+            if (rightInfoPane.getScene() != null) {
+                setupColumnWidthCalculation();
+            } else {
+                // 如果Scene还没有初始化，添加一个监听器等待
+                rightInfoPane.sceneProperty().addListener((_, _, newScene) -> {
+                    if (newScene != null) {
+                        setupColumnWidthCalculation();
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * 设置列宽计算逻辑
+     */
+    private void setupColumnWidthCalculation() {
+        // 监听Scene的宽度变化，这样可以响应窗口大小变化
+        mainBorderPane.getScene().widthProperty().addListener((_, _, _) -> {
+            updateColumnWidths();
+        });
+        
+        // 也监听rightInfoPane的父容器宽度变化
+        rightInfoPane.getParent().layoutBoundsProperty().addListener((_, _, _) -> {
+            updateColumnWidths();
+        });
+        
+        // 初始化列宽
+        updateColumnWidths();
+    }
+
+    /**
+     * 动态更新列宽（第三种方法：程序化精确计算）
+     */
+    private void updateColumnWidths() {
+        Platform.runLater(() -> {
+            // 获取Scene的总宽度
+            double sceneWidth = mainBorderPane.getScene().getWidth();
+            if (sceneWidth <= 0) {
+                return; // 还没有获得有效宽度
+            }
+            
+            // 计算右侧面板的可用宽度
+            // Scene总宽度 - 左侧棋盘固定宽度(600) - 一些边距
+            double rightPaneAvailableWidth = sceneWidth - 600 - 40; // 40是预留的边距
+            
+            if (rightPaneAvailableWidth <= 0) {
+                return; // 右侧面板宽度不足
+            }
+            
+            // 减去HBox内部间距（spacing = 10, 两个间距 = 20）
+            double availableWidth = rightPaneAvailableWidth - 20;
+            
+            // 计算每列的宽度
+            // 第一列和第三列各占35%，第二列（游戏列表）占30%
+            double firstColumnWidth = availableWidth * 0.35;
+            double secondColumnWidth = availableWidth * 0.30;  // 较窄的游戏列表
+            double thirdColumnWidth = availableWidth * 0.35;
+            
+            // 获取HBox中的所有列（VBox）
+            if (rightInfoPane.getChildren().size() >= 3) {
+                // 第一列：游戏信息和玩家控制
+                if (rightInfoPane.getChildren().get(0) instanceof javafx.scene.layout.VBox firstColumn) {
+                    firstColumn.setPrefWidth(firstColumnWidth);
+                    firstColumn.setMinWidth(firstColumnWidth);
+                    firstColumn.setMaxWidth(firstColumnWidth);
+                }
+                
+                // 第二列：游戏列表
+                if (rightInfoPane.getChildren().get(1) instanceof javafx.scene.layout.VBox secondColumn) {
+                    secondColumn.setPrefWidth(secondColumnWidth);
+                    secondColumn.setMinWidth(secondColumnWidth);
+                    secondColumn.setMaxWidth(secondColumnWidth);
+                }
+                
+                // 第三列：新游戏和系统控制
+                if (rightInfoPane.getChildren().get(2) instanceof javafx.scene.layout.VBox thirdColumn) {
+                    thirdColumn.setPrefWidth(thirdColumnWidth);
+                    thirdColumn.setMinWidth(thirdColumnWidth);
+                    thirdColumn.setMaxWidth(thirdColumnWidth);
+                }
+            }
+            
+            System.out.println(String.format("列宽更新: Scene宽度=%.1f, 右侧可用宽度=%.1f, 第一列=%.1f, 第二列=%.1f, 第三列=%.1f", 
+                sceneWidth, rightPaneAvailableWidth, firstColumnWidth, secondColumnWidth, thirdColumnWidth));
+        });
     }
 
     /**

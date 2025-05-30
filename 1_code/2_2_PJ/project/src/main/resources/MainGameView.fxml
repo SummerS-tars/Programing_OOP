@@ -4,59 +4,54 @@
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="top.thesumst.view.gui.GUIController">
-    <!-- top区域不再用于显示MOTD -->
-
+<BorderPane fx:id="mainBorderPane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="top.thesumst.view.gui.GUIController">
     <left>
         <StackPane fx:id="chessboardContainer" prefWidth="600" prefHeight="600" style="-fx-background-color: lightblue;">
-            <!-- 移除了占位符Label -->
         </StackPane>
-    </left>    <right>
-        <GridPane fx:id="rightInfoPane" hgap="10" vgap="10">
+    </left>
+    <right>
+        <!-- Stage 4: 右侧信息面板 - 使用HBox布局实现动态三等分列宽 -->
+        <VBox spacing="10" minWidth="300" BorderPane.alignment="CENTER">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
-            <columnConstraints>
-                <ColumnConstraints hgrow="ALWAYS" percentWidth="33"/>
-                <ColumnConstraints hgrow="ALWAYS" percentWidth="33"/>
-                <ColumnConstraints hgrow="ALWAYS" percentWidth="33"/>
-            </columnConstraints>
+            
+            <HBox fx:id="rightInfoPane" spacing="10" VBox.vgrow="SOMETIMES" maxWidth="Infinity" fillHeight="false">
+                <!-- 第一列：游戏信息和玩家控制 -->
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <Label text="当前游戏" style="-fx-font-weight: bold;"/>
+                    <Label fx:id="currentGameNumberLabel" text="游戏1"/>
+                    <Label fx:id="blackPlayerLabel" text="黑棋 [Player1]"/>
+                    <Label fx:id="blackPlayerScoreLabel" text="分数: 0" visible="false"/>
+                    <Label fx:id="whitePlayerLabel" text="白棋 [Player2]"/>
+                    <Label fx:id="whitePlayerScoreLabel" text="分数: 0" visible="false"/>
+                    <Label fx:id="currentRoundLabel" text="当前轮数: 1" visible="false"/>
+                    <Label fx:id="blackBombsLabel" text="黑方炸弹: 2" visible="false"/>
+                    <Label fx:id="whiteBombsLabel" text="白方炸弹: 2" visible="false"/>
+                    <Button fx:id="passButton" text="跳过本轮" maxWidth="Infinity" visible="false"/>
+                    <Button fx:id="useBombButton" text="使用炸弹" maxWidth="Infinity" visible="false"/>
+                    <Button fx:id="playbackButton" text="演示模式" maxWidth="Infinity"/>
+                </VBox>
 
-            <!-- 第一列：游戏信息和玩家控制 -->
-            <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" spacing="5">
-                <Label text="当前游戏" style="-fx-font-weight: bold;"/>
-                <Label fx:id="currentGameNumberLabel" text="游戏1"/>
-                <Label fx:id="blackPlayerLabel" text="黑棋 [Player1]"/>
-                <Label fx:id="blackPlayerScoreLabel" text="分数: 0" visible="false"/>
-                <Label fx:id="whitePlayerLabel" text="白棋 [Player2]"/>
-                <Label fx:id="whitePlayerScoreLabel" text="分数: 0" visible="false"/>
-                <Label fx:id="currentRoundLabel" text="当前轮数: 1" visible="false"/>
-                <Label fx:id="blackBombsLabel" text="黑方炸弹: 2" visible="false"/>
-                <Label fx:id="whiteBombsLabel" text="白方炸弹: 2" visible="false"/>
-                <Button fx:id="passButton" text="跳过本轮" maxWidth="Infinity" visible="false"/>
-                <Button fx:id="useBombButton" text="使用炸弹" maxWidth="Infinity" visible="false"/>
-            </VBox>
+                <!-- 第二列：游戏列表 -->
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <Label text="游戏列表" style="-fx-font-weight: bold;"/>
+                    <ListView fx:id="gameListView" prefHeight="200"/>
+                </VBox>
 
-            <!-- 第二列：游戏列表 -->
-            <VBox GridPane.columnIndex="1" GridPane.rowIndex="0" spacing="5">
-                <Label text="游戏列表" style="-fx-font-weight: bold;"/>
-                <ListView fx:id="gameListView" prefHeight="200"/>
-            </VBox>
-
-            <!-- 第三列：新游戏和系统控制 -->
-            <VBox GridPane.columnIndex="2" GridPane.rowIndex="0" spacing="5">
-                <Label text="添加新游戏" style="-fx-font-weight: bold;"/>
-                <Button fx:id="addPeaceButton" text="添加Peace" maxWidth="Infinity"/>
-                <Button fx:id="addReversiButton" text="添加Reversi" maxWidth="Infinity"/>
-                <Button fx:id="addGomokuButton" text="添加Gomoku" maxWidth="Infinity"/>
-                <Separator/>
-                <Button fx:id="playbackButton" text="演示模式" maxWidth="Infinity"/>
-                <Button fx:id="quitButton" text="退出游戏" maxWidth="Infinity"/>
-            </VBox>
-
-            <!-- 反馈消息标签（跨越三列） -->
-            <Label fx:id="feedbackMessageLabel" text="欢迎来到游戏！" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="3" style="-fx-text-fill: blue; -fx-font-weight: bold;"/>
-
-        </GridPane>
+                <!-- 第三列：新游戏和系统控制 -->
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <Label text="添加新游戏" style="-fx-font-weight: bold;"/>
+                    <Button fx:id="addPeaceButton" text="添加Peace" maxWidth="Infinity"/>
+                    <Button fx:id="addReversiButton" text="添加Reversi" maxWidth="Infinity"/>
+                    <Button fx:id="addGomokuButton" text="添加Gomoku" maxWidth="Infinity"/>
+                    <Separator/>
+                    <Button fx:id="quitButton" text="退出游戏" maxWidth="Infinity"/>
+                </VBox>
+            </HBox>
+            
+            <!-- 反馈消息标签 -->
+            <Label fx:id="feedbackMessageLabel" text="欢迎来到游戏！" style="-fx-text-fill: blue; -fx-font-weight: bold;"/>
+        </VBox>
     </right>
 </BorderPane>
