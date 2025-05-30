@@ -92,7 +92,6 @@ public class ReversiMode extends GameMode
             reverse(point, validPointsCache.get(point));
             updatePlayerChessNumber();
 
-            // TODO: update game state: should pass or end game
             updateGameState() ;
 
             return true ;

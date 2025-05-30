@@ -2,7 +2,6 @@ package top.thesumst.core.command;
 
 import top.thesumst.core.container.GameContainer;
 import top.thesumst.core.container.GameList;
-import top.thesumst.core.mode.GameMode;
 import top.thesumst.type.exception.IllegalCommandException;
 import top.thesumst.view.console.CLIPrintTools;
 

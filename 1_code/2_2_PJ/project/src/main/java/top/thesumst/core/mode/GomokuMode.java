@@ -209,7 +209,6 @@ public class GomokuMode extends GameMode
             setChessColor(p, ChessStatement.BARRIER);
     }
 
-    // TODO: implement bomb usage
     private boolean useBomb(Point point)
     {
         if(checkBomb(point))

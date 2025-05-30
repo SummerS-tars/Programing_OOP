@@ -2,7 +2,6 @@ package top.thesumst.core.command;
 
 import top.thesumst.core.container.GameContainer;
 import top.thesumst.core.container.GameList;
-import top.thesumst.core.mode.GameMode;
 
 public class SwitchBoardCommand implements GameCommand
 {
@@ -16,7 +15,6 @@ public class SwitchBoardCommand implements GameCommand
     @Override
     public CommandResult execute() 
     {
-        GameMode game = GameContainer.getCurrentGame();
         // 检查棋盘编号是否合法
         if (boardNumber < 1 || boardNumber > GameList.getGameNumber()) 
         {
@@ -25,7 +23,6 @@ public class SwitchBoardCommand implements GameCommand
 
         // 切换到指定棋盘
         GameContainer.switchGameOrder(boardNumber);
-        game = GameList.getGame(boardNumber);
 
         return CommandResult.success("切换到棋盘 #" + boardNumber);
     }

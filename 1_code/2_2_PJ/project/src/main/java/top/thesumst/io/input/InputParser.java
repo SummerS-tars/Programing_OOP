@@ -129,7 +129,7 @@ public class InputParser
      * @param position 棋盘位置
      * @return 是否有效
      */
-    private static boolean isValidPosition(Point position) // TODO: 此处处理逻辑可能会移至游戏内部?
+    private static boolean isValidPosition(Point position)
     {
         return position.x >= 0 && position.x < boardSize && 
                position.y >= 0 && position.y < boardSize;
