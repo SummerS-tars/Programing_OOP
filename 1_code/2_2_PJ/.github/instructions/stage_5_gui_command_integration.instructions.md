@@ -14,15 +14,14 @@ Now, we will thoroughly implement the functionality of `GUICommandProvider` and 
     * Add a public method (e.g., `public void offerCommand(String command)`) for `GUIController` to call to add commands to the queue.
     * Implement a `hasCommand()` method to check if there are pending commands in the queue.
 2.  Integrate `GUIGameLoop`:
-    * Modify `top.thesumst.core.loop.GUIGameLoop`. In its `gameLoop()` method, instead of direct CLI input, it should fetch user input command strings via `GUICommandProvider`'s `getNextCommand()` method.
-    * `GUIGameLoop` should pass the fetched command string to `top.thesumst.io.input.InputParser.parse()` for parsing, obtaining an `InputResult` object.
+    * Modify `top.thesumst.core.loop.GUIGameLoop`. It should use another thread to get Event from `GUICommandProvider` and process it.
+    * Other basic function of `GUIGameLoop` can refer to `CLIGameLoop`.
 3.  Connect GUI Events to Command Provider:
     * Ensure that in `GUIController`, all commands triggered by GUI interactions (chessboard clicks, various button clicks, `ListView` item selections, etc.) correctly call `GUICommandProvider.offerCommand()`, passing the corresponding command string.
     * Command String Format: Command strings must strictly follow `InputParser`'s expected format (e.g., '1A', 'pass', 'peace', '@1A', 'playback test1.cmd', 'quit', '2', etc.).
     * Game Operation Conversion: 'In previous labs, games were controlled via keyboard input; in the project, they are controlled by clicking relevant components with the mouse.' This includes: 'Place piece: Keyboard input 1a -> Mouse click on the board cell corresponding to 1a.' 'Switch game: Keyboard input 2 --> Mouse click on the button corresponding to game 2.' 'New game: Keyboard input `gomoku`--> Mouse click on the button corresponding to new gomoku.' 'Reversi pass function: Keyboard input pass --> Mouse click on the pass button.' 'Gomoku bomb function: Keyboard input @1a --> Mouse click on the bomb button, then click on the board cell corresponding to 1a.' 'Quit game: Keyboard input quit --> Mouse click on the quit button.'
 4.  Playback Mode File Selection Integration:
-    * Add a click event to `playbackButton` that uses `javafx.stage.FileChooser` to allow the user to select a `.cmd` file.
-    * After obtaining the file path, construct a command string like 'playback test1.cmd' and pass it to `GUICommandProvider.offerCommand()`.
+    * choose the `.cmd` file according the the current game(e.g. for GomokuGame, choose gomoku.cmd).
 5.  Error Message Passing: The `Event` object will contain a feedback message (`Event.message`) after execution. Ensure `GUIView` can receive and display these messages.
 
 ## Testing and Acceptance Criteria
