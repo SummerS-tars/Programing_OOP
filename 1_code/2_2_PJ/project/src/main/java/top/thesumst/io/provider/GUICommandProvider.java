@@ -13,14 +13,12 @@ public class GUICommandProvider extends BaseCommandProvider
         this.commandQueue = new LinkedBlockingQueue<>();
     }
 
-    // 为GUI提供设置命令的方法
-    public void setInputBuffer(String command) {
-        this.inputBuffer = command;
-    }
-
     // 为GUI提供添加命令到队列的方法
     public void offerCommand(String command) {
-        commandQueue.offer(command);
+        if (command != null && !command.trim().isEmpty()) {
+            commandQueue.offer(command.trim());
+            System.out.println("GUICommandProvider - 命令已添加到队列: " + command.trim());
+        }
     }
 
     // 为测试提供的方法，用于获取当前输入缓冲区内容
@@ -28,16 +26,34 @@ public class GUICommandProvider extends BaseCommandProvider
         return inputBuffer;
     }
 
+    // 为测试提供的方法，用于检查队列是否为空
+    public boolean isQueueEmpty() {
+        return commandQueue.isEmpty();
+    }
+
+    // 为测试提供的方法，用于获取队列大小
+    public int getQueueSize() {
+        return commandQueue.size();
+    }
+
+    // 为测试提供的方法，用于设置输入缓冲区内容
+    public void setInputBuffer(String buffer) {
+        this.inputBuffer = buffer;
+        System.out.println("GUICommandProvider - 设置输入缓冲区: " + buffer);
+    }
+
     @Override
     public void getNextCommand()
     {
         if (inputBuffer == null || inputBuffer.trim().isEmpty()) {
             try {
-                // 从命令队列中获取下一个命令
-                inputBuffer = commandQueue.take(); // 阻塞等待命令
+                // 从命令队列中获取下一个命令，阻塞等待
+                inputBuffer = commandQueue.take();
+                System.out.println("GUICommandProvider - 从队列获取命令: " + inputBuffer);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 inputBuffer = null;
+                System.out.println("GUICommandProvider - 命令获取被中断");
             }
         }
     }
@@ -51,11 +67,14 @@ public class GUICommandProvider extends BaseCommandProvider
     @Override
     public void open() {
         // GUI模式下，无需特殊的打开操作
+        System.out.println("GUICommandProvider - 已打开");
     }
 
     @Override
     public void close() {
         // 清空命令队列
         commandQueue.clear();
+        inputBuffer = null;
+        System.out.println("GUICommandProvider - 已关闭，队列已清空");
     }
 }

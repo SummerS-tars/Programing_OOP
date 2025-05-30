@@ -19,9 +19,6 @@ import top.thesumst.core.container.GameContainer;
 import top.thesumst.core.container.GameList;
 import top.thesumst.core.mode.GameMode;
 import top.thesumst.core.mode.GomokuMode;
-import top.thesumst.io.input.InputParser;
-import top.thesumst.io.input.InputResult;
-import top.thesumst.io.input.InputType;
 import top.thesumst.io.provider.GUICommandProvider;
 import top.thesumst.type.ChessStatement;
 import top.thesumst.type.component.ChessBoard;
@@ -216,49 +213,17 @@ public class GUIController implements Initializable {
         if (isBombModeActive) {
             inputString = "@" + coordinate; // 炸弹格式为 @1A
             isBombModeActive = false; // 使用炸弹后重置状态
+            showFeedbackMessage("炸弹已使用于位置 " + coordinate, false);
         } else {
             inputString = coordinate;
+            showFeedbackMessage("棋子落于位置 " + coordinate, false);
         }
         
-        // 解析输入并输出到控制台（用于测试）
-        try {
-            InputResult inputResult = InputParser.parse(inputString);
-            System.out.println("GUI Click - 原始输入: " + inputString);
-            System.out.println("GUI Click - 解析结果: " + inputResult);
-            System.out.println("GUI Click - 输入类型: " + inputResult.getType());
-            
-            // 获取坐标信息（如果是落子或炸弹命令）
-            if (inputResult.getType() == InputType.CHESS_MOVE || inputResult.getType() == InputType.USE_BOMB) {
-                Point pos = inputResult.getDataAs(Point.class);
-                System.out.println("GUI Click - 坐标: (" + pos.x + ", " + pos.y + ")");
-            }
-              // 集成GUICommandProvider处理命令
-            if (commandProvider != null) {
-                commandProvider.setInputBuffer(inputString);
-                System.out.println("GUI Click - 命令已设置到CommandProvider");
-            } else {
-                System.out.println("GUI Click - CommandProvider未设置，无法处理命令");
-            }
-            
-            // 检查当前游戏状态（如果gameList可用）
-            if (gameList != null) {
-                // 使用GameContainer获取当前游戏
-                int currentGameOrder = GameContainer.getCurrentGameOrder();
-                if (currentGameOrder > 0 && currentGameOrder <= GameList.getGameNumber()) {
-                    GameMode currentGame = GameList.getGame(currentGameOrder);
-                    System.out.println("GUI Click - 当前游戏: " + currentGame.getClass().getSimpleName());
-                    System.out.println("GUI Click - 棋盘大小: " + currentGame.getSize());
-                    
-                    // 如果棋盘大小发生变化，更新显示
-                    if (currentGame.getSize() != currentBoardSize) {
-                        updateChessboardDisplay(currentGame.getSize());
-                    }
-                }
-            }
-            
-        } catch (Exception e) {
-            System.err.println("GUI Click - 解析错误: " + e.getMessage());
-        }
+        // 发送命令到GUICommandProvider
+        sendCommand(inputString);
+        
+        // 输出调试信息
+        System.out.println("GUI Click - 棋盘点击: (" + row + ", " + col + ") -> " + inputString);
     }
 
     /**
@@ -531,9 +496,33 @@ public class GUIController implements Initializable {
      * 处理演示模式动作
      */
     private void handlePlaybackAction() {
-        // 暂时使用默认的示例脚本
-        sendCommand("playback gomoku.cmd");
-        showFeedbackMessage("开始演示模式...", false);
+        // 根据当前游戏类型选择对应的.cmd文件
+        String fileName = "peace.cmd"; // 默认文件
+        
+        if (gameList != null) {
+            int currentGameOrder = GameContainer.getCurrentGameOrder();
+            if (currentGameOrder > 0 && currentGameOrder <= GameList.getGameNumber()) {
+                GameMode currentGame = GameList.getGame(currentGameOrder);
+                String gameMode = currentGame.getGameMode();
+                
+                switch (gameMode) {
+                    case "gomoku":
+                        fileName = "gomoku.cmd";
+                        break;
+                    case "reversi":
+                        fileName = "reversi.cmd";
+                        break;
+                    case "peace":
+                    default:
+                        fileName = "peace.cmd";
+                        break;
+                }
+            }
+        }
+        
+        String command = "playback " + fileName;
+        sendCommand(command);
+        showFeedbackMessage("开始演示模式: " + fileName, false);
     }
 
     /**
@@ -702,5 +691,199 @@ public class GUIController implements Initializable {
                     break;
             }
         });
+    }
+    
+    /**
+     * 为GUIView提供的UI更新方法
+     * 由Observer模式的update方法调用
+     */
+    public void updateGameUI(top.thesumst.type.Event event, GameList gameList, int currentGameOrder) {
+        this.gameList = gameList;
+        
+        // 更新游戏列表显示
+        updateGameListDisplay();
+        
+        // 更新当前游戏信息
+        if (gameList != null && GameList.getGameNumber() > 0 && currentGameOrder >= 1 && currentGameOrder <= GameList.getGameNumber()) {
+            GameMode currentGame = GameList.getGame(currentGameOrder);
+            updateCurrentGameDisplay(currentGame, currentGameOrder);
+            
+            // 更新棋盘显示
+            ChessBoard board = currentGame.getBoard();
+            if (board != null) {
+                updateChessboardFromBoard(board);
+            }
+        }
+    }
+    
+    /**
+     * 为GUIView提供的UI初始化方法  
+     * 由Observer模式的init方法调用
+     */
+    public void initializeGameUI(GameList gameList, int currentGameOrder) {
+        this.gameList = gameList;
+        
+        // 初始化游戏列表显示
+        updateGameListDisplay();
+        
+        // 初始化当前游戏显示
+        if (gameList != null && GameList.getGameNumber() > 0 && currentGameOrder >= 1 && currentGameOrder <= GameList.getGameNumber()) {
+            GameMode currentGame = GameList.getGame(currentGameOrder);
+            updateCurrentGameDisplay(currentGame, currentGameOrder);
+            
+            // 初始化棋盘显示
+            ChessBoard board = currentGame.getBoard();
+            if (board != null) {
+                updateChessboardFromBoard(board);
+            }
+        }
+        
+        displayMessage("游戏界面初始化完成");
+    }
+    
+    /**
+     * 更新当前游戏信息显示
+     */
+    private void updateCurrentGameDisplay(GameMode currentGame, int currentGameOrder) {
+        // 更新游戏编号
+        currentGameNumberLabel.setText("游戏 " + currentGameOrder + " (" + currentGame.getGameMode() + ")");
+        
+        // 更新玩家信息
+        blackPlayerLabel.setText(currentGame.getPlayer1().getName());
+        whitePlayerLabel.setText(currentGame.getPlayer2().getName());
+        
+        // 更新分数（棋子数量）
+        ChessBoard board = currentGame.getBoard();
+        if (board != null) {
+            blackPlayerScoreLabel.setText("棋子: " + board.getChessNumber(ChessStatement.BLACK));
+            whitePlayerScoreLabel.setText("棋子: " + board.getChessNumber(ChessStatement.WHITE));
+        }
+        
+        // 更新回合信息
+        currentRoundLabel.setText("第 " + currentGame.getTurnNumber() + " 回合 - " + 
+                                  (currentGame.isBlackTurn() ? "黑方" : "白方") + "行棋");
+        
+        // 更新炸弹数量（如果是五子棋模式）
+        if ("gomoku".equals(currentGame.getGameMode())) {
+            try {
+                // 使用反射或转换来获取炸弹数量，如果Player没有getBombNumber方法
+                blackBombsLabel.setText("炸弹: " + 0); // 暂时使用默认值
+                whiteBombsLabel.setText("炸弹: " + 0); // 暂时使用默认值
+            } catch (Exception e) {
+                blackBombsLabel.setText("炸弹: N/A");
+                whiteBombsLabel.setText("炸弹: N/A");
+            }
+        } else {
+            blackBombsLabel.setText("炸弹: N/A");
+            whiteBombsLabel.setText("炸弹: N/A");
+        }
+        
+        // 更新按钮显示状态
+        updateButtonVisibility(currentGame.getGameMode(), !currentGame.isOver());
+    }
+    
+    /**
+     * 从ChessBoard更新棋盘显示
+     */
+    private void updateChessboardFromBoard(ChessBoard board) {
+        if (board != null && chessboardButtons != null) {
+            int boardSize = currentBoardSize; // 使用当前棋盘大小，而不是从board获取
+            
+            // 更新每个位置的显示
+            for (int row = 0; row < boardSize; row++) {
+                for (int col = 0; col < boardSize; col++) {
+                    if (chessboardButtons[row][col] != null) {
+                        Point point = new Point(row, col);
+                        ChessStatement statement = board.getChessStatement(point);
+                        updateChessboardCell(row, col, statement);
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * 更新单个棋盘格子的显示
+     */
+    private void updateChessboardCell(int row, int col, ChessStatement statement) {
+        Button button = chessboardButtons[row][col];
+        
+        // 清除之前的图形
+        button.setGraphic(null);
+        button.setText("");
+        
+        // 根据棋子状态设置显示
+        switch (statement) {
+            case BLACK:
+                Circle blackPiece = new Circle(8, Color.BLACK);
+                button.setGraphic(blackPiece);
+                break;
+            case WHITE:
+                Circle whitePiece = new Circle(8, Color.WHITE);
+                whitePiece.setStroke(Color.BLACK);
+                whitePiece.setStrokeWidth(1);
+                button.setGraphic(whitePiece);
+                break;
+            case VALID:
+                button.setText("+");
+                button.setStyle(button.getStyle() + "; -fx-text-fill: green; -fx-font-weight: bold;");
+                break;
+            case BARRIER:
+                Rectangle barrier = new Rectangle(16, 16, Color.BROWN);
+                button.setGraphic(barrier);
+                break;
+            case BOMBED:
+                button.setText("@");
+                button.setStyle(button.getStyle() + "; -fx-text-fill: red; -fx-font-weight: bold;");
+                break;
+            case BLANK:
+            default:
+                // 恢复默认样式
+                button.setStyle("-fx-background-color: #F5DEB3; -fx-border-color: #8B4513; -fx-border-width: 1px;");
+                break;
+        }
+    }
+    
+    /**
+     * 更新按钮可见性
+     */
+    private void updateButtonVisibility(String gameMode, boolean gameIsActive) {
+        Platform.runLater(() -> {
+            switch (gameMode) {
+                case "reversi":
+                    passButton.setVisible(gameIsActive);
+                    useBombButton.setVisible(false);
+                    break;
+                case "gomoku":
+                    passButton.setVisible(false);
+                    useBombButton.setVisible(gameIsActive);
+                    break;
+                case "peace":
+                default:
+                    passButton.setVisible(false);
+                    useBombButton.setVisible(false);
+                    break;
+            }
+        });
+    }
+    
+    /**
+     * 显示消息给用户
+     */
+    public void displayMessage(String message) {
+        if (feedbackMessageLabel != null) {
+            feedbackMessageLabel.setText(message);
+            feedbackMessageLabel.setTextFill(Color.BLUE);
+        }
+    }
+    
+    /**
+     * 显示错误消息给用户
+     */
+    public void displayErrorMessage(String errorMessage) {
+        if (feedbackMessageLabel != null) {
+            feedbackMessageLabel.setText("错误: " + errorMessage);
+            feedbackMessageLabel.setTextFill(Color.RED);
+        }
     }
 }

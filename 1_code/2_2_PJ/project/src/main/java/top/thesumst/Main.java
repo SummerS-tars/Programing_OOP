@@ -4,8 +4,8 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert; // 新增导入
-import javafx.scene.control.Alert.AlertType; // 新增导入
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import top.thesumst.core.container.GameContainer;
 import top.thesumst.core.container.GameList;
@@ -16,6 +16,8 @@ import top.thesumst.io.provider.CommandProviderFactory;
 import top.thesumst.observer.Observer;
 import top.thesumst.view.ViewFactory;
 import top.thesumst.view.console.CLIPrintTools;
+import top.thesumst.view.gui.GUIController;
+import top.thesumst.view.gui.GUIView;
 
 public class Main extends Application
 {
@@ -43,6 +45,57 @@ public class Main extends Application
         // 加载FXML文件
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainGameView.fxml"));
         Parent root = loader.load();
+        
+        // 获取FXML加载的GUIController实例
+        top.thesumst.view.gui.GUIController guiController = loader.getController();
+        
+        // 初始化游戏核心组件
+        try {
+            // 创建Observer - 这里需要将GUIController设置到GUIView中
+            observer = ViewFactory.getView("gui");
+            
+            // 如果observer是GUIView的实例，设置controller
+            if (observer instanceof top.thesumst.view.gui.GUIView) {
+                ((top.thesumst.view.gui.GUIView) observer).setController(guiController);
+            }
+            
+            cmdProvider = CommandProviderFactory.getCommandProvider("gui");
+            gameList = new GameList();
+            gameLoop = GameLoopFactory.getGameLoop("gui", gameList, cmdProvider, observer);
+            gameContainer = new GameContainer(gameList, gameLoop, cmdProvider, observer);
+            
+            // 设置窗口关闭事件处理
+            primaryStage.setOnCloseRequest(_ -> {
+                if (gameContainer != null) {
+                    GameContainer.stopGame();
+                }
+                System.exit(0);
+            });
+            
+            // 启动游戏循环（在后台线程中）
+            Thread gameThread = new Thread(() -> {
+                try {
+                    gameContainer.runGame();
+                } catch (Exception e) {
+                    System.err.println("游戏运行时发生错误: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            });
+            gameThread.setDaemon(true);
+            gameThread.start();
+            
+        } catch (Exception e) {
+            System.err.println("初始化GUI游戏组件时发生错误: " + e.getMessage());
+            e.printStackTrace();
+            
+            // 显示错误对话框
+            Alert errorAlert = new Alert(AlertType.ERROR);
+            errorAlert.setTitle("初始化错误");
+            errorAlert.setHeaderText("游戏初始化失败");
+            errorAlert.setContentText("无法初始化游戏组件: " + e.getMessage());
+            errorAlert.showAndWait();
+            return;
+        }
         
         // 创建Scene并设置到Stage
         Scene scene = new Scene(root);
