@@ -4,11 +4,20 @@ import java.awt.Point;
 
 import top.thesumst.core.container.*;
 import top.thesumst.core.mode.*;
+import top.thesumst.tools.PauseTools;
 import top.thesumst.type.Event;
 import top.thesumst.type.component.*;
 
 public class CLIPrintTools 
 {
+    public static void gameMotd()
+    {
+        CLIPrintTools.clearConsole();
+        System.out.println("欢迎来到各种棋类游戏！");
+        PauseTools.pause("请按回车键以继续");
+        CLIPrintTools.clearConsole();
+    }
+
     public static void initializePositionsSet(GameMode currentGame)
     {
         TerminalOutputPositionSets.setPositions(currentGame);

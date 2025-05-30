@@ -24,7 +24,9 @@ public class Main extends Application
     static GameList gameList;
     static GameLoop gameLoop;
     static Observer observer;
-    static BaseCommandProvider cmdProvider;    /**
+    static BaseCommandProvider cmdProvider;    
+
+    /**
      * JavaFX Application start方法
      */
     @Override
@@ -67,7 +69,7 @@ public class Main extends Application
             launch(args);
         } else {
             // 传统CLI模式
-            gameMotd();
+            CLIPrintTools.gameMotd();
             try{
                 observer = ViewFactory.getView(args[0]);
                 cmdProvider = CommandProviderFactory.getCommandProvider(args[0]);
@@ -84,13 +86,5 @@ public class Main extends Application
                 System.out.println("发生了未知错误: " + e.getMessage());
             }
         }
-    }
-
-    private static void gameMotd()
-    {
-        CLIPrintTools.clearConsole();
-        System.out.println("欢迎来到各种棋类游戏！");
-        PauseTools.pause("请按回车键以继续");
-        CLIPrintTools.clearConsole();
     }
 }
