@@ -1,12 +1,11 @@
 package top.thesumst.core.loop;
 
+import top.thesumst.core.command.PlaybackCommand;
 import top.thesumst.core.container.GameList;
 import top.thesumst.io.provider.*;
 import top.thesumst.io.provider.BaseCommandProvider.CommandProviderMode;
 import top.thesumst.observer.Observer;
 import top.thesumst.type.Event;
-import top.thesumst.type.EventState;
-import top.thesumst.type.EventType;
 
 public class CLIGameLoop extends GameLoop
 {
@@ -16,40 +15,35 @@ public class CLIGameLoop extends GameLoop
     }
 
     @Override
-    public Event startLoop()
+    public void startLoop()
     {
-        isLooping = true;
+        isRunning = true;
         cmdProvider.open();
-        return gameLoop(); // 返回无法直接在游戏中处理的事件
+        gameLoop();
     }
 
     @Override
-    public Event gameLoop()
+    public void gameLoop()
     {
         Event event = null;
-        while(isLooping)
+        while(isRunning)
         {
             event = null;
             cmdProvider.getNextCommand();
             event = cmdProvider.getEvent();
-            if(event.getType() == EventType.GAME_OPERATION) 
-                event.executeEvent(gameList, currentGameOrder);
-
-            if(event.getState() == EventState.EVENT_EXECUTED_SUCCESS || // event被执行过
-                event.getState() == EventState.EVENT_EXECUTED_FAIL)
+            event.executeEvent(gameList, currentGameOrder);
+            notifyObservers(event, gameList, currentGameOrder);
+            if(event.getCommand() instanceof PlaybackCommand)
             {
-                notifyObservers(event, gameList, currentGameOrder);
-                continue;
+                playback(event);
             }
-            else stopLoop();
         }
-        return event;
     }
 
     @Override
     public void stopLoop()
     {
-        isLooping = false;
+        isRunning = false;
         cmdProvider.close();
     }
 }

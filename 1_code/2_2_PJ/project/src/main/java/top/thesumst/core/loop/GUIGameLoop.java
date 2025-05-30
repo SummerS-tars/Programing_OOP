@@ -3,7 +3,6 @@ package top.thesumst.core.loop;
 import top.thesumst.core.container.GameList;
 import top.thesumst.io.provider.BaseCommandProvider;
 import top.thesumst.observer.Observer;
-import top.thesumst.type.Event;
 
 public class GUIGameLoop extends GameLoop
 {
@@ -14,9 +13,8 @@ public class GUIGameLoop extends GameLoop
     }
 
     @Override
-    public Event startLoop()
+    public void startLoop()
     {
-        return null;
     }
 
     @Override
@@ -26,8 +24,7 @@ public class GUIGameLoop extends GameLoop
 
 
     @Override    
-    public Event gameLoop()
+    public void gameLoop()
     {
-        return null;
     }
 }

@@ -1,10 +1,12 @@
 package top.thesumst.core.loop;
 
+import java.io.IOException;
 import java.util.List;
 
 import top.thesumst.core.container.GameList;
 import top.thesumst.core.mode.GameMode;
 import top.thesumst.io.provider.BaseCommandProvider;
+import top.thesumst.io.provider.PlaybackCommandProvider;
 import top.thesumst.observer.BaseSubject;
 import top.thesumst.observer.Observer;
 import top.thesumst.type.Event;
@@ -13,7 +15,7 @@ public abstract class GameLoop extends BaseSubject
 {
     protected final GameList gameList;
     protected final BaseCommandProvider cmdProvider;
-    protected boolean isLooping;
+    protected boolean isRunning;
     protected int currentGameOrder;
 
     public GameLoop(GameList gameList, BaseCommandProvider cmdProvider, Observer observer)
@@ -21,14 +23,13 @@ public abstract class GameLoop extends BaseSubject
         this.registerObserver(observer);
         this.gameList = gameList;
         this.cmdProvider = cmdProvider;
-        this.isLooping = false;
+        this.isRunning = false;
     }
 
     /**
      * 开始游戏循环
-     * @return Event
      */
-    abstract public Event startLoop();
+    abstract public void startLoop();
 
     abstract public void stopLoop();
 
@@ -37,7 +38,7 @@ public abstract class GameLoop extends BaseSubject
      * 返回无法直接在游戏中处理的事件
      * @return
      */
-    abstract protected Event gameLoop();
+    abstract protected void gameLoop();
 
     protected GameMode getCurrentGame()
     {
@@ -49,17 +50,23 @@ public abstract class GameLoop extends BaseSubject
         this.currentGameOrder = currentGameOrder;
     }
 
-    public void playback(List<Event> events)
+    public void playback(Event playbackEvent)
     {
-        for(Event event : events)
-        {
-            event.executeEvent(gameList, currentGameOrder);
-            notifyObservers(event, gameList, currentGameOrder);
-            try {
+        List<Event> events = null ;
+        try {
+            PlaybackCommandProvider playbackCommandProvider = new PlaybackCommandProvider(playbackEvent.getData());
+            events = playbackCommandProvider.getEvents();
+            
+            for(Event event : events)
+            {
+                event.executeEvent(gameList, currentGameOrder);
+                notifyObservers(event, gameList, currentGameOrder);
                 Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
+        } catch (IOException e) {
+            notifyObservers(Event.getErrorEvent(e), gameList, currentGameOrder);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import top.thesumst.core.command.PlaybackCommand;
 import top.thesumst.core.loop.*;
+import top.thesumst.core.mode.GameMode;
 import top.thesumst.io.input.InputParser;
 import top.thesumst.io.provider.*;
 import top.thesumst.io.provider.BaseCommandProvider.CommandProviderMode;
@@ -18,7 +19,6 @@ public class GameContainer extends BaseSubject
     private static GameList gameList ;
     private static GameLoop gameLoop ;
     private static int currentGameOrder ;
-    private static boolean isRunning ;
 
     public GameContainer(GameList gameList, GameLoop gameLoop, BaseCommandProvider commandProvider, Observer observer)
     {
@@ -26,7 +26,6 @@ public class GameContainer extends BaseSubject
         GameContainer.gameLoop = gameLoop;
         registerObserver(observer);
         switchGameOrder(1);
-        isRunning = true;
         notifyInit(gameList, currentGameOrder);
     }
 
@@ -35,17 +34,7 @@ public class GameContainer extends BaseSubject
      */
     public void runGame()
     {
-        Event event = null;
-        while(isRunning)
-        {
-            event = null;
-            event = gameLoop.startLoop();
-            event.executeEvent(gameList, currentGameOrder);
-            notifyObservers(event, gameList, currentGameOrder);
-
-            if(event.getCommand() instanceof PlaybackCommand)
-                playback(event);
-        }
+        gameLoop.startLoop();
     }
 
     /**
@@ -59,18 +48,6 @@ public class GameContainer extends BaseSubject
         InputParser.setBoardSize(GameList.getGame(currentGameOrder).size);
     }
 
-    private void playback(Event playbackEvent)
-    {
-        List<Event> events = null ;
-        try {
-            PlaybackCommandProvider playbackCommandProvider = new PlaybackCommandProvider(playbackEvent.getData());
-            events = playbackCommandProvider.getEvents();
-            gameLoop.playback(events);
-        } catch(IOException e) {
-            notifyObservers(Event.getErrorEvent(e), gameList, currentGameOrder);
-        }
-    }
-
     /**
      * 获取当前游戏序号
      * @return 当前游戏序号
@@ -80,9 +57,20 @@ public class GameContainer extends BaseSubject
         return currentGameOrder;
     }
 
+    public static GameMode getCurrentGame()
+    {
+        return GameList.getGame(currentGameOrder);
+    }
+
+    public static GameList getGameList()
+    {
+        return gameList;
+    }
+
+
     public static void stopGame()
     {
-        isRunning = false ;
+        gameLoop.stopLoop();
     }
 }
 
