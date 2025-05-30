@@ -19,13 +19,6 @@ public class Event
 
     public void executeEvent(GameList gameList, int currentGameOrder)
     {
-        if(command == null)
-        {
-            setState(EventState.EVENT_EXECUTED_FAIL);
-            setMessage("无效命令: " + rawCommand);
-            return;
-        }
-
         CommandResult result = getCommand().execute(GameList.getGame(currentGameOrder), gameList);
         if(result.isSuccess()) setState(EventState.EVENT_EXECUTED_SUCCESS);
         else setState(EventState.EVENT_EXECUTED_FAIL);

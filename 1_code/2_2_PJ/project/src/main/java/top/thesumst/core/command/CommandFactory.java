@@ -41,7 +41,7 @@ public class CommandFactory {
 
             case INVALID:
             default:
-                return null;
+                return new InvalidCommand(result.getDataAs(String.class));
         }
     }
 }

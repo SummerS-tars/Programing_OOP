@@ -121,7 +121,7 @@ public class InputParser
             return InputResult.playback(fileName);
         }
         
-        return InputResult.invalid();
+        return InputResult.invalid(input);
     }
     
     /**
