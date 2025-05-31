@@ -39,11 +39,11 @@ public class CLICommandProviderTest {
         // Test normal close operation
         provider.close();
         // No exception should be thrown
-    }
-
+    }    
+    
     @Test
-    public void testCloseWithException() throws Exception {
-        // Create a test scanner that we can close properly
+    public void testCloseWithException() throws Exception {        // Create a test scanner that we can close properly
+        @SuppressWarnings({"resource", "unused"}) // 抑制资源泄漏和未使用变量警告，这是测试代码
         final Scanner realScanner = new Scanner("test");
         
         // Create a problematic scanner using a proxy approach

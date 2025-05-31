@@ -22,10 +22,6 @@ public class GameList
     // Flag to indicate if deserialization is in progress
     // transient to ensure it's not part of serialization itself
     private static transient boolean isDeserializing = false;
-    
-    // Flag to indicate that this instance was created from deserialization
-    // and should be treated as such
-    private transient boolean isFromDeserialization = false;
 
     public GameList()
     {
@@ -65,8 +61,6 @@ public class GameList
      */
     public GameList(boolean fromDeserialization) {
         if (fromDeserialization) {
-            this.isFromDeserialization = true;
-            // 不初始化任何内容，假设静态字段已由反序列化器填充
             System.out.println("从反序列化创建GameList实例，包含 " + games.size() + " 个游戏");
         } else {
             throw new IllegalArgumentException("这个构造函数只应该由反序列化器调用，fromDeserialization参数必须为true");

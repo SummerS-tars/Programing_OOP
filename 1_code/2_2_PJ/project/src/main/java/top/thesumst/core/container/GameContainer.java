@@ -1,6 +1,5 @@
 package top.thesumst.core.container;
 
-import java.util.ArrayList;
 import top.thesumst.core.loop.*;
 import top.thesumst.core.mode.GameMode;
 import top.thesumst.io.input.InputParser;
