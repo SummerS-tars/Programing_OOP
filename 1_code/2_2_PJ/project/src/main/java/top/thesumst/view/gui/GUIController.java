@@ -205,7 +205,9 @@ public class GUIController implements Initializable {
         button.setOnAction(_ -> handleChessboardClick(row, col));
         
         return button;
-    }    /**
+    }    
+    
+    /**
      * 处理棋盘点击事件
      */
     private void handleChessboardClick(int row, int col) {
@@ -242,71 +244,6 @@ public class GUIController implements Initializable {
         // 列：转换为字母 (A-based)
         char colChar = (char)('A' + col);
         return rowStr + colChar;
-    }
-
-    /**
-     * 更新棋盘上的棋子显示
-     * @param gameMode 当前游戏模式
-     */
-    public void updateChessPieces(GameMode gameMode) {
-        if (gameMode == null || chessboardButtons == null) {
-            return;
-        }
-        
-        Platform.runLater(() -> {
-            ChessBoard board = gameMode.getBoard();
-            int boardSize = gameMode.getSize();
-            
-            // 如果棋盘大小发生变化，重新创建棋盘
-            if (boardSize != currentBoardSize) {
-                updateChessboardDisplay(boardSize);
-                return;
-            }
-            
-            // 更新每个位置的棋子显示
-            for (int row = 0; row < boardSize; row++) {
-                for (int col = 0; col < boardSize; col++) {
-                    Button button = chessboardButtons[row][col];
-                    Point point = new Point(row, col);
-                    ChessStatement statement = board.getChessStatement(point);
-                    
-                    // 清除之前的图形
-                    button.setGraphic(null);
-                    button.setText("");
-                    
-                    // 根据棋子状态设置显示
-                    switch (statement) {
-                        case BLACK:
-                            Circle blackPiece = new Circle(8, Color.BLACK);
-                            button.setGraphic(blackPiece);
-                            break;
-                        case WHITE:
-                            Circle whitePiece = new Circle(8, Color.WHITE);
-                            whitePiece.setStroke(Color.BLACK);
-                            whitePiece.setStrokeWidth(1);
-                            button.setGraphic(whitePiece);
-                            break;
-                        case VALID:
-                            button.setText("+");
-                            button.setStyle(button.getStyle() + "; -fx-text-fill: green; -fx-font-weight: bold;");
-                            break;
-                        case BARRIER:
-                            Rectangle barrier = new Rectangle(16, 16, Color.BROWN);
-                            button.setGraphic(barrier);
-                            break;
-                        case BOMBED:
-                            button.setText("⚠");
-                            button.setStyle(button.getStyle() + "; -fx-text-fill: red; -fx-font-weight: bold;");
-                            break;
-                        case BLANK:
-                        default:
-                            // 恢复默认样式
-                            button.setStyle("-fx-background-color: #F5DEB3; -fx-border-color: #8B4513; -fx-border-width: 1px;");
-                            break;
-                    }
-                }
-            }
-        });
     }
 
     /**
@@ -634,12 +571,11 @@ public class GUIController implements Initializable {
             
             // 更新UI元素可见性基于游戏模式
             updateUIForGameMode(currentGame);
-            
-            // 根据游戏类型显示分数或炸弹信息
+              // 根据游戏类型显示分数或炸弹信息 - 统一使用分数标签位置
             String gameMode = currentGame.getGameMode();
             switch (gameMode) {
                 case "reversi":
-                    // Reversi模式：使用getChessNumber()作为分数
+                    // Reversi模式：在分数标签位置显示棋子数量
                     blackPlayerScoreLabel.setText("分数: " + currentGame.getPlayer1().getChessNumber());
                     whitePlayerScoreLabel.setText("分数: " + currentGame.getPlayer2().getChessNumber());
                     blackPlayerScoreLabel.setVisible(true);
@@ -648,19 +584,19 @@ public class GUIController implements Initializable {
                     whiteBombsLabel.setVisible(false);
                     break;
                 case "gomoku":
-                    // Gomoku模式：使用GomokuMode的getBombNumber()方法
+                    // Gomoku模式：在分数标签位置显示炸弹数量
                     if (currentGame instanceof GomokuMode) {
                         GomokuMode gomokuGame = (GomokuMode) currentGame;
-                        blackBombsLabel.setText("黑方炸弹: " + gomokuGame.getBombNumber(currentGame.getPlayer1()));
-                        whiteBombsLabel.setText("白方炸弹: " + gomokuGame.getBombNumber(currentGame.getPlayer2()));
+                        blackPlayerScoreLabel.setText("炸弹: " + gomokuGame.getBombNumber(currentGame.getPlayer1()));
+                        whitePlayerScoreLabel.setText("炸弹: " + gomokuGame.getBombNumber(currentGame.getPlayer2()));
                     } else {
-                        blackBombsLabel.setText("黑方炸弹: 0");
-                        whiteBombsLabel.setText("白方炸弹: 0");
+                        blackPlayerScoreLabel.setText("炸弹: 0");
+                        whitePlayerScoreLabel.setText("炸弹: 0");
                     }
-                    blackBombsLabel.setVisible(true);
-                    whiteBombsLabel.setVisible(true);
-                    blackPlayerScoreLabel.setVisible(false);
-                    whitePlayerScoreLabel.setVisible(false);
+                    blackPlayerScoreLabel.setVisible(true);
+                    whitePlayerScoreLabel.setVisible(true);
+                    blackBombsLabel.setVisible(false);
+                    whiteBombsLabel.setVisible(false);
                     break;
                 case "peace":
                 default:
@@ -781,8 +717,7 @@ public class GUIController implements Initializable {
     
     /**
      * 更新当前游戏信息显示
-     */
-    private void updateCurrentGameDisplay(GameMode currentGame, int currentGameOrder) {
+     */    private void updateCurrentGameDisplay(GameMode currentGame, int currentGameOrder) {
         // 更新游戏编号
         currentGameNumberLabel.setText("游戏 " + currentGameOrder + " (" + currentGame.getGameMode() + ")");
         
@@ -790,30 +725,54 @@ public class GUIController implements Initializable {
         blackPlayerLabel.setText(currentGame.getPlayer1().getName());
         whitePlayerLabel.setText(currentGame.getPlayer2().getName());
         
-        // 更新分数（棋子数量）
-        ChessBoard board = currentGame.getBoard();
-        if (board != null) {
-            blackPlayerScoreLabel.setText("棋子: " + board.getChessNumber(ChessStatement.BLACK));
-            whitePlayerScoreLabel.setText("棋子: " + board.getChessNumber(ChessStatement.WHITE));
-        }
-        
         // 更新回合信息
         currentRoundLabel.setText("第 " + currentGame.getTurnNumber() + " 回合 - " + 
                                   (currentGame.isBlackTurn() ? "黑方" : "白方") + "行棋");
+        currentRoundLabel.setVisible(true);
+          // 根据游戏模式在固定位置显示不同的信息
+        String gameMode = currentGame.getGameMode();
+        ChessBoard board = currentGame.getBoard();
         
-        // 更新炸弹数量（如果是五子棋模式）
-        if ("gomoku".equals(currentGame.getGameMode())) {
-            try {
-                // 使用反射或转换来获取炸弹数量，如果Player没有getBombNumber方法
-                blackBombsLabel.setText("炸弹: " + 0); // 暂时使用默认值
-                whiteBombsLabel.setText("炸弹: " + 0); // 暂时使用默认值
-            } catch (Exception e) {
-                blackBombsLabel.setText("炸弹: N/A");
-                whiteBombsLabel.setText("炸弹: N/A");
+        // 使用分数标签位置作为统一显示位置
+        if ("reversi".equals(gameMode)) {
+            // Reversi模式：在分数标签位置显示棋子数量
+            if (board != null) {
+                blackPlayerScoreLabel.setText("棋子: " + board.getChessNumber(ChessStatement.BLACK));
+                whitePlayerScoreLabel.setText("棋子: " + board.getChessNumber(ChessStatement.WHITE));
+            } else {
+                blackPlayerScoreLabel.setText("棋子: 0");
+                whitePlayerScoreLabel.setText("棋子: 0");
             }
+            // 显示分数标签，隐藏炸弹标签
+            blackPlayerScoreLabel.setVisible(true);
+            whitePlayerScoreLabel.setVisible(true);
+            blackBombsLabel.setVisible(false);
+            whiteBombsLabel.setVisible(false);
+            
+        } else if ("gomoku".equals(gameMode)) {
+            // Gomoku模式：在分数标签位置显示炸弹数量
+            try {
+                GomokuMode gomokuMode = (GomokuMode) currentGame;
+                int blackBombs = gomokuMode.getBombNumber(currentGame.getPlayer1());
+                int whiteBombs = gomokuMode.getBombNumber(currentGame.getPlayer2());
+                blackPlayerScoreLabel.setText("炸弹: " + blackBombs);
+                whitePlayerScoreLabel.setText("炸弹: " + whiteBombs);
+            } catch (Exception e) {
+                blackPlayerScoreLabel.setText("炸弹: N/A");
+                whitePlayerScoreLabel.setText("炸弹: N/A");
+            }
+            // 只显示分数标签位置，隐藏专门的炸弹标签
+            blackPlayerScoreLabel.setVisible(true);
+            whitePlayerScoreLabel.setVisible(true);
+            blackBombsLabel.setVisible(false);
+            whiteBombsLabel.setVisible(false);
+            
         } else {
-            blackBombsLabel.setText("炸弹: N/A");
-            whiteBombsLabel.setText("炸弹: N/A");
+            // Peace模式或其他：隐藏所有额外信息
+            blackPlayerScoreLabel.setVisible(false);
+            whitePlayerScoreLabel.setVisible(false);
+            blackBombsLabel.setVisible(false);
+            whiteBombsLabel.setVisible(false);
         }
         
         // 更新按钮显示状态
