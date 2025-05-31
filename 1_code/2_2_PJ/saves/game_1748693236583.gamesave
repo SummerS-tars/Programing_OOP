@@ -1,0 +1,1734 @@
+{
+  "gameList": {
+    "gameNumber": 6,
+    "player1Name": "test1",
+    "player2Name": "test2",
+    "player1Color": "BLACK",
+    "player2Color": "WHITE",
+    "games": [
+      {
+        "className": "top.thesumst.core.mode.PeaceMode",
+        "gameOrder": 1,
+        "gameMode": "peace",
+        "size": 8,
+        "board": {
+          "chessBoard": [
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLACK",
+              "WHITE",
+              "BLANK",
+              "BLACK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "WHITE",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "WHITE",
+              "BLACK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLACK",
+              "WHITE",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ]
+          ],
+          "size": 8
+        },
+        "player1": {
+          "name": "test1",
+          "color": "BLACK",
+          "chessNumber": 2
+        },
+        "player2": {
+          "name": "test2",
+          "color": "WHITE",
+          "chessNumber": 2
+        },
+        "isBlackTurn": true,
+        "isOver": false,
+        "stepStack": [
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 1,
+              "y": 5
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 1,
+              "y": 3
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 1,
+              "y": 2
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 2,
+              "y": 1
+            }
+          }
+        ],
+        "undoStack": []
+      },
+      {
+        "className": "top.thesumst.core.mode.ReversiMode",
+        "gameOrder": 2,
+        "gameMode": "reversi",
+        "size": 8,
+        "board": {
+          "chessBoard": [
+            [
+              "WHITE",
+              "WHITE",
+              "WHITE",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "WHITE",
+              "WHITE",
+              "WHITE",
+              "BLANK",
+              "VALID",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "WHITE",
+              "WHITE",
+              "WHITE",
+              "BLACK",
+              "VALID",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "WHITE",
+              "WHITE",
+              "WHITE",
+              "BLACK",
+              "BLACK",
+              "VALID",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "WHITE",
+              "WHITE",
+              "WHITE",
+              "BLACK",
+              "BLACK",
+              "BLACK",
+              "VALID",
+              "BLANK"
+            ],
+            [
+              "BLACK",
+              "BLACK",
+              "BLACK",
+              "BLANK",
+              "VALID",
+              "VALID",
+              "VALID",
+              "BLANK"
+            ],
+            [
+              "VALID",
+              "VALID",
+              "VALID",
+              "VALID",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ]
+          ],
+          "size": 8
+        },
+        "player1": {
+          "name": "test1",
+          "color": "BLACK",
+          "chessNumber": 9
+        },
+        "player2": {
+          "name": "test2",
+          "color": "WHITE",
+          "chessNumber": 15
+        },
+        "isBlackTurn": false,
+        "isOver": false,
+        "stepStack": [
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 2,
+              "y": 3
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 2,
+              "y": 2
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 2,
+              "y": 1
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 1,
+              "y": 1
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 0,
+              "y": 1
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 3,
+              "y": 2
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 2,
+              "y": 0
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 1,
+              "y": 0
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 0,
+              "y": 2
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 1,
+              "y": 2
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 3,
+              "y": 1
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 3,
+              "y": 0
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 4,
+              "y": 0
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 4,
+              "y": 5
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 4,
+              "y": 1
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 5,
+              "y": 0
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 5,
+              "y": 1
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 5,
+              "y": 2
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 4,
+              "y": 2
+            }
+          },
+          {
+            "type": "PASS",
+            "dataType": "null"
+          }
+        ],
+        "undoStack": []
+      },
+      {
+        "className": "top.thesumst.core.mode.GomokuMode",
+        "gameOrder": 3,
+        "gameMode": "gomoku",
+        "size": 15,
+        "board": {
+          "chessBoard": [
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BARRIER"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLACK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BARRIER",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "WHITE",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BARRIER",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BOMBED",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLACK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BARRIER",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "WHITE",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ]
+          ],
+          "size": 15
+        },
+        "player1": {
+          "name": "test1",
+          "color": "BLACK",
+          "chessNumber": 2
+        },
+        "player2": {
+          "name": "test2",
+          "color": "WHITE",
+          "chessNumber": 2
+        },
+        "isBlackTurn": true,
+        "isOver": false,
+        "stepStack": [
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 5,
+              "y": 8
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 7,
+              "y": 8
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 9,
+              "y": 7
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 11,
+              "y": 9
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 8,
+              "y": 10
+            }
+          },
+          {
+            "type": "BOMB",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 8,
+              "y": 10
+            }
+          }
+        ],
+        "undoStack": [],
+        "blackBombNum": 2,
+        "whiteBombNum": 2
+      },
+      {
+        "className": "top.thesumst.core.mode.PeaceMode",
+        "gameOrder": 4,
+        "gameMode": "peace",
+        "size": 8,
+        "board": {
+          "chessBoard": [
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "WHITE",
+              "BLACK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLACK",
+              "WHITE",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ]
+          ],
+          "size": 8
+        },
+        "player1": {
+          "name": "test1",
+          "color": "BLACK",
+          "chessNumber": 2
+        },
+        "player2": {
+          "name": "test2",
+          "color": "WHITE",
+          "chessNumber": 2
+        },
+        "isBlackTurn": true,
+        "isOver": false,
+        "stepStack": [],
+        "undoStack": []
+      },
+      {
+        "className": "top.thesumst.core.mode.ReversiMode",
+        "gameOrder": 5,
+        "gameMode": "reversi",
+        "size": 8,
+        "board": {
+          "chessBoard": [
+            [
+              "WHITE",
+              "WHITE",
+              "WHITE",
+              "WHITE",
+              "WHITE",
+              "BLACK",
+              "BLACK",
+              "BLACK"
+            ],
+            [
+              "BLACK",
+              "WHITE",
+              "BLACK",
+              "WHITE",
+              "BLACK",
+              "WHITE",
+              "BLACK",
+              "BLACK"
+            ],
+            [
+              "BLACK",
+              "BLACK",
+              "WHITE",
+              "BLACK",
+              "WHITE",
+              "BLACK",
+              "WHITE",
+              "BLACK"
+            ],
+            [
+              "BLACK",
+              "WHITE",
+              "WHITE",
+              "WHITE",
+              "BLACK",
+              "WHITE",
+              "WHITE",
+              "BLACK"
+            ],
+            [
+              "BLACK",
+              "WHITE",
+              "WHITE",
+              "WHITE",
+              "BLACK",
+              "BLACK",
+              "WHITE",
+              "BLACK"
+            ],
+            [
+              "BLACK",
+              "BLACK",
+              "BLACK",
+              "WHITE",
+              "WHITE",
+              "WHITE",
+              "BLACK",
+              "BLACK"
+            ],
+            [
+              "BLACK",
+              "BLACK",
+              "BLACK",
+              "BLACK",
+              "BLACK",
+              "WHITE",
+              "WHITE",
+              "BLACK"
+            ],
+            [
+              "BLACK",
+              "BLACK",
+              "BLACK",
+              "BLACK",
+              "BLACK",
+              "WHITE",
+              "WHITE",
+              "WHITE"
+            ]
+          ],
+          "size": 8
+        },
+        "player1": {
+          "name": "test1",
+          "color": "BLACK",
+          "chessNumber": 36
+        },
+        "player2": {
+          "name": "test2",
+          "color": "WHITE",
+          "chessNumber": 28
+        },
+        "isBlackTurn": true,
+        "isOver": true,
+        "stepStack": [
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 3,
+              "y": 2
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 2,
+              "y": 2
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 2,
+              "y": 3
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 4,
+              "y": 2
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 5,
+              "y": 1
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 2,
+              "y": 4
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 1,
+              "y": 5
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 1,
+              "y": 4
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 1,
+              "y": 1
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 4,
+              "y": 5
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 6,
+              "y": 0
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 2,
+              "y": 1
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 0,
+              "y": 6
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 5,
+              "y": 2
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 2,
+              "y": 0
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 5,
+              "y": 0
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 4,
+              "y": 0
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 1,
+              "y": 0
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 3,
+              "y": 1
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 3,
+              "y": 0
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 5,
+              "y": 3
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 4,
+              "y": 1
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 4,
+              "y": 6
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 7,
+              "y": 0
+            }
+          },
+          {
+            "type": "PASS",
+            "dataType": "null"
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 0,
+              "y": 2
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 0,
+              "y": 1
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 1,
+              "y": 2
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 0,
+              "y": 3
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 1,
+              "y": 3
+            }
+          },
+          {
+            "type": "PASS",
+            "dataType": "null"
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 6,
+              "y": 1
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 7,
+              "y": 1
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 6,
+              "y": 2
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 7,
+              "y": 2
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 5,
+              "y": 4
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 0,
+              "y": 4
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 0,
+              "y": 5
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 2,
+              "y": 5
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 0,
+              "y": 7
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 6,
+              "y": 3
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 1,
+              "y": 6
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 2,
+              "y": 6
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 2,
+              "y": 7
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 1,
+              "y": 7
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 4,
+              "y": 7
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 3,
+              "y": 5
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 3,
+              "y": 6
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 3,
+              "y": 7
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 5,
+              "y": 5
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 6,
+              "y": 6
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 5,
+              "y": 6
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 5,
+              "y": 7
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 6,
+              "y": 4
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 6,
+              "y": 5
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 6,
+              "y": 7
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 7,
+              "y": 7
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 7,
+              "y": 3
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 7,
+              "y": 5
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 7,
+              "y": 4
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 7,
+              "y": 6
+            }
+          }
+        ],
+        "undoStack": []
+      },
+      {
+        "className": "top.thesumst.core.mode.GomokuMode",
+        "gameOrder": 6,
+        "gameMode": "gomoku",
+        "size": 15,
+        "board": {
+          "chessBoard": [
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BARRIER",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BARRIER"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BARRIER",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BARRIER",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ]
+          ],
+          "size": 15
+        },
+        "player1": {
+          "name": "test1",
+          "color": "BLACK",
+          "chessNumber": 2
+        },
+        "player2": {
+          "name": "test2",
+          "color": "WHITE",
+          "chessNumber": 2
+        },
+        "isBlackTurn": true,
+        "isOver": false,
+        "stepStack": [],
+        "undoStack": [],
+        "blackBombNum": 2,
+        "whiteBombNum": 3
+      }
+    ]
+  },
+  "currentGameOrder": 5,
+  "saveTime": "2025-05-31T20:09:04.3421949",
+  "version": "1.0"
+}

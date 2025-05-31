@@ -1,0 +1,597 @@
+{
+  "gameList": {
+    "gameNumber": 3,
+    "player1Name": "test1",
+    "player2Name": "test2",
+    "player1Color": "BLACK",
+    "player2Color": "WHITE",
+    "games": [
+      {
+        "className": "top.thesumst.core.mode.PeaceMode",
+        "gameOrder": 1,
+        "gameMode": "peace",
+        "size": 8,
+        "board": {
+          "chessBoard": [
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLACK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "WHITE",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLACK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "WHITE",
+              "BLACK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLACK",
+              "WHITE",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ]
+          ],
+          "size": 8
+        },
+        "player1": {
+          "name": "test1",
+          "color": "BLACK",
+          "chessNumber": 2
+        },
+        "player2": {
+          "name": "test2",
+          "color": "WHITE",
+          "chessNumber": 2
+        },
+        "isBlackTurn": false,
+        "isOver": false,
+        "stepStack": [
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 2,
+              "y": 5
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 1,
+              "y": 6
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 0,
+              "y": 7
+            }
+          }
+        ],
+        "undoStack": []
+      },
+      {
+        "className": "top.thesumst.core.mode.ReversiMode",
+        "gameOrder": 2,
+        "gameMode": "reversi",
+        "size": 8,
+        "board": {
+          "chessBoard": [
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "VALID",
+              "BLANK",
+              "VALID",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLACK",
+              "BLACK",
+              "BLACK",
+              "VALID",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "WHITE",
+              "BLACK",
+              "VALID",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "VALID",
+              "BLACK",
+              "WHITE",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "VALID",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ]
+          ],
+          "size": 8
+        },
+        "player1": {
+          "name": "test1",
+          "color": "BLACK",
+          "chessNumber": 5
+        },
+        "player2": {
+          "name": "test2",
+          "color": "WHITE",
+          "chessNumber": 2
+        },
+        "isBlackTurn": false,
+        "isOver": false,
+        "stepStack": [
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 2,
+              "y": 3
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 2,
+              "y": 2
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 2,
+              "y": 1
+            }
+          }
+        ],
+        "undoStack": []
+      },
+      {
+        "className": "top.thesumst.core.mode.GomokuMode",
+        "gameOrder": 3,
+        "gameMode": "gomoku",
+        "size": 15,
+        "board": {
+          "chessBoard": [
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BARRIER",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BARRIER",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BARRIER",
+              "BLANK",
+              "BLACK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "WHITE",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BARRIER",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BOMBED",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLACK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ],
+            [
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK",
+              "BLANK"
+            ]
+          ],
+          "size": 15
+        },
+        "player1": {
+          "name": "test1",
+          "color": "BLACK",
+          "chessNumber": 2
+        },
+        "player2": {
+          "name": "test2",
+          "color": "WHITE",
+          "chessNumber": 2
+        },
+        "isBlackTurn": false,
+        "isOver": false,
+        "stepStack": [
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 4,
+              "y": 8
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 6,
+              "y": 8
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 9,
+              "y": 4
+            }
+          },
+          {
+            "type": "MOVE",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 8,
+              "y": 8
+            }
+          },
+          {
+            "type": "BOMB",
+            "dataType": "java.awt.Point",
+            "data": {
+              "x": 8,
+              "y": 8
+            }
+          }
+        ],
+        "undoStack": [],
+        "blackBombNum": 1,
+        "whiteBombNum": 3
+      }
+    ]
+  },
+  "currentGameOrder": 3,
+  "saveTime": "2025-05-31T17:58:06.8496039",
+  "version": "1.0"
+}
