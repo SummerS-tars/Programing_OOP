@@ -23,6 +23,7 @@ import top.thesumst.core.mode.GomokuMode;
 import top.thesumst.io.provider.GUICommandProvider;
 import top.thesumst.type.ChessStatement;
 import top.thesumst.type.component.ChessBoard;
+import top.thesumst.type.component.Player;
 
 import java.awt.Point;
 import java.net.URL;
@@ -564,10 +565,16 @@ public class GUIController implements Initializable {
             
             int currentGameOrder = GameContainer.getCurrentGameOrder();
             currentGameNumberLabel.setText("游戏" + currentGameOrder);
+              // 获取玩家信息，动态显示棋子符号
+            Player player1 = currentGame.getPlayer1();
+            Player player2 = currentGame.getPlayer2();
             
-            // 获取玩家信息
-            blackPlayerLabel.setText("黑棋 [" + currentGame.getPlayer1().getName() + "]");
-            whitePlayerLabel.setText("白棋 [" + currentGame.getPlayer2().getName() + "]");
+            // 根据玩家实际颜色显示棋子符号
+            String player1Symbol = (player1.getColor() == ChessStatement.BLACK) ? "●" : "○";
+            String player2Symbol = (player2.getColor() == ChessStatement.BLACK) ? "●" : "○";
+            
+            blackPlayerLabel.setText(player1.getName() + " " + player1Symbol);
+            whitePlayerLabel.setText(player2.getName() + " " + player2Symbol);
             
             // 更新UI元素可见性基于游戏模式
             updateUIForGameMode(currentGame);
@@ -720,10 +727,16 @@ public class GUIController implements Initializable {
      */    private void updateCurrentGameDisplay(GameMode currentGame, int currentGameOrder) {
         // 更新游戏编号
         currentGameNumberLabel.setText("游戏 " + currentGameOrder + " (" + currentGame.getGameMode() + ")");
+          // 更新玩家信息，动态显示棋子符号
+        Player player1 = currentGame.getPlayer1();
+        Player player2 = currentGame.getPlayer2();
         
-        // 更新玩家信息
-        blackPlayerLabel.setText(currentGame.getPlayer1().getName());
-        whitePlayerLabel.setText(currentGame.getPlayer2().getName());
+        // 根据玩家实际颜色显示棋子符号
+        String player1Symbol = (player1.getColor() == ChessStatement.BLACK) ? "●" : "○";
+        String player2Symbol = (player2.getColor() == ChessStatement.BLACK) ? "●" : "○";
+        
+        blackPlayerLabel.setText(player1.getName() + " " + player1Symbol);
+        whitePlayerLabel.setText(player2.getName() + " " + player2Symbol);
         
         // 更新回合信息
         currentRoundLabel.setText("第 " + currentGame.getTurnNumber() + " 回合 - " + 
