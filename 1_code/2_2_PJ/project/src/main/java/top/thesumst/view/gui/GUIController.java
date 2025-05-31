@@ -10,11 +10,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import top.thesumst.core.container.GameContainer;
 import top.thesumst.core.container.GameList;
 import top.thesumst.core.mode.GameMode;
@@ -294,7 +295,7 @@ public class GUIController implements Initializable {
                             button.setGraphic(barrier);
                             break;
                         case BOMBED:
-                            button.setText("@");
+                            button.setText("⚠");
                             button.setStyle(button.getStyle() + "; -fx-text-fill: red; -fx-font-weight: bold;");
                             break;
                         case BLANK:
@@ -869,10 +870,11 @@ public class GUIController implements Initializable {
             case BARRIER:
                 Rectangle barrier = new Rectangle(20, 20, Color.BROWN);
                 button.setGraphic(barrier);
-                break;
+                break;            
             case BOMBED:
-                button.setText("@");
-                button.setStyle(button.getStyle() + "; -fx-text-fill: red; -fx-font-weight: bold; -fx-font-size: 18px;");
+                // 方法1：使用自定义图形 - 红色圆形加X
+                StackPane bombGraphic = createBombGraphic();
+                button.setGraphic(bombGraphic);
                 break;
             case BLANK:
             default:
@@ -904,7 +906,33 @@ public class GUIController implements Initializable {
             }
         });
     }
-    
+    /**
+     * 创建炸弹图形显示
+     * @return 炸弹图形的StackPane容器
+     */
+    private StackPane createBombGraphic() {
+        StackPane container = new StackPane();
+        
+        // 创建红色圆形背景
+        Circle background = new Circle(12, Color.RED);
+        background.setStroke(Color.DARKRED);
+        background.setStrokeWidth(2);
+        
+        // 创建X形状的线条
+        Line line1 = new Line(-8, -8, 8, 8);
+        line1.setStroke(Color.WHITE);
+        line1.setStrokeWidth(3);
+        
+        Line line2 = new Line(-8, 8, 8, -8);
+        line2.setStroke(Color.WHITE);
+        line2.setStrokeWidth(3);
+        
+        // 添加所有元素到容器
+        container.getChildren().addAll(background, line1, line2);
+        
+        return container;
+    }
+
     /**
      * 显示消息给用户
      */
