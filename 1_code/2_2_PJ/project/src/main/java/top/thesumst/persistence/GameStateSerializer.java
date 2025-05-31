@@ -2,6 +2,7 @@ package top.thesumst.persistence;
 
 import com.google.gson.*;
 import top.thesumst.core.container.GameContainer;
+import top.thesumst.core.container.GameList; // Import GameList
 import top.thesumst.core.mode.GameMode;
 import top.thesumst.type.Operation;
 import top.thesumst.type.component.Player;
@@ -32,6 +33,7 @@ public class GameStateSerializer {
                 .registerTypeAdapter(Stack.class, new StackSerializer())
                 .registerTypeAdapter(Operation.class, new OperationSerializer())
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter()) // 添加LocalDateTime适配器
+                .registerTypeAdapter(GameList.class, new GameListSerializer()) // Add GameListSerializer
                 .registerTypeHierarchyAdapter(GameMode.class, new GameModeSerializer())
                 .create();
     }

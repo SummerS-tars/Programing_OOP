@@ -1,5 +1,6 @@
 package top.thesumst.core.container;
 
+import java.util.ArrayList;
 import top.thesumst.core.loop.*;
 import top.thesumst.core.mode.GameMode;
 import top.thesumst.io.input.InputParser;
@@ -41,9 +42,41 @@ public class GameContainer extends BaseSubject
      */
     public static void switchGameOrder(int order)
     {
+        // 安全检查：确保游戏列表已初始化且不为空
+        if (GameList.getGames() == null || GameList.getGames().isEmpty()) {
+            System.out.println("警告: 游戏列表为空，无法切换游戏。");
+            // 如果游戏列表为空，我们应该创建默认游戏
+            try {
+                if (GameList.getGames() == null) {
+                    GameList.setGames(new ArrayList<>());
+                }
+                GameList.addGame("peace");
+                GameList.addGame("reversi");
+                GameList.addGame("gomoku");
+            } catch (Exception e) {
+                System.err.println("创建默认游戏失败: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+
         currentGameOrder = order;
         gameLoop.setCurrentGameOrder(currentGameOrder);
-        InputParser.setBoardSize(GameList.getGame(currentGameOrder).size);
+        
+        // 再次检查游戏是否存在
+        try {
+            InputParser.setBoardSize(GameList.getGame(currentGameOrder).size);
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println("警告: 无法找到序号为 " + currentGameOrder + " 的游戏。设置为默认值1。");
+            currentGameOrder = 1;
+            gameLoop.setCurrentGameOrder(currentGameOrder);
+            // 尝试再次获取
+            try {
+                InputParser.setBoardSize(GameList.getGame(currentGameOrder).size);
+            } catch (Exception ex) {
+                System.err.println("严重错误: 无法初始化游戏。");
+                ex.printStackTrace();
+            }
+        }
     }
 
     /**

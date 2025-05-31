@@ -19,8 +19,20 @@ public class GameList
     private static String player1Name , player2Name ;
     private static ChessStatement player1Color , player2Color ;
 
+    // Flag to indicate if deserialization is in progress
+    // transient to ensure it's not part of serialization itself
+    private static transient boolean isDeserializing = false;
+
     public GameList()
     {
+        if (isDeserializing) {
+            // 确保在反序列化时也初始化games集合
+            if (games == null) {
+                games = new ArrayList<>();
+            }
+            return; // Skip other initialization during deserialization
+        }
+
         gameNumber = 0 ;
         games = new ArrayList<GameMode>() ;
         setInitializeInfo() ;
@@ -35,6 +47,14 @@ public class GameList
 
     public GameList(String player1Name, String player2Name)
     {
+        if (isDeserializing) {
+            // 确保在反序列化时也初始化games集合
+            if (games == null) {
+                games = new ArrayList<>();
+            }
+            return; // Skip other initialization during deserialization
+        }
+
         gameNumber = 0 ;
         games = new ArrayList<GameMode>() ;
         GameList.player1Name = player1Name ;
@@ -48,6 +68,70 @@ public class GameList
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    // --- Static Getters ---
+    public static int getGameNumber()
+    {
+        return gameNumber ;
+    }
+
+    public static List<GameMode> getGames() {
+        return games;
+    }
+
+    public static String getPlayer1Name() {
+        return player1Name;
+    }
+
+    public static String getPlayer2Name() {
+        return player2Name;
+    }
+
+    public static ChessStatement getPlayer1Color() {
+        return player1Color;
+    }
+
+    public static ChessStatement getPlayer2Color() {
+        return player2Color;
+    }
+
+    // --- Static Setters ---
+    public static void setGameNumber(int gameNum) {
+        gameNumber = gameNum;
+    }
+
+    public static void setGames(List<GameMode> gameList) {
+        games = gameList;
+    }
+
+    public static void setPlayer1Name(String name) {
+        player1Name = name;
+    }
+
+    public static void setPlayer2Name(String name) {
+        player2Name = name;
+    }
+
+    public static void setPlayer1Color(ChessStatement color) {
+        player1Color = color;
+    }
+
+    public static void setPlayer2Color(ChessStatement color) {
+        player2Color = color;
+    }
+    
+    // --- Deserialization lifecycle methods ---
+    public static void startDeserialization() {
+        isDeserializing = true;
+        // Initialize games list if null to avoid NPE during deserializer adding games
+        if (games == null) {
+            games = new ArrayList<>();
+        }
+    }
+
+    public static void endDeserialization() {
+        isDeserializing = false;
     }
 
     /**
@@ -90,15 +174,6 @@ public class GameList
     public static GameMode getGame(int gameNum)
     {
         return games.get(gameNum - 1) ;
-    }
-
-    /**
-     * * getGameNumber方法用于获取游戏数量
-     * @return int 游戏数量
-     */
-    public static int getGameNumber()
-    {
-        return gameNumber ;
     }
 
     /**
