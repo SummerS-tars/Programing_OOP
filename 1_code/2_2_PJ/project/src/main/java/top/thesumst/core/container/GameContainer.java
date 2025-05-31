@@ -42,22 +42,8 @@ public class GameContainer extends BaseSubject
      */
     public static void switchGameOrder(int order)
     {
-        // 安全检查：确保游戏列表已初始化且不为空
-        if (GameList.getGames() == null || GameList.getGames().isEmpty()) {
-            System.out.println("警告: 游戏列表为空，无法切换游戏。");
-            // 如果游戏列表为空，我们应该创建默认游戏
-            try {
-                if (GameList.getGames() == null) {
-                    GameList.setGames(new ArrayList<>());
-                }
-                GameList.addGame("peace");
-                GameList.addGame("reversi");
-                GameList.addGame("gomoku");
-            } catch (Exception e) {
-                System.err.println("创建默认游戏失败: " + e.getMessage());
-                e.printStackTrace();
-            }
-        }
+        // 验证游戏列表是否已正确初始化
+        GameList.validateGamesInitialized();
 
         currentGameOrder = order;
         gameLoop.setCurrentGameOrder(currentGameOrder);

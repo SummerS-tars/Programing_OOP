@@ -68,23 +68,35 @@ public class Main extends Application
                 if (cmdProvider instanceof top.thesumst.io.provider.GUICommandProvider) {
                     guiController.setCommandProvider((top.thesumst.io.provider.GUICommandProvider) cmdProvider);
                 }
-            }            // 创建或恢复游戏状态
+            }
+
+            // 创建或恢复游戏状态
             if (saveData != null) {
                 // 从存档恢复游戏状态
+                System.out.println("正在从存档恢复游戏状态...");
+                
+                // 使用saveData中已经反序列化的GameList
+                // 由于GameList使用静态字段，所以不需要创建新实例
+                // 只需使用现有实例的引用
                 gameList = saveData.gameList;
                 
                 // 将GameList设置到GUIController中
                 guiController.setGameList(gameList);
                 
+                // 创建游戏循环
                 gameLoop = GameLoopFactory.getGameLoop("gui", gameList, cmdProvider, observer);
+                
+                // 创建游戏容器并恢复游戏状态
                 gameContainer = new GameContainer(gameList, gameLoop, cmdProvider, observer);
                 
                 // 恢复游戏状态到容器中
                 PersistenceManager.restoreGameState(gameContainer, saveData);
                 
                 System.out.println("成功从存档恢复游戏状态");
-            } else {
+            }
+            else {
                 // 创建新的游戏列表
+                System.out.println("创建新游戏...");
                 gameList = new GameList();
                 
                 // 将GameList设置到GUIController中
@@ -156,7 +168,9 @@ public class Main extends Application
         // 检查启动参数，如果是GUI模式则启动JavaFX应用
         if (args.length > 0 && "gui".equals(args[0])) {
             // 启动JavaFX应用
-            launch(args);        } else {
+            launch(args);        
+        } 
+        else {
             // 传统CLI模式
             CLIPrintTools.gameMotd();
             

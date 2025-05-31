@@ -22,15 +22,16 @@ public class GameList
     // Flag to indicate if deserialization is in progress
     // transient to ensure it's not part of serialization itself
     private static transient boolean isDeserializing = false;
+    
+    // Flag to indicate that this instance was created from deserialization
+    // and should be treated as such
+    private transient boolean isFromDeserialization = false;
 
     public GameList()
     {
         if (isDeserializing) {
-            // 确保在反序列化时也初始化games集合
-            if (games == null) {
-                games = new ArrayList<>();
-            }
-            return; // Skip other initialization during deserialization
+            this.isFromDeserialization = true;
+            return; // Skip initialization during deserialization
         }
 
         gameNumber = 0 ;
@@ -48,11 +49,8 @@ public class GameList
     public GameList(String player1Name, String player2Name)
     {
         if (isDeserializing) {
-            // 确保在反序列化时也初始化games集合
-            if (games == null) {
-                games = new ArrayList<>();
-            }
-            return; // Skip other initialization during deserialization
+            this.isFromDeserialization = true;
+            return; // Skip initialization during deserialization
         }
 
         gameNumber = 0 ;
@@ -68,6 +66,63 @@ public class GameList
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+    
+    /**
+     * 专门用于反序列化的构造函数
+     * 不会重新初始化任何游戏，而是使用已经设置的静态数据
+     * @param fromDeserialization 标记这是从反序列化创建的实例
+     */
+    public GameList(boolean fromDeserialization) {
+        if (fromDeserialization) {
+            this.isFromDeserialization = true;
+            // 不初始化任何内容，假设静态字段已由反序列化器填充
+            System.out.println("从反序列化创建GameList实例，包含 " + games.size() + " 个游戏");
+        } else {
+            throw new IllegalArgumentException("这个构造函数只应该由反序列化器调用，fromDeserialization参数必须为true");
+        }
+    }
+    
+    /**
+     * 检查游戏列表是否已初始化
+     * 如果未初始化或为空，则创建默认游戏
+     * @return 如果游戏列表已正确初始化则返回true
+     */
+    public static boolean validateGamesInitialized() {
+        // 如果正在反序列化，不要重新初始化游戏
+        if (isDeserializing) {
+            System.out.println("正在反序列化，跳过游戏列表初始化检查");
+            return true;
+        }
+        
+        if (games == null || games.isEmpty()) {
+            System.out.println("警告: 游戏列表为空或未初始化，创建默认游戏。");
+            try {
+                if (games == null) {
+                    games = new ArrayList<>();
+                    gameNumber = 0;
+                }
+                
+                // 确保玩家名称已设置，如果没有则使用默认值
+                if (player1Name == null) player1Name = "玩家1";
+                if (player2Name == null) player2Name = "玩家2";
+                
+                // 确保棋子颜色已设置
+                if (player1Color == null) player1Color = ChessStatement.BLACK;
+                if (player2Color == null) player2Color = ChessStatement.WHITE;
+                
+                // 添加默认游戏
+                addGame("peace");
+                addGame("reversi");
+                addGame("gomoku");
+                return true;
+            } catch (Exception e) {
+                System.err.println("创建默认游戏失败: " + e.getMessage());
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return true;
     }
 
     // --- Static Getters ---
