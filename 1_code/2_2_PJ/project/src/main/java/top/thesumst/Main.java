@@ -162,67 +162,14 @@ public class Main extends Application
         
         // 显示窗口
         primaryStage.show();
-    }
-
-    /**
+    }    /**
      * 游戏主函数
      * @param args
      */
     public static void main(String[] args) 
     {
-        // 检查启动参数，如果是GUI模式则启动JavaFX应用
-        if (args.length > 0 && "gui".equals(args[0])) {
-            // 启动JavaFX应用
-            launch(args);        
-        } 
-        else {
-            // 传统CLI模式
-            CLIPrintTools.gameMotd();
-            
-            // 检查是否有存档要加载
-            GameSaveData saveData = PersistenceManager.checkAndLoadOnStartup(false);
-            
-            try{
-                observer = ViewFactory.getView(args[0]);
-                cmdProvider = CommandProviderFactory.getCommandProvider(args[0]);
-                  // 创建或恢复游戏状态
-                if (saveData != null) {
-                    // 从存档恢复游戏状态
-                    gameList = saveData.gameList;
-                    
-                    gameLoop = GameLoopFactory.getGameLoop(args[0], gameList, cmdProvider, observer);
-                    gameContainer = new GameContainer(gameList, gameLoop, cmdProvider, observer);
-                    
-                    // 恢复游戏状态到容器中
-                    PersistenceManager.restoreGameState(gameContainer, saveData);
-                    
-                    System.out.println("成功从存档恢复游戏状态");
-                } else {
-                    // 创建新的游戏列表
-                    gameList = new GameList();
-                    
-                    gameLoop = GameLoopFactory.getGameLoop(args[0], gameList, cmdProvider, observer);
-                    gameContainer = new GameContainer(gameList, gameLoop, cmdProvider, observer);
-                }
-                // 添加JVM关闭钩子来处理保存
-                Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                    // 只在非正常退出时显示保存提示
-                    // QuitCommand会处理正常退出的保存逻辑
-                    if (gameContainer != null && !GameContainer.isNormalShutdown()) {
-                        System.out.println("\n程序即将退出...");
-                        PersistenceManager.checkAndSaveOnExit(gameContainer, false);
-                    }
-                }));
-                
-                gameContainer.runGame();
-            } catch (ArrayIndexOutOfBoundsException e) {
-                System.out.println("启动模式参数错误: " + e.getMessage());
-                System.out.println("请使用 'cli' 或 'gui' 启动游戏");
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-            } catch (Exception e) {
-                System.out.println("发生了未知错误: " + e.getMessage());
-            }
-        }
+        // 由于我们现在使用Launcher类作为入口点，此方法只用于JavaFX启动
+        // 如果是通过JavaFX的launch方法调用（通常是从Launcher调用的），就执行启动过程
+        launch(args);
     }
 }
