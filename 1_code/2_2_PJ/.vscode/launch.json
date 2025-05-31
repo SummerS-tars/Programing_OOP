@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "GameContainerCLITestDrive",
+            "request": "launch",
+            "mainClass": "top.thesumst.core.container.GameContainerCLITestDrive",
+            "projectName": "project"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"
@@ -18,7 +25,7 @@
             "projectName": "project",
             "vmArgs": [
                 "--module-path",
-                "E:\\_ComputerLearning\\_Environment\\javaModule\\javafx-sdk-21.0.7\\lib", // 指向 lib
+                "E:\\_ComputerLearning\\_Environment\\javaModule\\javafx-sdk-21.0.7\\lib",
                 "--add-modules=javafx.controls,javafx.fxml"
             ],
             "args": "gui"
@@ -29,6 +36,11 @@
             "request": "launch",
             "mainClass": "top.thesumst.Main",
             "projectName": "project",
+            "vmArgs": [
+                "--module-path",
+                "E:\\_ComputerLearning\\_Environment\\javaModule\\javafx-sdk-21.0.7\\lib",
+                "--add-modules=javafx.controls,javafx.fxml"
+            ],
             "args": "cli"
         },
         {
