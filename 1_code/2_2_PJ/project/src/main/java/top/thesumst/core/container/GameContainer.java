@@ -15,11 +15,13 @@ public class GameContainer extends BaseSubject
     private static GameList gameList ;
     private static GameLoop gameLoop ;
     private static int currentGameOrder ;
+    private static GameContainer currentInstance;
 
     public GameContainer(GameList gameList, GameLoop gameLoop, BaseCommandProvider commandProvider, Observer observer)
     {
         GameContainer.gameList = gameList;
         GameContainer.gameLoop = gameLoop;
+        GameContainer.currentInstance = this;
         registerObserver(observer);
         switchGameOrder(1);
         notifyInit(gameList, currentGameOrder);
@@ -51,18 +53,62 @@ public class GameContainer extends BaseSubject
     public static int getCurrentGameOrder()
     {
         return currentGameOrder;
-    }
-
-    public static GameMode getCurrentGame()
+    }    public static GameMode getCurrentGame()
     {
         return GameList.getGame(currentGameOrder);
     }
-
-    public static GameList getGameList()
-    {
+    
+    /**
+     * 获取游戏列表（用于序列化）
+     */
+    public static GameList getGameList() {
         return gameList;
     }
+    
+    /**
+     * 获取游戏循环（用于序列化）
+     */
+    public static GameLoop getGameLoop() {
+        return gameLoop;
+    }
 
+    /**
+     * 设置游戏列表（用于反序列化）
+     * @param newGameList 新的游戏列表
+     */
+    public static void setGameList(GameList newGameList) {
+        gameList = newGameList;
+    }
+    
+    /**
+     * 设置游戏循环（用于反序列化）
+     * @param newGameLoop 新的游戏循环
+     */
+    public static void setGameLoop(GameLoop newGameLoop) {
+        gameLoop = newGameLoop;
+    }
+    
+    /**
+     * 获取当前GameContainer实例
+     * @return 当前实例
+     */
+    public static GameContainer getCurrentInstance() {
+        return currentInstance;
+    }
+    
+    /**
+     * 设置当前游戏序号（用于反序列化）
+     * @param order 游戏序号
+     */
+    public static void setCurrentGameOrder(int order) {
+        currentGameOrder = order;
+        if (gameLoop != null) {
+            gameLoop.setCurrentGameOrder(currentGameOrder);
+        }
+        if (gameList != null && GameList.getGame(currentGameOrder) != null) {
+            InputParser.setBoardSize(GameList.getGame(currentGameOrder).size);
+        }
+    }
 
     public static void stopGame()
     {

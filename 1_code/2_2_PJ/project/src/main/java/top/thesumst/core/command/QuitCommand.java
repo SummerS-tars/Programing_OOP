@@ -2,22 +2,31 @@ package top.thesumst.core.command;
 
 import javafx.application.Platform;
 import top.thesumst.core.container.GameContainer;
+import top.thesumst.persistence.PersistenceManager;
 
 /**
  * 退出游戏命令
+ * 现在只处理保存检查，不直接强制退出
  */
-public class QuitCommand implements GameCommand {
-    @Override
+public class QuitCommand implements GameCommand {    @Override
     public CommandResult execute() 
     {
-        GameContainer.stopGame();
+        // 检查是否需要保存并处理退出逻辑
+        boolean isGuiMode = Platform.isFxApplicationThread() || isJavaFXEnvironment();
+        boolean canExit = PersistenceManager.checkAndSaveOnExit(GameContainer.getCurrentInstance(), isGuiMode);
         
-        // 如果是JavaFX环境，确保完全退出应用程序
-        if (Platform.isFxApplicationThread() || isJavaFXEnvironment()) {
-            Platform.exit();
+        if (canExit) {
+            // 只有用户确认可以退出时才真正退出
+            GameContainer.stopGame();
+            
+            if (isGuiMode) {
+                Platform.exit();
+            }
+            System.exit(0);
         }
         
-        return CommandResult.quit();
+        // 如果用户取消退出，返回继续游戏的结果
+        return CommandResult.success();
     }
     
     /**

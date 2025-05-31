@@ -16,8 +16,8 @@ import top.thesumst.io.provider.CommandProviderFactory;
 import top.thesumst.observer.Observer;
 import top.thesumst.view.ViewFactory;
 import top.thesumst.view.console.CLIPrintTools;
-import top.thesumst.view.gui.GUIController;
-import top.thesumst.view.gui.GUIView;
+import top.thesumst.persistence.PersistenceManager;
+import top.thesumst.persistence.GameSaveData;
 
 public class Main extends Application
 {
@@ -25,19 +25,22 @@ public class Main extends Application
     static GameList gameList;
     static GameLoop gameLoop;
     static Observer observer;
-    static BaseCommandProvider cmdProvider;    
-
-    /**
+    static BaseCommandProvider cmdProvider;        /**
      * JavaFX Application start方法
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // 首先显示MOTD对话框
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("欢迎");
-        alert.setHeaderText(null);
-        alert.setContentText("欢迎来到各种棋类游戏！" + System.lineSeparator() + System.lineSeparator() + "将来这里会提示是否加载存在的游戏存档。"); // 修改MOTD内容并使用System.lineSeparator()
-        alert.showAndWait();
+        // 首先检查是否有存档要加载
+        GameSaveData saveData = PersistenceManager.checkAndLoadOnStartup(true);
+        
+        if (saveData == null) {
+            // 显示MOTD对话框
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("欢迎");
+            alert.setHeaderText(null);
+            alert.setContentText("欢迎来到各种棋类游戏！");
+            alert.showAndWait();
+        }
 
         // 设置窗口标题
         primaryStage.setTitle("Board Game");
@@ -65,22 +68,46 @@ public class Main extends Application
                 if (cmdProvider instanceof top.thesumst.io.provider.GUICommandProvider) {
                     guiController.setCommandProvider((top.thesumst.io.provider.GUICommandProvider) cmdProvider);
                 }
+            }            // 创建或恢复游戏状态
+            if (saveData != null) {
+                // 从存档恢复游戏状态
+                gameList = saveData.gameList;
+                
+                // 将GameList设置到GUIController中
+                guiController.setGameList(gameList);
+                
+                gameLoop = GameLoopFactory.getGameLoop("gui", gameList, cmdProvider, observer);
+                gameContainer = new GameContainer(gameList, gameLoop, cmdProvider, observer);
+                
+                // 恢复游戏状态到容器中
+                PersistenceManager.restoreGameState(gameContainer, saveData);
+                
+                System.out.println("成功从存档恢复游戏状态");
+            } else {
+                // 创建新的游戏列表
+                gameList = new GameList();
+                
+                // 将GameList设置到GUIController中
+                guiController.setGameList(gameList);
+                
+                gameLoop = GameLoopFactory.getGameLoop("gui", gameList, cmdProvider, observer);
+                gameContainer = new GameContainer(gameList, gameLoop, cmdProvider, observer);
             }
             
-            gameList = new GameList();
-            
-            // 将GameList设置到GUIController中
-            guiController.setGameList(gameList);
-            
-            gameLoop = GameLoopFactory.getGameLoop("gui", gameList, cmdProvider, observer);
-            gameContainer = new GameContainer(gameList, gameLoop, cmdProvider, observer);
-            
-            // 设置窗口关闭事件处理
-            primaryStage.setOnCloseRequest(_ -> {
-                if (gameContainer != null) {
-                    GameContainer.stopGame();
+            // 设置窗口关闭事件处理，添加保存提示
+            primaryStage.setOnCloseRequest(event -> {
+                event.consume(); // 阻止默认关闭行为
+                
+                // 询问是否保存游戏
+                boolean canClose = PersistenceManager.checkAndSaveOnExit(gameContainer, true);
+                
+                if (canClose) {
+                    if (gameContainer != null) {
+                        GameContainer.stopGame();
+                    }
+                    primaryStage.close();
+                    System.exit(0);
                 }
-                System.exit(0);
             });
             
             // 启动游戏循环（在后台线程中）
@@ -129,16 +156,44 @@ public class Main extends Application
         // 检查启动参数，如果是GUI模式则启动JavaFX应用
         if (args.length > 0 && "gui".equals(args[0])) {
             // 启动JavaFX应用
-            launch(args);
-        } else {
+            launch(args);        } else {
             // 传统CLI模式
             CLIPrintTools.gameMotd();
+            
+            // 检查是否有存档要加载
+            GameSaveData saveData = PersistenceManager.checkAndLoadOnStartup(false);
+            
             try{
                 observer = ViewFactory.getView(args[0]);
                 cmdProvider = CommandProviderFactory.getCommandProvider(args[0]);
-                gameList = new GameList();
-                gameLoop = GameLoopFactory.getGameLoop(args[0], gameList, cmdProvider, observer);
-                gameContainer = new GameContainer(gameList, gameLoop, cmdProvider, observer);
+                  // 创建或恢复游戏状态
+                if (saveData != null) {
+                    // 从存档恢复游戏状态
+                    gameList = saveData.gameList;
+                    
+                    gameLoop = GameLoopFactory.getGameLoop(args[0], gameList, cmdProvider, observer);
+                    gameContainer = new GameContainer(gameList, gameLoop, cmdProvider, observer);
+                    
+                    // 恢复游戏状态到容器中
+                    PersistenceManager.restoreGameState(gameContainer, saveData);
+                    
+                    System.out.println("成功从存档恢复游戏状态");
+                } else {
+                    // 创建新的游戏列表
+                    gameList = new GameList();
+                    
+                    gameLoop = GameLoopFactory.getGameLoop(args[0], gameList, cmdProvider, observer);
+                    gameContainer = new GameContainer(gameList, gameLoop, cmdProvider, observer);
+                }
+                
+                // 添加JVM关闭钩子来处理保存
+                Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                    if (gameContainer != null) {
+                        System.out.println("\n程序即将退出...");
+                        PersistenceManager.checkAndSaveOnExit(gameContainer, false);
+                    }
+                }));
+                
                 gameContainer.runGame();
             } catch (ArrayIndexOutOfBoundsException e) {
                 System.out.println("启动模式参数错误: " + e.getMessage());

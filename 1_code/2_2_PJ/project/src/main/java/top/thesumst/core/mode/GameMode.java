@@ -70,14 +70,24 @@ public abstract class GameMode
     {
         return gameMode;
     }
-    public boolean isOver()
-    {
-        return isOver;
-    }
-    public boolean isBlackTurn()
-    {
+    
+    // 序列化支持的getter方法
+    public boolean isBlackTurn() {
         return isBlackTurn;
     }
+    
+    public boolean isOver() {
+        return isOver;
+    }
+    
+    public Stack<Operation<?>> getStepStack() {
+        return stepStack;
+    }
+    
+    public Stack<Operation<?>> getUndoStack() {
+        return undoStack;
+    }
+
     public Player getPlayer1()
     {
         return player1;
