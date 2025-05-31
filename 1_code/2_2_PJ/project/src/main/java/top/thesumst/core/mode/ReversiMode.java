@@ -2,7 +2,6 @@ package top.thesumst.core.mode;
 
 import top.thesumst.type.*;
 import top.thesumst.type.component.Player;
-import top.thesumst.type.component.Step;
 import top.thesumst.type.exception.*;
 
 import java.awt.Point;
@@ -48,10 +47,15 @@ public class ReversiMode extends GameMode
                 if(isOver) throw new IllegalMoveException("游戏已经结束，无法下棋") ;
                 if(shouldPass) throw new IllegalMoveException("当前玩家无有效下棋位置") ;
                 Point point = (Point) operation.getData();
-                return go(point);
+                if(go(point))
+                {
+                    addStep(operation);
+                    return true;
+                }
             case PASS:
                 if(isOver) throw new IllegalCommandException("游戏未结束，无法pass");
                 if(!shouldPass) throw new IllegalCommandException("当前玩家有有效下棋位置，无法pass");
+                addStep(operation);
                 updateGameState();
                 return true ;
             case BOMB:
@@ -87,8 +91,6 @@ public class ReversiMode extends GameMode
     {
         if(checkGo(point))
         {
-            ChessStatement color = isBlackTurn ? ChessStatement.BLACK : ChessStatement.WHITE ;
-            addStep(new Step(point, color));
             reverse(point, validPointsCache.get(point));
             updatePlayerChessNumber();
 

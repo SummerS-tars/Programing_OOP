@@ -1,7 +1,6 @@
 package top.thesumst.core.mode;
 
 import top.thesumst.type.ChessStatement;
-import top.thesumst.type.component.Step;
 import top.thesumst.type.exception.*;
 import top.thesumst.type.*;
 
@@ -37,7 +36,11 @@ public class PeaceMode extends GameMode
             case MOVE:
                 if(isOver) throw new IllegalMoveException("游戏已经结束，无法下棋") ;
                 Point point = (Point) operation.getData();
-                return go(point);
+                if(go(point))
+                {
+                    addStep(operation);
+                    return true;
+                }
             case PASS:
                 throw new IllegalCommandException("peace模式不支持pass操作") ;
             case BOMB:
@@ -57,7 +60,6 @@ public class PeaceMode extends GameMode
         if(checkPoint(point))
         {
             ChessStatement color = isBlackTurn ? ChessStatement.BLACK : ChessStatement.WHITE ;
-            addStep(new Step(point, color));
             setChessColor(point, color);
             isBlackTurn = !isBlackTurn ;
             isOver = checkGameOver() ;

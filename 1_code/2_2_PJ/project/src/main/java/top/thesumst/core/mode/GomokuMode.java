@@ -36,12 +36,20 @@ public class GomokuMode extends GameMode
             case MOVE:
                 if(isOver) throw new IllegalMoveException("游戏已经结束，无法下棋") ;
                 Point point = (Point) operation.getData();
-                return go(point);
+                if(go(point))
+                {
+                    addStep(operation);
+                    return true;
+                }
             case PASS:
                 throw new IllegalCommandException("gomoku模式不支持pass操作") ;
             case BOMB:
                 Point bombPoint = (Point) operation.getData();
-                return useBomb(bombPoint);
+                if(useBomb(bombPoint))
+                {
+                    addStep(operation);
+                    return true;
+                }
             default:
                 throw new IllegalCommandException("不支持的操作类型");
         }
@@ -77,7 +85,6 @@ public class GomokuMode extends GameMode
         if(checkPoint(point))
         {
             ChessStatement color = isBlackTurn ? ChessStatement.BLACK : ChessStatement.WHITE ;
-            addStep(new Step(point, color));
             setChessColor(point, color);
 
             // * 检察游戏状态
