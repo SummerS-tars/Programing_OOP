@@ -722,7 +722,7 @@ public class GUIController implements Initializable {
     }
     
     /**
-     * 为GUIView提供的UI更新方法
+     * 为GUIView提供的UI更新方法  
      * 由Observer模式的update方法调用
      */
     public void updateGameUI(top.thesumst.type.Event event, GameList gameList, int currentGameOrder) {
@@ -739,7 +739,12 @@ public class GUIController implements Initializable {
             // 更新棋盘显示
             ChessBoard board = currentGame.getBoard();
             if (board != null) {
-                updateChessboardFromBoard(board);
+                // 根据当前游戏模式确定棋盘大小
+                int newBoardSize = (currentGame instanceof GomokuMode) ? 15 : 8;
+                if (newBoardSize != currentBoardSize) {
+                    updateChessboardDisplay(newBoardSize); // 如果棋盘大小改变，则重新绘制棋盘
+                }
+                updateChessboardFromBoard(board); // 然后根据棋盘状态更新棋子
             }
         }
     }
