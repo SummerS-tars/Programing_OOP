@@ -8,11 +8,7 @@ import javafx.stage.Stage;
 import top.thesumst.core.container.GameContainer;
 import top.thesumst.core.container.GameList;
 import top.thesumst.core.mode.GameMode;
-import top.thesumst.core.mode.GomokuMode;
-import top.thesumst.core.mode.PeaceMode;
-import top.thesumst.core.mode.ReversiMode;
 import top.thesumst.io.provider.GUICommandProvider;
-import top.thesumst.type.component.Player;
 
 /**
  * 第4阶段测试程序 - 测试右侧信息面板的功能
