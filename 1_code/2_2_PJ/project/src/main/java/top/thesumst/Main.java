@@ -82,17 +82,20 @@ public class Main extends Application
                 
                 // 将GameList设置到GUIController中
                 guiController.setGameList(gameList);
-                
-                // 创建游戏循环
+                  // 创建游戏循环
                 gameLoop = GameLoopFactory.getGameLoop("gui", gameList, cmdProvider, observer);
                 
-                // 创建游戏容器并恢复游戏状态
+                // 预先设置当前游戏序号，这样GameContainer构造函数就不会默认设为1
+                GameContainer.setCurrentGameOrder(saveData.currentGameOrder);
+                System.out.println("预设当前游戏序号: " + saveData.currentGameOrder);
+                
+                // 创建游戏容器
                 gameContainer = new GameContainer(gameList, gameLoop, cmdProvider, observer);
                 
-                // 恢复游戏状态到容器中
-                PersistenceManager.restoreGameState(gameContainer, saveData);
+                // 再次确保序号正确（防止构造函数覆盖）
+                GameContainer.setCurrentGameOrder(saveData.currentGameOrder);
                 
-                System.out.println("成功从存档恢复游戏状态");
+                System.out.println("成功从存档恢复游戏状态，当前游戏序号: " + GameContainer.getCurrentGameOrder());
             }
             else {
                 // 创建新的游戏列表

@@ -16,8 +16,7 @@ public class GameContainer extends BaseSubject
     private static GameList gameList ;
     private static GameLoop gameLoop ;
     private static int currentGameOrder ;
-    private static GameContainer currentInstance;
-    private static BaseCommandProvider commandProvider; // 添加commandProvider字段
+    private static GameContainer currentInstance;    private static BaseCommandProvider commandProvider; // 添加commandProvider字段
 
     public GameContainer(GameList gameList, GameLoop gameLoop, BaseCommandProvider commandProvider, Observer observer)
     {
@@ -26,7 +25,22 @@ public class GameContainer extends BaseSubject
         GameContainer.commandProvider = commandProvider; // 存储命令提供者
         GameContainer.currentInstance = this;
         registerObserver(observer);
-        switchGameOrder(1);
+        
+        // 如果当前游戏序号未设置，则初始化为1
+        // 否则保留现有值（例如从保存文件恢复时）
+        if (currentGameOrder <= 0) {
+            switchGameOrder(1);
+        } else {
+            // 重用现有的游戏序号，但确保gameLoop和InputParser正确设置
+            gameLoop.setCurrentGameOrder(currentGameOrder);
+            try {
+                InputParser.setBoardSize(GameList.getGame(currentGameOrder).size);
+            } catch (Exception e) {
+                System.err.println("警告: 恢复游戏序号 " + currentGameOrder + " 失败，重置为1");
+                switchGameOrder(1);
+            }
+        }
+        
         notifyInit(gameList, currentGameOrder);
     }
     

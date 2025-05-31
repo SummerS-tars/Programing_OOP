@@ -140,8 +140,7 @@ public class PersistenceManager {
      * @param gameContainer 目标游戏容器
      * @param saveData 保存数据
      * @throws IllegalStateException 如果恢复失败
-     */
-    public static void restoreGameState(GameContainer gameContainer, GameSaveData saveData) {
+     */    public static void restoreGameState(GameContainer gameContainer, GameSaveData saveData) {
         if (!saveData.isValid()) {
             throw new IllegalStateException("保存数据无效，无法恢复游戏状态");
         }
@@ -150,12 +149,18 @@ public class PersistenceManager {
             // 恢复游戏列表
             GameContainer.setGameList(saveData.gameList);
             
-            // 恢复当前游戏序号
+            // 打印当前游戏序号，用于调试
+            System.out.println("从保存文件恢复游戏序号: " + saveData.currentGameOrder);
+            
+            // 恢复当前游戏序号 - 这一步必须在GameContainer构造函数调用之后执行
+            // 之前的问题是GameContainer构造函数会重置currentGameOrder
             GameContainer.setCurrentGameOrder(saveData.currentGameOrder);
             
+            // 确认序号已正确设置
+            System.out.println("恢复后的当前游戏序号: " + GameContainer.getCurrentGameOrder());
+            
             // 通知观察者游戏状态已更新
-            // 注意：这里假设GameContainer有重新初始化的机制
-            // 在实际应用中，可能需要调用notifyInit或其他方法来更新UI
+            // 在GameContainer中已通过setCurrentGameOrder通知UI
             
         } catch (Exception e) {
             throw new IllegalStateException("恢复游戏状态时发生错误: " + e.getMessage(), e);
