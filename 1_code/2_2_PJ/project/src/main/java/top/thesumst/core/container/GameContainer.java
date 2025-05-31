@@ -17,15 +17,25 @@ public class GameContainer extends BaseSubject
     private static GameLoop gameLoop ;
     private static int currentGameOrder ;
     private static GameContainer currentInstance;
+    private static BaseCommandProvider commandProvider; // 添加commandProvider字段
 
     public GameContainer(GameList gameList, GameLoop gameLoop, BaseCommandProvider commandProvider, Observer observer)
     {
         GameContainer.gameList = gameList;
         GameContainer.gameLoop = gameLoop;
+        GameContainer.commandProvider = commandProvider; // 存储命令提供者
         GameContainer.currentInstance = this;
         registerObserver(observer);
         switchGameOrder(1);
         notifyInit(gameList, currentGameOrder);
+    }
+    
+    /**
+     * 获取当前命令提供者
+     * @return 命令提供者
+     */
+    public BaseCommandProvider getCommandProvider() {
+        return commandProvider;
     }
 
     /**
