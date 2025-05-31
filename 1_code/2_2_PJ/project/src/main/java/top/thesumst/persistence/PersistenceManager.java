@@ -464,8 +464,7 @@ public class PersistenceManager {
     }
       /**
      * CLI模式下显示保存游戏对话框
-     */
-    private static boolean showSaveGameDialogCLI(GameContainer gameContainer) {
+     */    private static boolean showSaveGameDialogCLI(GameContainer gameContainer) {
         Scanner scanner = ScannerTools.getScanner();
         
         System.out.println("是否要保存当前游戏进度？");
@@ -475,8 +474,16 @@ public class PersistenceManager {
         System.out.print("请选择 (1-3): ");
         
         try {
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // 消费换行符
+            // 读取整行并尝试转换为整数，这样可以处理非数字输入
+            String input = scanner.nextLine().trim();
+            int choice;
+            
+            try {
+                choice = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("输入无效，退出已取消。");
+                return false;
+            }
             
             switch (choice) {
                 case 1:

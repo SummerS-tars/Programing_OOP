@@ -8,8 +8,7 @@ import top.thesumst.persistence.PersistenceManager;
  * 退出游戏命令
  * 现在只处理保存检查，不直接强制退出
  */
-public class QuitCommand implements GameCommand {    @Override
-    public CommandResult execute() 
+public class QuitCommand implements GameCommand {    @Override    public CommandResult execute() 
     {
         // 检查命令是从哪个模式（GUI或CLI）发出的
         // 尊重命令提供者的类型，而不是检测JavaFX环境
@@ -31,7 +30,8 @@ public class QuitCommand implements GameCommand {    @Override
         
         if (canExit) {
             // 只有用户确认可以退出时才真正退出
-            GameContainer.stopGame();
+            // 停止游戏前标记这是正常退出
+            GameContainer.stopGame(); // 这会设置normalShutdown = true
             
             if (isGuiMode) {
                 Platform.exit();

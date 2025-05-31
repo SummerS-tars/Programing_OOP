@@ -29,11 +29,6 @@ public class GameList
 
     public GameList()
     {
-        if (isDeserializing) {
-            this.isFromDeserialization = true;
-            return; // Skip initialization during deserialization
-        }
-
         gameNumber = 0 ;
         games = new ArrayList<GameMode>() ;
         setInitializeInfo() ;
@@ -48,11 +43,6 @@ public class GameList
 
     public GameList(String player1Name, String player2Name)
     {
-        if (isDeserializing) {
-            this.isFromDeserialization = true;
-            return; // Skip initialization during deserialization
-        }
-
         gameNumber = 0 ;
         games = new ArrayList<GameMode>() ;
         GameList.player1Name = player1Name ;

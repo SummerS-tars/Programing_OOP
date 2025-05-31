@@ -25,7 +25,9 @@ public class Main extends Application
     static GameList gameList;
     static GameLoop gameLoop;
     static Observer observer;
-    static BaseCommandProvider cmdProvider;        /**
+    static BaseCommandProvider cmdProvider;        
+    
+    /**
      * JavaFX Application start方法
      */
     @Override
@@ -202,10 +204,11 @@ public class Main extends Application
                     gameLoop = GameLoopFactory.getGameLoop(args[0], gameList, cmdProvider, observer);
                     gameContainer = new GameContainer(gameList, gameLoop, cmdProvider, observer);
                 }
-                
                 // 添加JVM关闭钩子来处理保存
                 Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                    if (gameContainer != null) {
+                    // 只在非正常退出时显示保存提示
+                    // QuitCommand会处理正常退出的保存逻辑
+                    if (gameContainer != null && !GameContainer.isNormalShutdown()) {
                         System.out.println("\n程序即将退出...");
                         PersistenceManager.checkAndSaveOnExit(gameContainer, false);
                     }

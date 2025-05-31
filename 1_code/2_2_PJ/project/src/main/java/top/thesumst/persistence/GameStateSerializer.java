@@ -249,7 +249,7 @@ public class GameStateSerializer {
     /**
      * GameMode类的自定义序列化器
      * 处理多态序列化问题
-     */
+     */    
     private static class GameModeSerializer implements JsonSerializer<GameMode>, JsonDeserializer<GameMode> {
         @Override
         public JsonElement serialize(GameMode src, Type typeOfSrc, JsonSerializationContext context) {
@@ -259,7 +259,8 @@ public class GameStateSerializer {
             jsonObject.addProperty("gameMode", src.gameMode);
             jsonObject.addProperty("size", src.size);
             jsonObject.add("board", context.serialize(src.getBoard()));
-            jsonObject.add("player1", context.serialize(src.getPlayer1()));            jsonObject.add("player2", context.serialize(src.getPlayer2()));
+            jsonObject.add("player1", context.serialize(src.getPlayer1()));            
+            jsonObject.add("player2", context.serialize(src.getPlayer2()));
             jsonObject.addProperty("isBlackTurn", src.isBlackTurn());
             jsonObject.addProperty("isOver", src.isOver());
             
@@ -267,6 +268,26 @@ public class GameStateSerializer {
             // 使用已有的getter方法
             jsonObject.add("stepStack", context.serialize(src.getStepStack()));
             jsonObject.add("undoStack", context.serialize(src.getUndoStack()));
+            
+            // GomokuMode特有字段的序列化
+            if (src.getClass().getName().equals("top.thesumst.core.mode.GomokuMode")) {
+                try {
+                    // 使用反射获取GomokuMode的炸弹数量字段
+                    java.lang.reflect.Field blackBombNumField = src.getClass().getDeclaredField("blackBombNum");
+                    java.lang.reflect.Field whiteBombNumField = src.getClass().getDeclaredField("whiteBombNum");
+                    blackBombNumField.setAccessible(true);
+                    whiteBombNumField.setAccessible(true);
+                    
+                    int blackBombNum = (int) blackBombNumField.get(src);
+                    int whiteBombNum = (int) whiteBombNumField.get(src);
+                    
+                    jsonObject.addProperty("blackBombNum", blackBombNum);
+                    jsonObject.addProperty("whiteBombNum", whiteBombNum);
+                } catch (Exception e) {
+                    System.err.println("Warning: Failed to serialize GomokuMode bomb numbers: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
             
             return jsonObject;
         }
@@ -328,8 +349,9 @@ public class GameStateSerializer {
                     } catch (Exception e) {
                         System.err.println("Warning: Failed to restore board state: " + e.getMessage());
                     }
-                }
-                  // 恢复游戏状态
+                }                  
+                
+                // 恢复游戏状态
                 try {
                     java.lang.reflect.Field isBlackTurnField = GameMode.class.getDeclaredField("isBlackTurn");
                     isBlackTurnField.setAccessible(true);
@@ -338,6 +360,31 @@ public class GameStateSerializer {
                     java.lang.reflect.Field isOverField = GameMode.class.getDeclaredField("isOver");
                     isOverField.setAccessible(true);
                     isOverField.set(restoredGame, isOver);
+                    
+                    // GomokuMode特有字段的反序列化
+                    if (className.equals("top.thesumst.core.mode.GomokuMode")) {
+                        if (jsonObject.has("blackBombNum") && jsonObject.has("whiteBombNum")) {
+                            int blackBombNum = jsonObject.get("blackBombNum").getAsInt();
+                            int whiteBombNum = jsonObject.get("whiteBombNum").getAsInt();
+                            
+                            try {
+                                java.lang.reflect.Field blackBombNumField = restoredGame.getClass().getDeclaredField("blackBombNum");
+                                java.lang.reflect.Field whiteBombNumField = restoredGame.getClass().getDeclaredField("whiteBombNum");
+                                blackBombNumField.setAccessible(true);
+                                whiteBombNumField.setAccessible(true);
+                                
+                                blackBombNumField.set(restoredGame, blackBombNum);
+                                whiteBombNumField.set(restoredGame, whiteBombNum);
+                                
+                                System.out.println("恢复GomokuMode炸弹数量 - 黑棋: " + blackBombNum + ", 白棋: " + whiteBombNum);
+                            } catch (Exception e) {
+                                System.err.println("Warning: Failed to restore GomokuMode bomb numbers: " + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        } else {
+                            System.out.println("Warning: GomokuMode loaded but bomb numbers not found in save file");
+                        }
+                    }
                     
                     // 恢复操作栈
                     if (jsonObject.has("stepStack")) {

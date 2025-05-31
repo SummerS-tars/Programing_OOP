@@ -16,7 +16,9 @@ public class GameContainer extends BaseSubject
     private static GameList gameList ;
     private static GameLoop gameLoop ;
     private static int currentGameOrder ;
-    private static GameContainer currentInstance;    private static BaseCommandProvider commandProvider; // 添加commandProvider字段
+    private static GameContainer currentInstance;    
+    private static BaseCommandProvider commandProvider; // 添加commandProvider字段
+    private static boolean normalShutdown = false; // 标记是否为正常退出
 
     public GameContainer(GameList gameList, GameLoop gameLoop, BaseCommandProvider commandProvider, Observer observer)
     {
@@ -151,11 +153,19 @@ public class GameContainer extends BaseSubject
         if (gameList != null && GameList.getGame(currentGameOrder) != null) {
             InputParser.setBoardSize(GameList.getGame(currentGameOrder).size);
         }
-    }
-
-    public static void stopGame()
+    }    public static void stopGame()
     {
+        normalShutdown = true; // 设置正常退出标志
         gameLoop.stopLoop();
+    }
+    
+    /**
+     * 检查是否为正常退出（通过QuitCommand）
+     * @return 是否为正常退出
+     */
+    public static boolean isNormalShutdown()
+    {
+        return normalShutdown;
     }
 }
 
