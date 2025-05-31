@@ -14,6 +14,7 @@ import java.util.Stack;
 import java.awt.Point;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import top.thesumst.type.OperationType;
 
 /**
  * 游戏状态序列化器
@@ -128,14 +129,24 @@ public class GameStateSerializer {
             JsonObject jsonObject = json.getAsJsonObject();
             return new Point(jsonObject.get("x").getAsInt(), jsonObject.get("y").getAsInt());
         }
-    }
-      /**
+    }    /**
      * Stack类的自定义序列化器
      */
     private static class StackSerializer implements JsonSerializer<Stack<?>>, JsonDeserializer<Stack<?>> {
         @Override
         public JsonElement serialize(Stack<?> src, Type typeOfSrc, JsonSerializationContext context) {
-            return context.serialize(src.toArray());
+            // 将栈转换为数组进行序列化
+            JsonArray array = new JsonArray();
+            for (Object obj : src) {
+                if (obj instanceof Operation) {
+                    // 对于操作类型，使用专门的序列化器
+                    array.add(context.serialize(obj, Operation.class));
+                } else {
+                    // 其他类型正常序列化
+                    array.add(context.serialize(obj));
+                }
+            }
+            return array;
         }
         
         @Override
@@ -143,15 +154,24 @@ public class GameStateSerializer {
                 throws JsonParseException {
             Stack<Object> stack = new Stack<>();
             JsonArray array = json.getAsJsonArray();
+            
+            // 确定Operation的参数化类型
+            Type operationType = new com.google.gson.reflect.TypeToken<Operation<?>>() {}.getType();
+            
             for (JsonElement element : array) {
-                // 这里需要根据实际的Operation类型进行反序列化
-                // 暂时使用Object，实际使用时需要类型信息
-                stack.push(context.deserialize(element, Operation.class));
+                try {
+                    // 尝试作为Operation反序列化，大多数情况下是这样
+                    Operation<?> op = context.deserialize(element, operationType);
+                    stack.push(op);
+                } catch (JsonParseException e) {
+                    // 如果失败，尝试作为普通对象反序列化
+                    stack.push(context.deserialize(element, Object.class));
+                }
             }
+            
             return stack;
         }
-    }
-      /**
+    }    /**
      * Operation类的自定义序列化器
      */
     private static class OperationSerializer implements JsonSerializer<Operation<?>>, JsonDeserializer<Operation<?>> {
@@ -159,7 +179,17 @@ public class GameStateSerializer {
         public JsonElement serialize(Operation<?> src, Type typeOfSrc, JsonSerializationContext context) {
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("type", src.getType().name());
-            jsonObject.add("data", context.serialize(src.getData()));
+            
+            // 添加数据类型信息以便反序列化时确定正确的类型
+            Object data = src.getData();
+            if (data != null) {
+                jsonObject.addProperty("dataType", data.getClass().getName());
+                jsonObject.add("data", context.serialize(data));
+            } else {
+                jsonObject.addProperty("dataType", "null");
+                jsonObject.add("data", JsonNull.INSTANCE);
+            }
+            
             return jsonObject;
         }
         
@@ -168,15 +198,52 @@ public class GameStateSerializer {
                 throws JsonParseException {
             JsonObject jsonObject = json.getAsJsonObject();
             String typeName = jsonObject.get("type").getAsString();
+            String dataTypeName = jsonObject.get("dataType").getAsString();
             JsonElement dataElement = jsonObject.get("data");
             
-            // 根据类型名恢复Operation对象
-            // 这里需要根据实际的OperationType枚举进行处理
-            return new Operation<>(
-                top.thesumst.type.OperationType.valueOf(typeName),
-                context.deserialize(dataElement, Object.class)
-            );
+            // 根据操作类型和数据类型名恢复Operation对象
+            OperationType operationType = OperationType.valueOf(typeName);
+            
+            try {
+                if ("null".equals(dataTypeName) || dataElement.isJsonNull()) {
+                    return new Operation<>(operationType, null);
+                }
+                
+                // 根据数据类型名确定正确的类型
+                Class<?> dataClass = determineDataClass(dataTypeName, operationType);
+                Object data = context.deserialize(dataElement, dataClass);
+                
+                return new Operation<>(operationType, data);
+            } catch (Exception e) {
+                System.err.println("Warning: Failed to deserialize Operation: " + e.getMessage());
+                e.printStackTrace();
+                // 返回一个带有通用Object的Operation作为后备
+                return new Operation<>(operationType, context.deserialize(dataElement, Object.class));
+            }
         }
+        
+        /**
+         * 根据数据类型名和操作类型确定正确的数据类
+         */
+        private Class<?> determineDataClass(String dataTypeName, OperationType operationType) throws ClassNotFoundException {
+            // 尝试直接使用类名
+            try {
+                return Class.forName(dataTypeName);
+            } catch (ClassNotFoundException e) {
+                // 如果类名不正确，根据操作类型推断
+                switch (operationType) {
+                    case MOVE:
+                        return Point.class; // 移动操作通常使用Point
+                    case BOMB:
+                        return Point.class; // 炸弹操作也通常使用Point
+                    case PASS:
+                        return Object.class; // PASS操作可能没有特定数据
+                    default:
+                        throw new ClassNotFoundException("Cannot determine data class for: " + dataTypeName);
+                }
+            }
+        }
+        
     }
     
     /**
@@ -192,12 +259,15 @@ public class GameStateSerializer {
             jsonObject.addProperty("gameMode", src.gameMode);
             jsonObject.addProperty("size", src.size);
             jsonObject.add("board", context.serialize(src.getBoard()));
-            jsonObject.add("player1", context.serialize(src.getPlayer1()));
-            jsonObject.add("player2", context.serialize(src.getPlayer2()));
+            jsonObject.add("player1", context.serialize(src.getPlayer1()));            jsonObject.add("player2", context.serialize(src.getPlayer2()));
             jsonObject.addProperty("isBlackTurn", src.isBlackTurn());
             jsonObject.addProperty("isOver", src.isOver());
-            // 注意：stepStack和undoStack需要特殊处理，因为它们是private的
-            // 可能需要在GameMode中添加getter方法或者使用反射
+            
+            // 序列化操作栈
+            // 使用已有的getter方法
+            jsonObject.add("stepStack", context.serialize(src.getStepStack()));
+            jsonObject.add("undoStack", context.serialize(src.getUndoStack()));
+            
             return jsonObject;
         }
           @Override
@@ -259,8 +329,7 @@ public class GameStateSerializer {
                         System.err.println("Warning: Failed to restore board state: " + e.getMessage());
                     }
                 }
-                
-                // 恢复游戏状态
+                  // 恢复游戏状态
                 try {
                     java.lang.reflect.Field isBlackTurnField = GameMode.class.getDeclaredField("isBlackTurn");
                     isBlackTurnField.setAccessible(true);
@@ -269,8 +338,32 @@ public class GameStateSerializer {
                     java.lang.reflect.Field isOverField = GameMode.class.getDeclaredField("isOver");
                     isOverField.setAccessible(true);
                     isOverField.set(restoredGame, isOver);
+                    
+                    // 恢复操作栈
+                    if (jsonObject.has("stepStack")) {
+                        // 使用类型令牌正确反序列化操作栈
+                        Type operationStackType = new com.google.gson.reflect.TypeToken<Stack<Operation<?>>>() {}.getType();
+                        Stack<Operation<?>> stepStack = context.deserialize(jsonObject.get("stepStack"), operationStackType);
+                        
+                        java.lang.reflect.Field stepStackField = GameMode.class.getDeclaredField("stepStack");
+                        stepStackField.setAccessible(true);
+                        stepStackField.set(restoredGame, stepStack);
+                        System.out.println("恢复步骤栈，大小: " + stepStack.size());
+                    }
+                    
+                    if (jsonObject.has("undoStack")) {
+                        // 使用类型令牌正确反序列化撤销栈
+                        Type operationStackType = new com.google.gson.reflect.TypeToken<Stack<Operation<?>>>() {}.getType();
+                        Stack<Operation<?>> undoStack = context.deserialize(jsonObject.get("undoStack"), operationStackType);
+                        
+                        java.lang.reflect.Field undoStackField = GameMode.class.getDeclaredField("undoStack");
+                        undoStackField.setAccessible(true);
+                        undoStackField.set(restoredGame, undoStack);
+                        System.out.println("恢复撤销栈，大小: " + undoStack.size());
+                    }
                 } catch (Exception e) {
                     System.err.println("Warning: Failed to restore game state: " + e.getMessage());
+                    e.printStackTrace();
                 }
                   return restoredGame;
                 

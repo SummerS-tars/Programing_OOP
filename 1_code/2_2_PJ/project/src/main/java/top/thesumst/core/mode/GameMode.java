@@ -15,7 +15,7 @@ public abstract class GameMode
     private ChessBoard board;
     protected Player player1, player2;
     protected boolean isBlackTurn, isOver;
-    @SuppressWarnings("unused")
+    // 移除 @SuppressWarnings("unused") 注解，确保操作栈可以被序列化
     private Stack<Operation<?>> stepStack, undoStack;
 
     GameMode(int order, String mode,int size, String name1, String name2, ChessStatement color1, ChessStatement color2)
