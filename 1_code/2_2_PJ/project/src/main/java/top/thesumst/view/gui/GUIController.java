@@ -748,8 +748,7 @@ public class GUIController implements Initializable {
             }
         }
     }
-    
-    /**
+      /**
      * 为GUIView提供的UI初始化方法  
      * 由Observer模式的init方法调用
      */
@@ -767,7 +766,12 @@ public class GUIController implements Initializable {
             // 初始化棋盘显示
             ChessBoard board = currentGame.getBoard();
             if (board != null) {
-                updateChessboardFromBoard(board);
+                // 根据当前游戏模式确定棋盘大小
+                int newBoardSize = (currentGame instanceof GomokuMode) ? 15 : 8;
+                if (newBoardSize != currentBoardSize) {
+                    updateChessboardDisplay(newBoardSize); // 如果棋盘大小改变，则重新绘制棋盘
+                }
+                updateChessboardFromBoard(board); // 然后根据棋盘状态更新棋子
             }
         }
         
@@ -814,24 +818,25 @@ public class GUIController implements Initializable {
         // 更新按钮显示状态
         updateButtonVisibility(currentGame.getGameMode(), !currentGame.isOver());
     }
-    
-    /**
+      /**
      * 从ChessBoard更新棋盘显示
      */
     private void updateChessboardFromBoard(ChessBoard board) {
         if (board != null && chessboardButtons != null) {
-            int boardSize = currentBoardSize; // 使用当前棋盘大小，而不是从board获取
-            
-            // 更新每个位置的显示
-            for (int row = 0; row < boardSize; row++) {
-                for (int col = 0; col < boardSize; col++) {
-                    if (chessboardButtons[row][col] != null) {
-                        Point point = new Point(row, col);
-                        ChessStatement statement = board.getChessStatement(point);
-                        updateChessboardCell(row, col, statement);
+            Platform.runLater(() -> {
+                int boardSize = currentBoardSize; // 使用当前棋盘大小，而不是从board获取
+                
+                // 更新每个位置的显示
+                for (int row = 0; row < boardSize; row++) {
+                    for (int col = 0; col < boardSize; col++) {
+                        if (chessboardButtons[row][col] != null) {
+                            Point point = new Point(row, col);
+                            ChessStatement statement = board.getChessStatement(point);
+                            updateChessboardCell(row, col, statement);
+                        }
                     }
                 }
-            }
+            });
         }
     }
     
