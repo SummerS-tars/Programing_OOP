@@ -1,0 +1,22 @@
+This is the slides of my the ICS lecture, now please conclude the content of the slides to markdown format, which can be used to be easliy referred.
+
+requirements:
+
+1. you can use the format referring to the OOP conclusion markdown I give you. the toc and the title order number is no need for your part.
+
+```md
+# ICS
+
+## Chapter 1 : ...
+
+...
+
+### Part 1 : ...
+
+...
+
+```
+
+2. omit the part not very important about the knowledge of the ICS lecture. care about the important part.
+
+3. every time you should conclude 2 chapters of slides to avoid the too long output.
