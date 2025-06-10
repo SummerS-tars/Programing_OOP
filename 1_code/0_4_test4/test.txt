@@ -1,0 +1,2 @@
+It's a text file for the file test class.
+This is the 2nd line of this file.
