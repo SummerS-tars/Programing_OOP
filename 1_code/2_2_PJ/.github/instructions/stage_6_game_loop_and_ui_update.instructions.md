@@ -19,7 +19,7 @@ We will implement the core logic of `GUIGameLoop` to drive the game and dynamica
         * Legal Move Hints: In Reversi mode, 'reversi mode needs to further display each player's score... it is required to display all legal move positions for the current player on the chessboard (using +)'. Ensure `GUIView`, when updating the chessboard, can calculate and display '+' symbols based on game logic.
         * Right Information Panel Update: Update player names, scores (Reversi mode), bomb counts (Gomoku mode), current round number (Gomoku mode).
         * Game List Update: Update the content of `gameListView` to reflect the new game list.
-        * Visibility Control: 'Different game types will have different GUI aspects, with specific requirements психолог previous labs.' Ensure `GUIView` dynamically controls the visibility of relevant UI elements (e.g., scores, bomb counts, round numbers, pass/use bomb buttons) based on the current game mode.
+        * Visibility Control: 'Different game types will have different GUI aspects, with specific requirements in previous labs.' Ensure `GUIView` dynamically controls the visibility of relevant UI elements (e.g., scores, bomb counts, round numbers, pass/use bomb buttons) based on the current game mode.
 3.  Feedback Message Display:
     * The `Event` object will contain a feedback message (`Event.message`) after execution.
     * In `GUIView`'s `update` method, display `event.message` on the `feedbackMessageLabel` reserved in `MainGameView.fxml`.
